@@ -1,5 +1,7 @@
-<nav>
-  <img class="logo" alt="logo" src="assets/nav/logo.png" />
+<nav [class.scrolled]="!isScrollAtTop">
+  <div class="logo-wrapper">
+    <img class="logo" alt="logo" src="assets/nav/logo.png" />
+  </div>
 
   <div class="navigation">
     <div class="app-urls">
@@ -10,8 +12,18 @@
     </div>
 
     <div class="menu-icons">
-      <img src="assets/nav/discord-gold.svg" alt="discord-server" />
-      <img src="assets/nav/cart-gold.svg" alt="cart" />
+      <img
+        src="assets/nav/discord-gold.svg"
+        width="35"
+        height="35"
+        alt="discord server icon"
+      />
+      <img
+        src="assets/nav/cart-gold.svg"
+        width="28"
+        height="28"
+        alt="cart menu icon"
+      />
       <img src="assets/nav/us-flag.svg" alt="menu" />
     </div>
   </div>

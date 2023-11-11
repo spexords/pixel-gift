@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { JumbotronComponent } from './jumbotron/jumbotron.component';
 import { CategoriesCardsComponent } from './categories-cards/categories-cards.component';
 import { ChooseUsComponent } from './choose-us/choose-us.component';
+import { InfoCardsComponent } from './info-cards/info-cards.component';
 
 @Component({
   selector: 'app-home',
@@ -12,6 +13,7 @@ import { ChooseUsComponent } from './choose-us/choose-us.component';
     JumbotronComponent,
     CategoriesCardsComponent,
     ChooseUsComponent,
+    InfoCardsComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',

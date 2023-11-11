@@ -1,0 +1,11 @@
+:host {
+  display: grid;
+  place-items: center;
+  margin-top: 5.5rem;
+}
+
+section {
+  position: relative;
+  display: flex;
+  column-gap: 1.5rem;
+}

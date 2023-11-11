@@ -9,10 +9,18 @@ nav {
   align-items: center;
   justify-content: space-between;
   color: white;
+  height: 120px;
   font-size: 1.375rem;
 
-  & > .logo {
-    width: 250px;
+
+  & > .logo-wrapper {
+    position: relative;
+    & > .logo {
+      top: 0;
+      transform: translateY(-50%);
+      position: absolute;
+      width: 250px;
+    }
   }
 
   & a {
@@ -39,4 +47,8 @@ nav {
       }
     }
   }
+}
+
+.scrolled {
+  background-color: rgba($color: #0b1726, $alpha: 0.65);
 }

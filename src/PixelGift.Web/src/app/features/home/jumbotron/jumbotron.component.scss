@@ -9,9 +9,9 @@ header {
   background: linear-gradient(
       rgba(0, 0, 0, 0.5),
       rgba(0, 0, 0, 0.3) 50%,
-      rgba(3, 30, 60, 0.8) 75%,
-      rgba(3, 30, 60, 0.9) 85%,
-      rgba(3, 30, 60, 1) 100%
+      rgba(6, 27, 51, 0.75) 75%,
+      rgba(6, 27, 51, 0.85) 85%,
+      rgba(6, 27, 51, 1)
     ),
     radial-gradient(circle, rgba(3, 30, 60, 1), rgba(3, 30, 60, 0.3)),
     url("/assets/home/background2.png");
@@ -62,7 +62,6 @@ header {
         line-height: 170%;
         text-wrap: wrap;
         font-weight: normal;
-        margin: 0;
       }
     }
   }
@@ -71,10 +70,10 @@ header {
 .blur-effect {
   position: absolute;
   bottom: -40%;
-  right: -20%;
+  right: -50%;
   width: 990.415px;
   height: 633.398px;
-  transform: translate(-50%, -50%), rotate(-12.583deg);
+  transform: rotate(-12.583deg) translate(-50%, -50%);
   flex-shrink: 0;
   border-radius: 990.415px;
   background: rgba(254, 187, 2, 0.1);
