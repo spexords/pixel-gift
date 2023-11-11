@@ -40,18 +40,7 @@ header {
       align-items: flex-start;
       width: fit-content;
       row-gap: 0.5rem;
-
-      & > h1 {
-        font-size: 6.25rem;
-        min-width: 100%;
-        letter-spacing: -0.5px;
-        text-align: center;
-        color: white;
-        & > .highlight {
-          color: $gold;
-        }
-      }
-
+      
       & > p {
         max-inline-size: min-content;
         min-inline-size: fit-content;
