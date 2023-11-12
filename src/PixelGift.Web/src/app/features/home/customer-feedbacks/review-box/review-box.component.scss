@@ -1,0 +1,30 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  row-gap: 2.725rem;
+
+  & > .summary {
+    color: white;
+    font-size: 1.125rem;
+    font-style: normal;
+    line-height: 180%;
+    letter-spacing: 0.44px;
+  }
+
+  & > .rating {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    & > p {
+      color: white;
+      font-size: 1.625rem;
+      font-weight: bold;
+      line-height: 180%; /* 46.8px */
+    }
+
+    & > img {
+      height: 20px;
+    }
+  }
+}

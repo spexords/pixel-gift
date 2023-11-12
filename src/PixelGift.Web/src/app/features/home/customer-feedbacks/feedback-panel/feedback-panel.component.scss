@@ -1,0 +1,34 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  padding: 3.125rem;
+  border-radius: 26px;
+  border: 1px solid #dca71a;
+  position: relative;
+
+  & > h3 {
+    margin: 0;
+    color: white;
+    text-align: center;
+    font-size: 3rem;
+    font-weight: normal;
+    line-height: 48px;
+    text-transform: uppercase;
+  }
+
+  & > p {
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    font-size: 1.125rem;
+    line-height: 28px;
+  }
+
+  & > img {
+    position: absolute;
+    height: 55px;
+    right: 0;
+    top: 50%;
+    transform: translate(20px, -50%);
+  }
+}
