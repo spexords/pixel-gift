@@ -1,10 +1,12 @@
 :host {
   padding: 6rem;
+  padding-top: 8rem;
   display: grid;
   place-items: center;
 }
 
 section {
+  position: relative;
   padding: 6rem 4.375rem;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -16,4 +18,37 @@ section {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+}
+
+.spatial {
+  position: absolute;
+  border-radius: 990.415px;
+  background: rgba(254, 187, 2, 0.08);
+  filter: blur(174px);
+  width: 990.415px;
+  height: 633.398px;
+  transform: rotate(-12.583deg) translate(-50%,-50%);
+  right: -40%;
+  bottom: -70%;
+}
+
+.star-one {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 0;
+  top: 0;
+}
+
+.star-two {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  right: 0;
+  top: 2rem;
+}
+
+.star-three {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  right: 25%;
+  bottom: -5rem;
 }

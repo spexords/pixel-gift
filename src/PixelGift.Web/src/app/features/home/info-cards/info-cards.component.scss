@@ -9,3 +9,15 @@ section {
   display: flex;
   column-gap: 1.5rem;
 }
+
+.spatial {
+  position: absolute;
+  border-radius: 990.415px;
+  background: rgba(254, 187, 2, 0.1);
+  filter: blur(174px);
+  width: 990.415px;
+  height: 633.398px;
+  transform: rotate(-12.583deg) translate(-50%, -50%);
+  left: 10%;
+  bottom: -100%;
+}
