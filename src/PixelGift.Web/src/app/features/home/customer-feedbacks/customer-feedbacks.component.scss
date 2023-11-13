@@ -1,6 +1,5 @@
 :host {
-  padding: 4.75rem;
-  padding-top: 6rem;
+  padding: 6rem;
   display: grid;
   place-items: center;
 }
@@ -14,7 +13,7 @@ section {
   justify-content: space-between;
   align-items: center;
   background-image: url("/assets/home/feedback/world.png");
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
 }

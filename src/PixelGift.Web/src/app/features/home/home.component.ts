@@ -6,6 +6,7 @@ import { ChooseUsComponent } from './choose-us/choose-us.component';
 import { InfoCardsComponent } from './info-cards/info-cards.component';
 import { GiftStoreComponent } from './gift-store/gift-store.component';
 import { CustomerFeedbacksComponent } from './customer-feedbacks/customer-feedbacks.component';
+import { FaqComponent } from './faq/faq.component';
 
 @Component({
   selector: 'app-home',
@@ -18,6 +19,7 @@ import { CustomerFeedbacksComponent } from './customer-feedbacks/customer-feedba
     InfoCardsComponent,
     GiftStoreComponent,
     CustomerFeedbacksComponent,
+    FaqComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
