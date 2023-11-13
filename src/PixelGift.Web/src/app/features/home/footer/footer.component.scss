@@ -1,0 +1,56 @@
+:host {
+  width: 100%;
+  display: grid;
+  padding-top: 6rem;
+}
+
+.pre-footer {
+  padding: 0 10.375rem;
+  margin-bottom: 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  & > .contact {
+    & > .contact-links {
+      display: flex;
+      flex-direction: column;
+      row-gap: 1.5rem;
+    }
+  }
+
+  & > .socials {
+    & > .social-icons {
+      display: flex;
+      column-gap: 1rem;
+    }
+  }
+}
+
+h4 {
+  margin: 0;
+  margin-bottom: 4rem;
+  color: white;
+  font-size: 2rem;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  text-transform: uppercase;
+}
+
+.separator {
+  background: rgba(255, 255, 255, 0.1);
+  height: 3px;
+  width: 100%;
+}
+
+.copy {
+  padding: 2.5rem;
+  text-align: center;
+  color: #fff;
+  font-family: Goldman;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%; /* 30.8px */
+}

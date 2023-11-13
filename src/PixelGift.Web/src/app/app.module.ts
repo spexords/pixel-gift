@@ -4,10 +4,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { HomeComponent } from './features/home/home.component';
+import { FooterComponent } from './features/home/footer/footer.component';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, CoreModule, HomeComponent],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    CoreModule,
+    HomeComponent,
+    FooterComponent,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
