@@ -1,0 +1,24 @@
+<div class="switcher-wrapper" (click)="toggleLangSwitcher()">
+  <img [src]="flag.path" [width]="flag.width" alt="menu-switcher" />
+  <div class="arrow" [ngClass]="{ down: !opened, up: opened }"></div>
+  @if(opened) {
+  <div class="lang-menu">
+    <div class="lang" (click)="switchLang('en')">
+      <img
+        [width]="flags['en'].width"
+        src="assets/nav/us-flag.svg"
+        alt="us flag"
+      />
+      <p>English</p>
+    </div>
+    <div class="lang" (click)="switchLang('pl')">
+      <img
+        [width]="flags['pl'].width"
+        src="assets/nav/pl-flag.svg"
+        alt="polish flag"
+      />
+      <p>Polish</p>
+    </div>
+  </div>
+  }
+</div>

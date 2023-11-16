@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslocoPipe, TranslocoService } from '@ngneat/transloco';
+import { TranslocoPipe } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-jumbotron',
@@ -10,12 +10,4 @@ import { TranslocoPipe, TranslocoService } from '@ngneat/transloco';
   styleUrl: './jumbotron.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class JumbotronComponent {
-  private translocoService = inject(TranslocoService);
-
-  changeLanguage(): void {
-    const lang = this.translocoService.getActiveLang();
-    if (lang === 'en') this.translocoService.setActiveLang('pl');
-    else this.translocoService.setActiveLang('en');
-  }
-}
+export class JumbotronComponent {}
