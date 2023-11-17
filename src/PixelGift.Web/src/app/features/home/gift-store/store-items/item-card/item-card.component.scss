@@ -1,0 +1,53 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+  min-height: 470px;
+  background: rgba(0, 0, 0, 0.16);
+
+  & > .img-wrapper {
+    flex: 1;
+    position: relative;
+
+    & > img {
+      margin-top: 2rem;
+      position: absolute;
+      height: 140px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  & > .content-wrapper {
+    box-sizing: border-box;
+    flex: 1;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 0.875rem;
+
+    & > .price {
+      color: #dda81b;
+      text-align: center;
+      font-size: 2.125rem;
+      font-style: normal;
+      letter-spacing: 0.2px;
+    }
+
+    & > .name {
+      flex: 1;
+      color: rgba(255, 255, 255, 0.92);
+      text-align: center;
+      font-size: 1.125rem;
+      line-height: 117%;
+      letter-spacing: 0.2px;
+      text-transform: uppercase;
+    }
+
+    & > button {
+      white-space: nowrap;
+    }
+  }
+}

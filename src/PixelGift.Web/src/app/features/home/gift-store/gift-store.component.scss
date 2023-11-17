@@ -1,0 +1,21 @@
+section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 8rem;
+}
+
+.star-one {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 20%;
+  top: 8rem;
+}
+
+.star-two {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  right: 15%;
+  top: 15rem;
+}

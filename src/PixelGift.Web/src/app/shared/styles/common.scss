@@ -1,0 +1,59 @@
+@import "colors";
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: Goldman, sans-serif, Arial, sans-serif;
+  font-size: 1rem;
+  background: linear-gradient(180deg, #0b1726 0%, #022042 100%);
+  min-width: 100vw;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+button {
+  cursor: pointer;
+  color: #03264e;
+  text-align: center;
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 170%;
+  letter-spacing: 0.01rem;
+  text-transform: uppercase;
+
+  border-radius: 2.5rem;
+  border: 0.16rem solid #092545;
+  padding: 0.75rem 2rem;
+  background: linear-gradient(91deg, #fbc32e 0.69%, #d8a317 98.75%);
+}
+
+h1 {
+  text-align: center;
+  font-size: 6.25rem;
+  color: white;
+  min-width: 100%;
+  letter-spacing: -0.5px;
+}
+
+h2 {
+  text-align: center;
+  font-size: 5.5rem;
+  color: white;
+  font-weight: normal;
+  margin: 0;
+  line-height: 98.5%; /* 88.65px */
+  letter-spacing: -0.5px;
+  padding: 0 2.5rem;
+}
+
+.highlight {
+  color: $gold;
+}
+
+.active ::ng-deep {
+  color: rgba(255, 255, 255, 0.92) !important;
+  border: .11rem solid #dea91b !important;
+}

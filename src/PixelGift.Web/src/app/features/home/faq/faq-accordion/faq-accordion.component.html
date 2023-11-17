@@ -1,0 +1,9 @@
+<p class="question">
+  {{ question }}
+  <span class="btn-action" (click)="collapsed = !collapsed">{{
+    collapsed ? "+" : "-"
+  }}</span>
+</p>
+<p class="answer" [class.expanded]="!collapsed">
+  {{ answer }}
+</p>

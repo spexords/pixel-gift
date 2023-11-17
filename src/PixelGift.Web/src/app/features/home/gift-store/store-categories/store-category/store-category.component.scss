@@ -1,0 +1,17 @@
+:host {
+  border-radius: 12px;
+  padding: 1.25rem 2.75rem;
+  font-size: 1.25rem;
+  display: grid;
+  place-items: center;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+:host(.active) {
+  color: rgba(255, 255, 255, 0.92) !important;
+  border: 2px solid #dea91b  !important;
+}

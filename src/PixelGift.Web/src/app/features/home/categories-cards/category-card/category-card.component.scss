@@ -1,0 +1,24 @@
+:host {
+  display: block;
+  position: relative;
+  width: 280px;
+  height: 350px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  & > img {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  & > button {
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+  }
+}

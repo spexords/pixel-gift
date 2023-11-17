@@ -32,10 +32,21 @@
             "styles": [
               "src/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/app/shared/styles"
+              ]
+            },
             "scripts": []
           },
           "configurations": {
             "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",
@@ -65,10 +76,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "PixelGift.Web:build:production"
+              "buildTarget": "PixelGift.Web:build:production"
             },
             "development": {
-              "browserTarget": "PixelGift.Web:build:development"
+              "buildTarget": "PixelGift.Web:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -76,7 +87,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "PixelGift.Web:build"
+            "buildTarget": "PixelGift.Web:build"
           }
         },
         "test": {
@@ -100,5 +111,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
