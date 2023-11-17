@@ -4,11 +4,12 @@ import {
   Input,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TranslocoPipe } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-item-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslocoPipe],
   templateUrl: './item-card.component.html',
   styleUrl: './item-card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

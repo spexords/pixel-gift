@@ -45,5 +45,9 @@
       letter-spacing: 0.2px;
       text-transform: uppercase;
     }
+
+    & > button {
+      white-space: nowrap;
+    }
   }
 }

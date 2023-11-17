@@ -1,5 +1,8 @@
-<section>
-  <h2>{{'store.header' | transloco}} <span class="highlight">{{'store.header-highlight' | transloco}}</span></h2>
+<section #scrollTarget>
+  <h2>
+    {{ "store.header" | transloco }}
+    <span class="highlight">{{ "store.header-highlight" | transloco }}</span>
+  </h2>
   <app-store-categories />
   <app-store-items />
   <svg

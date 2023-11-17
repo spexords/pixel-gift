@@ -1,8 +1,8 @@
-<section>
+<section #scrollTarget>
   <h2>FAQ</h2>
-  <div class="faqs-container">
-    <app-faq-accordion />
-    <app-faq-accordion />
-    <app-faq-accordion />
+  <div class="faqs-container" *ngIf="faqItems$ | async as faqItems">
+    @for(faq of faqItems; track faq.question ) {
+    <app-faq-accordion [question]="faq.question" [answer]="faq.answer" />
+    }
   </div>
 </section>

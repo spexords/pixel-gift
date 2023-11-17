@@ -11,4 +11,6 @@ import { CommonModule } from '@angular/common';
 })
 export class FaqAccordionComponent {
   @Input() collapsed = true;
+  @Input({required: true}) question!: string;
+  @Input({required: true}) answer!: string;
 }

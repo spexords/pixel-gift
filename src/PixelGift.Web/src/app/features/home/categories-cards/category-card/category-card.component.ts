@@ -6,11 +6,12 @@ import {
   OnInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TranslocoPipe } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-category-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslocoPipe],
   templateUrl: './category-card.component.html',
   styleUrl: './category-card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -21,7 +22,6 @@ export class CategoryCardComponent implements OnInit {
   @Input() even = false;
   @Input({ required: true }) background!: string;
   @Input({ required: true }) logo!: string;
-  @Input() caption = 'categories';
 
   ngOnInit(): void {
     this.back = `url('${this.background}')`;

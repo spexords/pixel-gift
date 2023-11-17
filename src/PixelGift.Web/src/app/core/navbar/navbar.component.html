@@ -5,10 +5,14 @@
 
   <div class="navigation">
     <div class="app-urls">
-      <a href="#">Home</a>
-      <a href="#">About Us</a>
-      <a href="#">Store</a>
-      <a href="#">FAQ</a>
+      <a (click)="navbarService.scroll('home')">{{ "nav.home" | transloco }}</a>
+      <a (click)="navbarService.scroll('choose-us')">{{
+        "nav.about" | transloco
+      }}</a>
+      <a (click)="navbarService.scroll('store')">{{
+        "nav.store" | transloco
+      }}</a>
+      <a (click)="navbarService.scroll('faq')">{{ "nav.faq" | transloco }}</a>
     </div>
 
     <div class="menu-icons">
@@ -24,7 +28,7 @@
         height="28"
         alt="cart menu icon"
       />
-      <app-lang-switcher/>
+      <app-lang-switcher />
     </div>
   </div>
 </nav>

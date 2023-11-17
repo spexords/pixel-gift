@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslocoPipe } from '@ngneat/transloco';
 
@@ -10,4 +15,10 @@ import { TranslocoPipe } from '@ngneat/transloco';
   styleUrl: './choose-us.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChooseUsComponent {}
+export class ChooseUsComponent {
+  @ViewChild('scrollTarget') scrollTarget!: ElementRef;
+
+  scrollIntoView() {
+    this.scrollTarget.nativeElement.scrollIntoView({ behavior: 'smooth' });
+  }
+}
