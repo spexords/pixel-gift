@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PixelGift.Core.Entities;
+using PixelGift.Core.Entities.Identity;
+using PixelGift.Core.Extensions;
 
 namespace PixelGift.Infrastructure.Data;
 
@@ -17,22 +19,60 @@ public class PixelGiftContextSeed
 
         try
         {
-            context.Categories.RemoveRange(context.Categories);
+            await SeedUsers(context, logger);
 
-            var categories = new[]
-            {
+            await SeedCategories(context, logger);
+
+            await context.SaveChangesAsync();
+
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex.Message);
+        }
+    }
+
+    private static async Task SeedUsers(PixelGiftContext context, ILogger<PixelGiftContextSeed> logger)
+    {
+        logger.LogInformation("Remove old Users seed");
+        context.Users.RemoveRange(context.Users);
+
+        var users = new[]
+        {
+            new User{ Username = "admin", Role = UserRole.Admin, HashedPassword = "MilaTrobalo123".ToSha256Hash() }
+        };
+
+        logger.LogInformation("Creating new Users seed");
+        await context.Users.AddRangeAsync(users);
+    }
+
+    private static async Task SeedCategories(PixelGiftContext context, ILogger logger)
+    {
+        logger.LogInformation("Remove old Categories seed");
+        context.Categories.RemoveRange(context.Categories);
+
+
+        var categories = new[]
+        {
                 new Category { Name = Fortnite },
                 new Category { Name = Valorant },
                 new Category { Name = LeagueOfLegends },
                 new Category { Name = CounterStrike },
             };
 
-            await context.Categories.AddRangeAsync(categories);
+        logger.LogInformation("Creating new Categories seed");
+        await context.Categories.AddRangeAsync(categories);
 
-            var category = categories.First(c => c.Name == LeagueOfLegends);
+        var category = categories.First(c => c.Name == LeagueOfLegends);
 
-            var items = new[]
-            {
+        logger.LogInformation("Creating items seed for: {category}", category.Name);
+        SeedItems(category);
+    }
+
+    private static void SeedItems(Category category)
+    {
+        var items = new[]
+        {
                 new Item
                 {
                     Name = "Hextech Key",
@@ -107,17 +147,10 @@ public class PixelGiftContextSeed
                 }
             };
 
-            foreach(var item in items)
-            {
-                category.Items.Add(item);
-            }
-
-            await context.SaveChangesAsync();
-
-        }
-        catch (Exception ex)
+        foreach (var item in items)
         {
-            logger.LogError(ex.Message);
+            category.Items.Add(item);
         }
     }
 }
+
