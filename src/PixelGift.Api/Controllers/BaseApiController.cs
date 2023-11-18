@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PixelGift.Api.Controllers;
 
@@ -6,4 +7,6 @@ namespace PixelGift.Api.Controllers;
 [ApiController]
 public abstract class BaseApiController : ControllerBase
 {
+    private IMediator? _mediator;
+    protected IMediator Mediator => _mediator ?? (_mediator = (IMediator)HttpContext.RequestServices.GetRequiredService<IMediator>());
 }

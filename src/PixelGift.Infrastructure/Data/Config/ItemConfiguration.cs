@@ -9,5 +9,7 @@ public class ItemConfiguration : IEntityTypeConfiguration<Item>
     public void Configure(EntityTypeBuilder<Item> builder)
     {
         builder.ToTable("Items");
+        builder.Property(t => t.UnitPrice)
+            .HasPrecision(18, 2);
     }
 }

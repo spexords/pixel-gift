@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using PixelGift.Api.Extensions;
+using PixelGift.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddApplicationServices(config);
 
 var app = builder.Build();
+
+//Migrations & seeding
+using var scope = app.Services.CreateScope();
+var context = scope.ServiceProvider.GetRequiredService<PixelGiftContext>();
+await context.Database.MigrateAsync();
+var loggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
+await PixelGiftContextSeed.SeedAsync(context, loggerFactory);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
