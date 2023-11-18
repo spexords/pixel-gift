@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using PixelGift.Application.Categories.Queries;
+using PixelGift.Core.Interfaces;
 using PixelGift.Infrastructure.Data;
+using PixelGift.Infrastructure.Security;
 using System.Text;
 
 namespace PixelGift.Api.Extensions;
@@ -19,13 +20,17 @@ public static class ApplicationServicesExtensions
                 policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200");
             });
         });
-
-
+        
         ConfigureJwt(@this, config["JwtTokenKey"]!);
+
+        @this.AddAuthentication();
 
         @this.AddDbContext<PixelGiftContext>(options => options.UseSqlServer(config.GetConnectionString("MSSQL")));
 
         @this.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(GetCategoriesQuery).Assembly));
+
+        @this.AddScoped<IJwtGenerator, JwtGenerator>();
+        @this.AddScoped<IUserService, UserService>();
 
         return @this;
     }

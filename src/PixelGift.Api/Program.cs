@@ -41,6 +41,8 @@ app.UseCors("default");
 
 app.UseRouting();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();

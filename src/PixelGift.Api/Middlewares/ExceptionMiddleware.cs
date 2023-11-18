@@ -31,6 +31,7 @@ public class ExceptionMiddleware
     private async Task HandleExceptionAsync(Exception ex, HttpContext httpContext)
     {
         object errors = default!;
+
         switch (ex)
         {
             case BaseApiException ae:
@@ -42,6 +43,7 @@ public class ExceptionMiddleware
                 httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 break;
         }
+
         httpContext.Response.ContentType = MediaTypeNames.Application.Json;
         await httpContext.Response.WriteAsJsonAsync(new { errors });
     }

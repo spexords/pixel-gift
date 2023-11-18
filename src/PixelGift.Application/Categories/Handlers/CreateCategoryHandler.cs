@@ -31,7 +31,7 @@ public class CreateCategoryHandler : IRequestHandler<CreateCategoryCommand, Unit
         {
             _logger.LogWarning("Attempted to create a category that already exists. Category Name: {CategoryName}", request.Name);
 
-            throw new BaseApiException(HttpStatusCode.BadRequest, new { Category = $"Category: {request.Name} already exsists" });
+            throw new BaseApiException(HttpStatusCode.BadRequest, new { Message = $"Category: {request.Name} already exsists" });
         }
 
         _logger.LogInformation("Adding a new category to the database. Category Name: {CategoryName}", request.Name);

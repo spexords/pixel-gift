@@ -39,7 +39,7 @@ public class PixelGiftContextSeed
 
         var users = new[]
         {
-            new User{ Username = "admin", Role = UserRole.Admin, HashedPassword = "MilaTrobalo123".ToSha256Hash() }
+            new User{ Username = "admin", Role = UserRole.Admin, HashedPassword = "Pa$$Word".ToSha256Hash() }
         };
 
         logger.LogInformation("Creating new Users seed");

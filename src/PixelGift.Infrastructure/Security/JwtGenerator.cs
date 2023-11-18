@@ -36,6 +36,7 @@ public class JwtGenerator : IJwtGenerator
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
+
         return tokenHandler.WriteToken(token);
     }
 }
