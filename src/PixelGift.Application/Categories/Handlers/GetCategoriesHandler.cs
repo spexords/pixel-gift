@@ -22,10 +22,10 @@ public class GetCategoriesHandler : IRequestHandler<GetCategoriesQuery, IEnumera
     {
         _logger.LogInformation("Getting categories from database");
 
-        var categories = await _context.Categories.ToListAsync();
+        var categories = await _context.Categories
+            .Select(c => new CategoryDto { Id = c.Id, Name = c.Name })
+            .ToListAsync();
 
-        var categoryDtos = categories.Select(c => new CategoryDto { Name = c.Name, Id = c.Id });
-
-        return categoryDtos;
+        return categories;
     }
 }
