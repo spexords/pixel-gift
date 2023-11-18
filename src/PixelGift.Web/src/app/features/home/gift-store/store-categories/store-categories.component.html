@@ -1,4 +1,3 @@
-<app-store-category [active]="true">fortnite</app-store-category>
-<app-store-category>valorant</app-store-category>
-<app-store-category>league of legends</app-store-category>
-<app-store-category>cs:go</app-store-category>
+@for(category of categories; track category.id) {
+  <app-store-category>{{category.name}}</app-store-category>
+}

@@ -15,9 +15,9 @@ public static class ApplicationServicesExtensions
     {
         @this.AddCors(options =>
         {
-            options.AddPolicy("default", policy =>
+            options.AddPolicy("default", builder =>
             {
-                policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200");
+                builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200");
             });
         });
         

@@ -1,8 +1,9 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreCategoriesComponent } from './store-categories/store-categories.component';
 import { StoreItemsComponent } from './store-items/store-items.component';
 import { TranslocoPipe } from '@ngneat/transloco';
+import { GiftStoreService } from './gift-store.service';
 
 @Component({
   selector: 'app-gift-store',
@@ -12,6 +13,10 @@ import { TranslocoPipe } from '@ngneat/transloco';
   styleUrl: './gift-store.component.scss',
 })
 export class GiftStoreComponent {
+  private giftStoreService = inject(GiftStoreService);
+
+  categories$ = this.giftStoreService.getCategories();
+
   @ViewChild('scrollTarget') scrollTarget!: ElementRef;
 
   scrollIntoView() {

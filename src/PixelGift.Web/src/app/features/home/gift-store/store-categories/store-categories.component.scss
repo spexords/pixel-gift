@@ -1,5 +1,7 @@
 :host {
   display: flex;
-  column-gap: 3rem;
+  flex-wrap: wrap;
+  gap: 3rem;
   margin-top: 4.875rem;
+  justify-self: center;
 }
