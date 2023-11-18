@@ -15,4 +15,9 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PixelGift.Core\PixelGift.Core.csproj" />
+    <ProjectReference Include="..\PixelGift.Infrastructure\PixelGift.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

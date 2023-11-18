@@ -27,15 +27,13 @@ app.UseHttpsRedirection();
 
 app.UseCors("default");
 
-app.UseAuthorization();
-
 app.UseRouting();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-    endpoints.MapFallbackToController("Index", "Fallback");
-});
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.MapFallbackToController("Index", "Fallback");
 
 app.MapControllers();
 
