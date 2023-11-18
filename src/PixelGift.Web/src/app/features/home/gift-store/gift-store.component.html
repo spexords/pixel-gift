@@ -3,10 +3,19 @@
     {{ "store.header" | transloco }}
     <span class="highlight">{{ "store.header-highlight" | transloco }}</span>
   </h2>
-  <ng-container *ngIf="categories$ | async as categories">
-    <app-store-categories [categories]="categories" />
+
+  <ng-container *ngIf="categoriesData$ | async as data">
+    <app-store-categories
+      [categories]="data.categories"
+      [currentCategory]="data.selectedCategory"
+      (categorySelected)="categorySelected($event)"
+    />
   </ng-container>
-  <app-store-items />
+
+  <ng-container *ngIf="items$ | async as items">
+    <app-store-items [items]="items" />
+  </ng-container>
+
   <svg
     class="star-one"
     xmlns="http://www.w3.org/2000/svg"

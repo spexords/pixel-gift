@@ -4,6 +4,8 @@ public class Item : BaseEntity
 {
     public string Name { get; set; } = default!;
 
+    public string Base64Image { get; set; } = default!;
+
     public string PolishName { get; set; } = default!;
 
     public string Description { get; set; } = default!;

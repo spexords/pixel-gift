@@ -1,3 +1,7 @@
 @for(category of categories; track category.id) {
-  <app-store-category>{{category.name}}</app-store-category>
+<app-store-category
+  [active]="category.id === currentCategory.id"
+  (click)="categorySelected.emit(category)"
+  >{{ category.name }}</app-store-category
+>
 }

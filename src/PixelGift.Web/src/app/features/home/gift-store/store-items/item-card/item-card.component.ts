@@ -15,7 +15,7 @@ import { TranslocoPipe } from '@ngneat/transloco';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemCardComponent {
-  @Input({ required: true }) icon!: string;
+  @Input({ required: true }) base64image!: string;
   @Input({ required: true }) price!: number;
-  @Input({ required: true }) item!: string;
+  @Input({ required: true }) name!: string;
 }

@@ -31,7 +31,7 @@ public class GetItemsByCategoryHandler : IRequestHandler<GetItemsByCategoryQuery
 
         var items = await _context.Items
             .Where(i => i.CategoryId == request.CategoryId)
-            .Select(i => new ItemDto(i.Id, i.Name, i.PolishName, i.Description, i.PolishDescription, i.UnitPrice))
+            .Select(i => new ItemDto(i.Id, i.Name, i.Base64Image, i.PolishName, i.Description, i.PolishDescription, i.UnitPrice))
             .ToListAsync(cancellationToken);
 
         return items;
