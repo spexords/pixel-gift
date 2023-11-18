@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using PixelGift.Application.Categories.Dtos;
 using PixelGift.Application.Categories.Queries;
 using PixelGift.Infrastructure.Data;
+using System.Linq;
 
 namespace PixelGift.Application.Categories.Handlers;
 
@@ -23,8 +24,8 @@ public class GetCategoriesHandler : IRequestHandler<GetCategoriesQuery, IEnumera
         _logger.LogInformation("Getting categories from database");
 
         var categories = await _context.Categories
-            .Select(c => new CategoryDto { Id = c.Id, Name = c.Name })
-            .ToListAsync();
+            .Select(c => new CategoryDto(c.Id, c.Name))
+            .ToListAsync(cancellationToken);
 
         return categories;
     }

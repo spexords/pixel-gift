@@ -2,10 +2,5 @@
 
 namespace PixelGift.Application.Categories.Commands
 {
-    public class CreateCategoryCommand : IRequest<Unit>
-    {
-        public Guid Id { get; set; }
-
-        public string Name { get; set; } = default!;
-    }
+    public record CreateCategoryCommand(Guid Id, string Name) : IRequest<Unit>;
 }

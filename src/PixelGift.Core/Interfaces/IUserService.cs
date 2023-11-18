@@ -5,5 +5,5 @@ namespace PixelGift.Core.Interfaces;
 
 public interface IUserService
 {
-    Task<UserDto?> AuthenticateAsync(string username, string password);
+    Task<UserDto?> AuthenticateAsync(string username, string password, CancellationToken cancellationToken = default);
 }

@@ -25,7 +25,7 @@ public class CreateCategoryHandler : IRequestHandler<CreateCategoryCommand, Unit
         _logger.LogInformation("Checking in the database if the category already exists");
 
         var category = await _context.Categories
-            .FirstOrDefaultAsync(c => c.Name.ToLower() == request.Name.ToLower());
+            .FirstOrDefaultAsync(c => c.Name.ToLower() == request.Name.ToLower(), cancellationToken);
 
         if(category is not null)
         {
@@ -38,7 +38,7 @@ public class CreateCategoryHandler : IRequestHandler<CreateCategoryCommand, Unit
 
         _context.Categories.Add(new Category { Id = request.Id, Name = request.Name });
 
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;
     }

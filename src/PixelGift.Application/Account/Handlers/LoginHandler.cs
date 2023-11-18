@@ -18,7 +18,7 @@ public class LoginHandler : IRequestHandler<LoginCommand, UserDto>
 
     public async Task<UserDto> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userService.AuthenticateAsync(request.Username, request.Password);
+        var user = await _userService.AuthenticateAsync(request.Username, request.Password, cancellationToken);
 
         if (user is null)
         {

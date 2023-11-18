@@ -20,11 +20,11 @@ public class UserService : IUserService
         _logger = logger;
     }
 
-    public async Task<UserDto?> AuthenticateAsync(string username, string password)
+    public async Task<UserDto?> AuthenticateAsync(string username, string password, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Attempting to authenticate user: {Username}", username);
 
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username, cancellationToken);
 
         if(user is null)
         {
@@ -40,12 +40,7 @@ public class UserService : IUserService
 
         _logger.LogInformation("User successfully authenticated: {Username}", username);
 
-        return new UserDto 
-        { 
-            Username = user.Username, 
-            Role = user.Role.ToString(), 
-            Token = _jwtGenerator.CreateToken(user) 
-        };
+        return new UserDto(user.Username, user.Role.ToString(), _jwtGenerator.CreateToken(user)); 
     }
 
     private bool ValidatePassword(string actual, string provided)
