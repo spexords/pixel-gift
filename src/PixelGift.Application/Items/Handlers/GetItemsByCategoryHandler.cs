@@ -26,6 +26,7 @@ public class GetItemsByCategoryHandler : IRequestHandler<GetItemsByCategoryQuery
 
         if(!await _context.Categories.AnyAsync(c => c.Id == request.CategoryId, cancellationToken))
         {
+            _logger.LogWarning("Category with id: {Category} does not exist", request.CategoryId);
             throw new BaseApiException(HttpStatusCode.NotFound, new { Message = $"Category with id: {request.CategoryId} does not exist" });
         }
 

@@ -53,7 +53,6 @@ public class PixelGiftContextSeed
         logger.LogInformation("Remove old Categories seed");
         context.Categories.RemoveRange(context.Categories);
 
-
         var categories = new[]
         {
                 new Category { Name = Fortnite },
