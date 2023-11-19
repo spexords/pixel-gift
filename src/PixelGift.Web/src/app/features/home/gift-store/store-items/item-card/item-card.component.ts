@@ -5,6 +5,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslocoPipe } from '@ngneat/transloco';
+import { Item } from '../../models';
 
 @Component({
   selector: 'app-item-card',
@@ -15,7 +16,5 @@ import { TranslocoPipe } from '@ngneat/transloco';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemCardComponent {
-  @Input({ required: true }) base64image!: string;
-  @Input({ required: true }) price!: number;
-  @Input({ required: true }) name!: string;
+  @Input({ required: true }) item!: Item;
 }

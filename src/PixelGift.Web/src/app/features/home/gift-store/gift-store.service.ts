@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, Subject, switchMap, tap } from 'rxjs';
+import { Observable, Subject, combineLatest, map, switchMap, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/tokens/api-url.token';
 import { Category, Item } from './models';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Injectable({ providedIn: 'root' })
 export class GiftStoreService {
@@ -14,10 +15,17 @@ export class GiftStoreService {
 
   private currentCategorySource = new Subject<Category>();
 
-  currentCategory = this.currentCategorySource.asObservable();
+  private translocoService = inject(TranslocoService);
 
-  items$ = this.currentCategory.pipe(
-    switchMap((category) => this.getItems(category.id))
+  currentCategoryChanged$ = this.currentCategorySource.asObservable();
+
+  private itemsInputChanged$ = combineLatest([
+    this.currentCategoryChanged$,
+    this.translocoService.langChanges$,
+  ]).pipe(map(([category, lang]) => ({ category, lang })));
+
+  items$ = this.itemsInputChanged$.pipe(
+    switchMap(({ category, lang }) => this.getItems(category.id, lang))
   );
 
   getCategories(): Observable<Category[]> {
@@ -30,20 +38,20 @@ export class GiftStoreService {
     );
   }
 
-  getItems(categoryId: string): Observable<Item[]> {
+  getItems(categoryId: string, lang: string): Observable<Item[]> {
     return this.http.get<Item[]>(
-      `${this.baseUrl}/items/category/${categoryId}`
+      `${this.baseUrl}/items/category/${categoryId}?lang=${lang}`
     );
   }
 
-  selectCategory(category: Category): void {
+  notifyCategoryChange(category: Category): void {
     this.currentCategorySource.next(category);
   }
 
   selectCategoryByName(categoryName: string): void {
     const category = this.categoriesCache.find((c) => c.name === categoryName);
-    if(category) {
-      this.selectCategory(category);
+    if (category) {
+      this.notifyCategoryChange(category);
     }
   }
 }

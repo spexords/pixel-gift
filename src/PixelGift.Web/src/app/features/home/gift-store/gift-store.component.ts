@@ -24,7 +24,7 @@ export class GiftStoreComponent {
 
   private categories$ = this.giftStoreService.getCategories();
   
-  private currentCategory$ = this.giftStoreService.currentCategory;
+  private currentCategory$ = this.giftStoreService.currentCategoryChanged$;
 
   categoriesData$ = combineLatest([
     this.categories$,
@@ -45,6 +45,6 @@ export class GiftStoreComponent {
   }
 
   categorySelected(category: Category): void {
-    this.giftStoreService.selectCategory(category);
+    this.giftStoreService.notifyCategoryChange(category);
   }
 }

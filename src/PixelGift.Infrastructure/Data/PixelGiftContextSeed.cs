@@ -60,7 +60,7 @@ public class PixelGiftContextSeed
                 new Category { Name = Valorant },
                 new Category { Name = LeagueOfLegends },
                 new Category { Name = CounterStrike },
-            };
+        };
 
         logger.LogInformation("Creating new Categories seed");
         await context.Categories.AddRangeAsync(categories);

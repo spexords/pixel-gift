@@ -1,9 +1,5 @@
 <section>
   @for(item of items; track item.id) {
-  <app-item-card
-    [price]="item.unitPrice"
-    [name]="item.name"
-    [base64image]="item.base64Image"
-  />
+  <app-item-card [item]="item" />
   }
 </section>

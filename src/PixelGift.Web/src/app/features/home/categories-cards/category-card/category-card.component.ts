@@ -31,8 +31,8 @@ export class CategoryCardComponent implements OnInit {
   @Input({ required: true }) categoryName!: string;
 
   moveToStore() {
-    this.navbarService.scroll('store');
     this.giftStoreService.selectCategoryByName(this.categoryName);
+    this.navbarService.scroll('store');
   }
 
   ngOnInit(): void {

@@ -3,4 +3,4 @@ using PixelGift.Application.Items.Dtos;
 
 namespace PixelGift.Application.Items.Queries;
 
-public record GetItemsByCategoryQuery(Guid CategoryId): IRequest<IEnumerable<ItemDto>>;
+public record GetItemsByCategoryQuery(Guid CategoryId, string Language): IRequest<IEnumerable<ItemDto>>;
