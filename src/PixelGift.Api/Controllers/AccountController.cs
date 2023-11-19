@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PixelGift.Application.Account.Commands;
 
 namespace PixelGift.Api.Controllers;
@@ -11,5 +12,14 @@ public class AccountController : BaseApiController
         var user = await Mediator.Send(command);
 
         return Ok(user);
+    }
+
+    [Authorize]
+    [HttpPost("change-password")]
+    public async Task<IActionResult> ChangePassword(ChangePasswordCommand command)
+    {
+        await Mediator.Send(command);
+
+        return Ok();
     }
 }

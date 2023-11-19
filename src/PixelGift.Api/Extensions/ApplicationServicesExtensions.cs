@@ -30,9 +30,12 @@ public static class ApplicationServicesExtensions
         @this.AddDbContext<PixelGiftContext>(options => options.UseMySql(config.GetConnectionString("MySQL"), version));
 
         @this.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(GetCategoriesQuery).Assembly));
+        @this.AddHttpContextAccessor();
 
+        //own services
         @this.AddScoped<IJwtGenerator, JwtGenerator>();
         @this.AddScoped<IUserService, UserService>();
+
 
         return @this;
     }
