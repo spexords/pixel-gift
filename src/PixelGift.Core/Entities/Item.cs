@@ -8,10 +8,6 @@ public class Item : BaseEntity
 
     public string PolishName { get; set; } = default!;
 
-    public string Description { get; set; } = default!;
-
-    public string PolishDescription { get; set; } = default!;
-
     public int Quantity { get; set; }
 
     public decimal UnitPrice { get; set; }

@@ -11,7 +11,7 @@ namespace PixelGift.Api.Extensions;
 
 public static class ApplicationServicesExtensions
 {
-    public static IServiceCollection AddApplicationServices(this IServiceCollection @this, IConfiguration config)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection @this, IConfiguration config, IWebHostEnvironment environment)
     {
         @this.AddCors(options =>
         {
@@ -25,7 +25,15 @@ public static class ApplicationServicesExtensions
 
         @this.AddAuthentication();
 
-        @this.AddDbContext<PixelGiftContext>(options => options.UseSqlServer(config.GetConnectionString("MSSQL")));
+        if (environment.IsDevelopment())
+        {
+            @this.AddDbContext<PixelGiftContext>(options => options.UseSqlServer(config.GetConnectionString("MSSQL")));
+        }
+        else
+        {
+            var version = new MySqlServerVersion(new Version(8, 0, 35));
+            @this.AddDbContext<PixelGiftContext>(options => options.UseMySql(config.GetConnectionString("MySQL"), version));
+        }
 
         @this.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(GetCategoriesQuery).Assembly));
 
