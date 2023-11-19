@@ -25,15 +25,9 @@ public static class ApplicationServicesExtensions
 
         @this.AddAuthentication();
 
-        if (environment.IsDevelopment())
-        {
-            @this.AddDbContext<PixelGiftContext>(options => options.UseSqlServer(config.GetConnectionString("MSSQL")));
-        }
-        else
-        {
-            var version = new MySqlServerVersion(new Version(8, 0, 35));
-            @this.AddDbContext<PixelGiftContext>(options => options.UseMySql(config.GetConnectionString("MySQL"), version));
-        }
+     
+        var version = new MySqlServerVersion(new Version(8, 0, 35));
+        @this.AddDbContext<PixelGiftContext>(options => options.UseMySql(config.GetConnectionString("MySQL"), version));
 
         @this.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(GetCategoriesQuery).Assembly));
 

@@ -24,15 +24,15 @@ export class GiftStoreComponent {
 
   private categories$ = this.giftStoreService.getCategories();
   
-  private selectedCategory$ = this.giftStoreService.selectedCategory$;
+  private currentCategory$ = this.giftStoreService.currentCategory;
 
   categoriesData$ = combineLatest([
     this.categories$,
-    this.selectedCategory$,
+    this.currentCategory$,
   ]).pipe(
-    map(([categories, selectedCategory]) => ({
+    map(([categories, currentCategory]) => ({
       categories,
-      selectedCategory,
+      currentCategory,
     }))
   );
 

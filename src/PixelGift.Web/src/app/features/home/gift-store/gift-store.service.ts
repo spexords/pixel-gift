@@ -10,20 +10,24 @@ export class GiftStoreService {
 
   private baseUrl = inject(API_URL);
 
-  private selectedCategorySource = new Subject<Category>();
+  private categoriesCache: Category[] = [];
 
-  selectedCategory$ = this.selectedCategorySource.asObservable();
+  private currentCategorySource = new Subject<Category>();
 
-  items$ = this.selectedCategory$.pipe(
+  currentCategory = this.currentCategorySource.asObservable();
+
+  items$ = this.currentCategory.pipe(
     switchMap((category) => this.getItems(category.id))
   );
 
   getCategories(): Observable<Category[]> {
-    return this.http
-      .get<Category[]>(`${this.baseUrl}/categories`)
-      .pipe(
-        tap((categories) => this.selectedCategorySource.next(categories[2])) // remove later its legaue of legeneds
-      );
+    return this.http.get<Category[]>(`${this.baseUrl}/categories`).pipe(
+      tap((categories) => {
+        this.categoriesCache = categories;
+        // TODO: remove later its league of legeneds
+        this.currentCategorySource.next(categories[2]);
+      })
+    );
   }
 
   getItems(categoryId: string): Observable<Item[]> {
@@ -33,6 +37,13 @@ export class GiftStoreService {
   }
 
   selectCategory(category: Category): void {
-    this.selectedCategorySource.next(category);
+    this.currentCategorySource.next(category);
+  }
+
+  selectCategoryByName(categoryName: string): void {
+    const category = this.categoriesCache.find((c) => c.name === categoryName);
+    if(category) {
+      this.selectCategory(category);
+    }
   }
 }
