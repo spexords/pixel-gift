@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PixelGift.Api.Attributes;
 using PixelGift.Application.Items.Commands;
 using PixelGift.Application.Items.Queries;
+using PixelGift.Core.Entities;
+using PixelGift.Core.Entities.Identity;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace PixelGift.Api.Controllers;
 
@@ -15,11 +19,32 @@ public class ItemsController : BaseApiController
     }
 
     [HttpPost("category/{categoryId}")]
-    public async Task<IActionResult> CreateItemForCategory(Guid categoryId, CreateItemCommand command )
+    [AuthorizeRole(UserRole.Admin)]
+    public async Task<IActionResult> CreateItemForCategory(Guid categoryId, CreateItemCommand command)
     {
         command = command with { CategoryId = categoryId };
         await Mediator.Send(command);
 
         return Ok();
     }
+
+    [HttpDelete("{id}")]
+    [AuthorizeRole(UserRole.Admin)]
+    public async Task<IActionResult> DeleteItem(Guid id)
+    {
+        await Mediator.Send(new DeleteItemCommand(id));
+
+        return Ok();
+    }
+
+    [HttpPut("{id}")]
+    [AuthorizeRole(UserRole.Admin)]
+    public async Task<IActionResult> UpdateItem(Guid id, [FromBody] UpdateItemCommand command)
+    {
+        command = command with { Id = id };
+        await Mediator.Send(command);
+
+        return Ok();
+    }
+
 }

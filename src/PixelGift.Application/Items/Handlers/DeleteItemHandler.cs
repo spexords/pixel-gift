@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using PixelGift.Application.Items.Commands;
+using PixelGift.Core.Entities;
 using PixelGift.Core.Exceptions;
 using PixelGift.Infrastructure.Data;
 using System.Net;
@@ -27,7 +28,7 @@ public class DeleteItemHandler : IRequestHandler<DeleteItemCommand, Unit>
         if (item is null)
         {
             _logger.LogWarning($"Item with Id {request.Id} not found.");
-            throw new BaseApiException(HttpStatusCode.NotFound, new { Message = $"Could not find item with id: {request.Id}." });
+            throw new BaseApiException(HttpStatusCode.NotFound, new { Message = $"Could not find ${nameof(Item)} with id: {request.Id}." });
         }
 
         _context.Items.Remove(item);

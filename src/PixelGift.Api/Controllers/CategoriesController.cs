@@ -24,4 +24,14 @@ public class CategoriesController : BaseApiController
 
         return Ok();
     }
+
+    [HttpDelete("{id}")]
+    [AuthorizeRole(UserRole.Admin)]
+    public async Task<IActionResult> DeleteCategory(Guid id)
+    {
+        await Mediator.Send(new DeleteCategoryCommand(id));
+
+        return Ok();
+    }
+
 }
