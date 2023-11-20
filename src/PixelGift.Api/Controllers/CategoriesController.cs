@@ -34,4 +34,14 @@ public class CategoriesController : BaseApiController
         return Ok();
     }
 
+    [HttpPut("{id}")]
+    [AuthorizeRole(UserRole.Admin)]
+    public async Task<IActionResult> UpdateCategory(Guid id, UpdateCategoryCommand command)
+    {
+        command = command with { Id = id };
+
+        await Mediator.Send(command);
+
+        return Ok();
+    }
 }

@@ -8,21 +8,19 @@ using System.Net;
 
 namespace PixelGift.Application.Categories.Handlers;
 
-public class DeleteCategoryHandler : IRequestHandler<DeleteCategoryCommand, Unit>
+public class UpdateCategoryHandler : IRequestHandler<UpdateCategoryCommand, Unit>
 {
     private readonly PixelGiftContext _context;
-    private readonly ILogger<DeleteCategoryHandler> _logger;
+    private readonly ILogger<UpdateCategoryHandler> _logger;
 
-    public DeleteCategoryHandler(PixelGiftContext context, ILogger<DeleteCategoryHandler> logger)
+    public UpdateCategoryHandler(PixelGiftContext context, ILogger<UpdateCategoryHandler> logger)
     {
         _context = context;
         _logger = logger;
     }
 
-    public async Task<Unit> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation($"Deleting {nameof(Category)} with id: {request.Id}");
-
         var category = await _context.Categories.FindAsync(request.Id);
 
         if (category is null)
@@ -31,11 +29,11 @@ public class DeleteCategoryHandler : IRequestHandler<DeleteCategoryCommand, Unit
             throw new BaseApiException(HttpStatusCode.NotFound, new { Message = $"Could not find ${nameof(Category)} with id: {request.Id}." });
         }
 
-        _context.Categories.Remove(category);
+        category.Name = request.Name ?? category.Name;
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation($"{nameof(Category)} with id {request.Id} deleted successfully.");
+        _logger.LogInformation($"{nameof(Category)} with id {request.Id} updated successfully.");
 
         return Unit.Value;
     }

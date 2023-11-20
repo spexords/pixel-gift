@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PixelGift.Api.Attributes;
 using PixelGift.Application.Items.Commands;
 using PixelGift.Application.Items.Queries;
