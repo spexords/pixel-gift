@@ -5,6 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "postbuild": "npm run move-to-wwwroot",
+    "move-to-wwwroot": "xcopy /s /y .\\dist\\pixel-gift.web\\* ..\\PixelGift.Api\\wwwroot\\",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

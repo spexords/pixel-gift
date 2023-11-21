@@ -1,8 +1,8 @@
 <div class="img-wrapper">
-  <img alt="store item icon" [src]="icon" />
+  <img alt="store item icon" [src]="'data:image;base64,' + item.base64Image" />
 </div>
 <div class="content-wrapper">
-  <p class="price">${{ price }}</p>
-  <p class="name">{{ item }}</p>
+  <p class="price">${{ item.unitPrice }}</p>
+  <p class="name">{{ item.name }}</p>
   <button>{{ "buttons.cart" | transloco }}</button>
 </div>
