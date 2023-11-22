@@ -1,0 +1,17 @@
+:host {
+  display: contents;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  & > .nav-item {
+    margin-bottom: 1.25rem;
+    padding: 1.5rem;
+    border: 1px solid white;
+    & > a {
+      color: white;
+      text-decoration: none;
+    }
+  }
+}
