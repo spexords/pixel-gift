@@ -1,1 +1,10 @@
-<p>categories works!</p>
+<ng-container *ngIf="categories$ | async as categories">
+  @for(category of categories; track category.id) {
+  <app-editable-card
+    [menuItems]="menuItems"
+    (menuItemClicked)="handleMenuItemClicked($event)"
+  >
+    <p>{{ category.name }}</p>
+  </app-editable-card>
+  }
+</ng-container>

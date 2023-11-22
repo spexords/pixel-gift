@@ -1,0 +1,11 @@
+<ng-content></ng-content>
+<p class="menu-button" (click)="active = !active">...</p>
+<div class="menu-container" *ngIf="active">
+  @for(menuItem of menuItems; track menuItem) {
+    <div class="menu-item" (click)="active=false; menuItemClicked.emit(menuItem)">
+      {{menuItem}}
+    </div>
+  }@empty {
+    No menu items
+  }
+</div>

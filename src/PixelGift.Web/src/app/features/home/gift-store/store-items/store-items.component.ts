@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ItemCardComponent } from './item-card/item-card.component';
-import { Item } from '../models';
+import { Item } from 'src/app/core/models';
 
 @Component({
   selector: 'app-store-items',
