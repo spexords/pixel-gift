@@ -1,0 +1,12 @@
+:host {
+  height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  column-gap: 3rem;
+}
+
