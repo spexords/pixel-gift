@@ -2,7 +2,7 @@
   @for(category of categories; track category.id) {
   <app-editable-card
     [menuItems]="menuItems"
-    (menuItemClicked)="handleMenuItemClicked($event)"
+    (menuItemClicked)="handleMenuItemClicked($event, category)"
   >
     <p>{{ category.name }}</p>
   </app-editable-card>

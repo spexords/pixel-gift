@@ -1,22 +1,17 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AdminService as AdminPanelService } from '../../admin-panel.service';
 import { EditableCardComponent } from 'src/app/shared/components/editable-card/editable-card.component';
-import {
-  MatDialog,
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialogTitle,
-  MatDialogContent,
-  MatDialogActions,
-  MatDialogClose,
-} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { UpdateCategoryComponent } from './update-category/update-category.component';
+import { ConfirmationModalComponent } from 'src/app/shared/components/confirmation-modal/confirmation-modal.component';
+import { Category } from 'src/app/core/models';
+import { AdminPanelService } from '../../admin-panel.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [CommonModule, EditableCardComponent],
+  imports: [CommonModule, EditableCardComponent, ConfirmationModalComponent],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss',
 })
@@ -25,16 +20,15 @@ export class CategoriesComponent {
   private dialog = inject(MatDialog);
   menuItems = ['Update', 'Delete'];
 
-  categories$ = this.adminPanelService.getCategories();
+  categories$ = this.adminPanelService.categories$;
 
-  handleMenuItemClicked(menuItem: string): void {
-    console.log('lul')
+  handleMenuItemClicked(menuItem: string, category: Category): void {
     switch (menuItem) {
       case 'Update':
         this.handleUpdate();
         break;
       case 'Delete':
-        this.handleDelete();
+        this.handleDelete(category);
         break;
     }
   }
@@ -43,7 +37,15 @@ export class CategoriesComponent {
     const dialogRef = this.dialog.open(UpdateCategoryComponent);
   }
 
-  handleDelete(): void {
-    console.log('delete');
+  handleDelete(category: Category): void {
+    const dialogRef = this.dialog.open(ConfirmationModalComponent, {
+      data: `Are you sure you want to remove ${category.name}?`,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.adminPanelService.deleteCategory(category.id).subscribe();
+      }
+    });
   }
 }

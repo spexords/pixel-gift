@@ -1,17 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { ReplaySubject, first, tap, map } from 'rxjs';
+import { ReplaySubject, first, tap, map, take, BehaviorSubject } from 'rxjs';
 import { User } from 'src/app/core/models';
 import { Login } from 'src/app/core/models/login.interface';
 import { API_URL } from 'src/app/core/tokens/api-url.token';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private userSource = new ReplaySubject<User | null>();
+  private userSource = new BehaviorSubject<User | null>(null);
   private http = inject(HttpClient);
   private baseUrl = inject(API_URL);
 
   user$ = this.userSource.asObservable();
+
   getCurrentUser(): void {
     const token = this.getJwtToken();
 
@@ -25,10 +26,7 @@ export class AuthService {
 
     this.http
       .get<User>(`${this.baseUrl}/account`, { headers })
-      .pipe(
-        first(),
-        tap((user) => this.saveJwtToken(user.token))
-      )
+      .pipe(tap((user) => this.saveJwtToken(user.token)))
       .subscribe((user) => this.userSource.next(user));
   }
 
@@ -36,29 +34,33 @@ export class AuthService {
     this.http
       .post<User>(`${this.baseUrl}/account/login`, values)
       .pipe(
-        first(),
         tap((user) => {
           this.saveJwtToken(user.token);
         })
       )
-      .subscribe((user) => this.userSource.next(user));
+      .subscribe({
+        next: (user) => {
+          this.userSource.next(user);
+          console.log(user);
+        },
+        error: (error) => {
+          if (error.status === 401) {
+            const { message } = error.error.errors;
+            alert(message);
+          }
+        },
+      });
   }
 
   logout(): void {
     this.userSource.next(null);
     this.deleteJwtToken();
-    this.userSource.next(null);
-    this.userSource.next(null);
   }
 
   isLoggedIn(): boolean {
     let loggedIn = false;
-    this.user$
-      .pipe(
-        first(),
-        map((user) => !!user)
-      )
-      .subscribe((res) => (loggedIn = res));
+    this.user$.pipe(take(1), map((user) => !!user)).subscribe((res) => (loggedIn = res));
+    console.log(loggedIn);
     return loggedIn;
   }
 

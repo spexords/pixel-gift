@@ -1,11 +1,9 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   OnInit,
   inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AdminService } from '../admin-panel/admin-panel.service';
 import {
   FormControl,
   FormGroup,
@@ -23,7 +21,6 @@ import { AuthService } from './auth.service';
   imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthComponent implements OnInit {
   private router = inject(Router);
@@ -35,15 +32,12 @@ export class AuthComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.authService.user$.pipe(filter((user) => !!user)).subscribe(() => {
+      console.log('eal')
+      this.router.navigate(['/admin'], {replaceUrl: true});
+    });
     this.authService.getCurrentUser();
-    this.authService.user$
-      .pipe(
-        filter((user) => !!user),
-        first()
-      )
-      .subscribe(() => {
-        this.router.navigateByUrl('/admin');
-      });
+
   }
 
   onSubmit(): void {
