@@ -1,0 +1,16 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <label for="name">Name</label>
+  <input id="name" [formControl]="form.controls.name" />
+
+  <!-- <div *ngFor="let controlName of controlKeys">
+    <div *ngIf="form.get(controlName)?.errors">
+      <p>{{ controlName }} errors:</p>
+      <pre>
+        {{ form.get(controlName)?.errors | json }}
+      </pre>
+    </div>
+  </div> -->
+  
+  <button [disabled]="!form.valid" type="submit">Create</button>
+</form>
+

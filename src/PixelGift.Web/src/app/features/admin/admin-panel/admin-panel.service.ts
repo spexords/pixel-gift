@@ -7,7 +7,7 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { Category, User } from 'src/app/core/models';
+import { Category, CreateCategory, User } from 'src/app/core/models';
 import { API_URL } from 'src/app/core/tokens/api-url.token';
 
 @Injectable({ providedIn: 'root' })
@@ -32,6 +32,12 @@ export class AdminPanelService {
   deleteCategory(id: string): Observable<unknown> {
     return this.http
       .delete(`${this.baseUrl}/categories/${id}`)
+      .pipe(tap(() => this.categoriesChangedSource.next(true)));
+  }
+
+  createCategory(values: CreateCategory): Observable<unknown> {
+    return this.http
+      .post(`${this.baseUrl}/categories`, values)
       .pipe(tap(() => this.categoriesChangedSource.next(true)));
   }
 }

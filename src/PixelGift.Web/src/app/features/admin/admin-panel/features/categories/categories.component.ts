@@ -6,23 +6,29 @@ import { UpdateCategoryComponent } from './update-category/update-category.compo
 import { ConfirmationModalComponent } from 'src/app/shared/components/confirmation-modal/confirmation-modal.component';
 import { Category } from 'src/app/core/models';
 import { AdminPanelService } from '../../admin-panel.service';
-import { Subject } from 'rxjs';
+import { CreateCategoryComponent } from './create-category/create-category.component';
 
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [CommonModule, EditableCardComponent, ConfirmationModalComponent],
+  imports: [
+    CommonModule,
+    EditableCardComponent,
+    ConfirmationModalComponent,
+    CreateCategoryComponent,
+  ],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss',
 })
 export class CategoriesComponent {
   private adminPanelService = inject(AdminPanelService);
   private dialog = inject(MatDialog);
-  menuItems = ['Update', 'Delete'];
+
+  existingCategoryMenuItems = ['Update', 'Delete'];
 
   categories$ = this.adminPanelService.categories$;
 
-  handleMenuItemClicked(menuItem: string, category: Category): void {
+  handleExistingCategoryClicked(menuItem: string, category: Category): void {
     switch (menuItem) {
       case 'Update':
         this.handleUpdate();
@@ -47,5 +53,9 @@ export class CategoriesComponent {
         this.adminPanelService.deleteCategory(category.id).subscribe();
       }
     });
+  }
+
+  handleNewCategory(): void {
+    this.dialog.open(CreateCategoryComponent);
   }
 }
