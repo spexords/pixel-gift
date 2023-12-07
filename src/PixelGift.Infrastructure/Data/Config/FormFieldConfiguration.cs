@@ -4,10 +4,10 @@ using PixelGift.Core.Entities;
 
 namespace PixelGift.Infrastructure.Data.Config;
 
-public class PromoCodeConfiguration : IEntityTypeConfiguration<PromoCode>
+public class FormFieldConfiguration : IEntityTypeConfiguration<FormField>
 {
-    public void Configure(EntityTypeBuilder<PromoCode> builder)
+    public void Configure(EntityTypeBuilder<FormField> builder)
     {
-        builder.ToTable("PromoCodes");
+        builder.ToTable("FormFields");
     }
 }

@@ -13,5 +13,10 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
             .WithOne(i => i.Category)
             .HasForeignKey(i => i.CategoryId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany<FormField>()
+            .WithOne(f => f.Category)
+            .HasForeignKey(f => f.CategoryId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -5,4 +5,6 @@ public class Category : BaseEntity
     public string Name { get; set; } = default!;
 
     public ICollection<Item> Items { get; } = new List<Item>();
+
+    public ICollection<FormField> FormFields { get; } = new List<FormField>();
 }
