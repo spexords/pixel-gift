@@ -11,6 +11,7 @@ const routes: Routes = [
       ),
   },
   { path: '', component: HomeComponent },
+  { path: '**', redirectTo: ''}
 ];
 
 @NgModule({
@@ -18,3 +19,4 @@ const routes: Routes = [
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
+

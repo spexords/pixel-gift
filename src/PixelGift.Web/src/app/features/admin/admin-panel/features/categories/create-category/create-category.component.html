@@ -1,16 +1,69 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <label for="name">Name</label>
-  <input id="name" [formControl]="form.controls.name" />
+  <ng-container>
+    <label for="name">Category name:</label>
+    <input id="name" [formControl]="form.controls.name" />
+  </ng-container>
 
-  <!-- <div *ngFor="let controlName of controlKeys">
-    <div *ngIf="form.get(controlName)?.errors">
-      <p>{{ controlName }} errors:</p>
-      <pre>
-        {{ form.get(controlName)?.errors | json }}
-      </pre>
+  <ng-container>
+    <label>Form data:</label>
+    <div class="form-data-wrapper">
+      <form
+        class="field-data-wrapper"
+        *ngFor="let group of formArray.controls; let i = index; let isLastI = last"
+        [formGroup]="group"
+      >
+        <input
+          [formControl]="group.controls.key"
+          type="text"
+          placeholder="Key"
+        />
+        <select placeholder="control" [formControl]="group.controls.type">
+          <option *ngFor="let option of fieldTypeOptions">{{ option }}</option>
+        </select>
+        <div class="form-options">
+          <img
+            alt="add new field"
+            src="assets/admin/add_icon.png"
+            (click)="addDefaultControlField()"
+            *ngIf="isLastI"
+          />
+          <img
+            alt="remove field"
+            src="assets/admin/remove_icon.png"
+            (click)="removeFormControlField(i)"
+            *ngIf="i !== 0"
+          />
+        </div>
+        <ng-container *ngIf="group.controls.type.value === fieldTypeOptions[1]">
+          <div class="field-addtional-data-container">
+            <div
+              class="field-additional-data-wrapper"
+              *ngFor="
+                let optionControl of group.controls.options.controls;
+                let j = index; let isLastJ = last
+              "
+            >
+              <input placeholder="option" [formControl]="optionControl" />
+              <div class="form-options">
+                <img
+                  alt="add new field"
+                  src="assets/admin/add_icon.png"
+                  (click)="addFormControlOption(i)"
+                  *ngIf="isLastJ"
+                />
+                <img
+                  alt="remove field"
+                  src="assets/admin/remove_icon.png"
+                  (click)="removeFormControlOption(i, j)"
+                  *ngIf="j !== 0"
+                />
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </form>
     </div>
-  </div> -->
-  
+  </ng-container>
+
   <button [disabled]="!form.valid" type="submit">Create</button>
 </form>
-
