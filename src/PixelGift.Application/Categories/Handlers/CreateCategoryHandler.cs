@@ -13,9 +13,9 @@ namespace PixelGift.Application.Categories.Handlers;
 public class CreateCategoryHandler : IRequestHandler<CreateCategoryCommand, Unit>
 {
     private readonly PixelGiftContext _context;
-    private readonly ILogger<GetCategoriesHandler> _logger;
+    private readonly ILogger<CreateCategoryCommand> _logger;
 
-    public CreateCategoryHandler(PixelGiftContext context, ILogger<GetCategoriesHandler> logger)
+    public CreateCategoryHandler(PixelGiftContext context, ILogger<CreateCategoryCommand> logger)
     {
         _context = context;
         _logger = logger;
@@ -47,13 +47,16 @@ public class CreateCategoryHandler : IRequestHandler<CreateCategoryCommand, Unit
 
         foreach (var formField in request.FormFields)
         {
+            var fieldType = Enum.Parse<FieldType>(formField.FieldType);
+
             _context.FormFields.Add(new FormField
             {
+                Id = formField.Id,
                 Name = formField.Name,
                 CategoryId = category.Id,
                 Category = category,
-                Options = formField.Options.Count() > 0 ? string.Join(',', formField.Options) : null,
-                Type = Enum.Parse<FieldType>(formField.FieldType)
+                Options = fieldType == FieldType.Select ? string.Join(',', formField.Options) : null,
+                Type = fieldType
             });
         }
 

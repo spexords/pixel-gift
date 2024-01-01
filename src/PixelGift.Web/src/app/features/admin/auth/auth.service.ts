@@ -41,7 +41,6 @@ export class AuthService {
       .subscribe({
         next: (user) => {
           this.userSource.next(user);
-          console.log(user);
         },
         error: (error) => {
           if (error.status === 401) {
@@ -60,7 +59,6 @@ export class AuthService {
   isLoggedIn(): boolean {
     let loggedIn = false;
     this.user$.pipe(take(1), map((user) => !!user)).subscribe((res) => (loggedIn = res));
-    console.log(loggedIn);
     return loggedIn;
   }
 

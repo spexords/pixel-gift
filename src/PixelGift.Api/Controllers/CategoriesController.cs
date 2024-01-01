@@ -17,6 +17,7 @@ public class CategoriesController : BaseApiController
     }
 
     [HttpGet("{id}")]
+    [AuthorizeRole(UserRole.Admin)]
     public async Task<IActionResult> GetCategory(Guid id)
     {
         var category = await Mediator.Send(new GetCategoryQuery(id));

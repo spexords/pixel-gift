@@ -7,7 +7,12 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { Category, CreateCategory, User } from 'src/app/core/models';
+import {
+  Category,
+  CategoryPayloadRequest,
+  DetailedCategory,
+  User,
+} from 'src/app/core/models';
 import { API_URL } from 'src/app/core/tokens/api-url.token';
 
 @Injectable({ providedIn: 'root' })
@@ -17,16 +22,20 @@ export class AdminPanelService {
   private baseUrl = inject(API_URL);
 
   private categoriesChangedSource = new BehaviorSubject<unknown>(false);
-  private categoriesChanged = this.categoriesChangedSource.asObservable();
+  private categoriesChanged$ = this.categoriesChangedSource.asObservable();
 
   user$ = this.userSource.asObservable();
 
-  categories$ = this.categoriesChanged.pipe(
+  categories$ = this.categoriesChanged$.pipe(
     switchMap(() => this.getCategories())
   );
 
   private getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(`${this.baseUrl}/categories`);
+  }
+
+  getCategory(id: string): Observable<DetailedCategory> {
+    return this.http.get<DetailedCategory>(`${this.baseUrl}/categories/${id}`);
   }
 
   deleteCategory(id: string): Observable<unknown> {
@@ -35,9 +44,15 @@ export class AdminPanelService {
       .pipe(tap(() => this.categoriesChangedSource.next(true)));
   }
 
-  createCategory(values: CreateCategory): Observable<unknown> {
+  createCategory(values: CategoryPayloadRequest): Observable<unknown> {
     return this.http
       .post(`${this.baseUrl}/categories`, values)
+      .pipe(tap(() => this.categoriesChangedSource.next(true)));
+  }
+
+  updateCategory(id: string, values: CategoryPayloadRequest): Observable<unknown> {
+    return this.http
+      .put(`${this.baseUrl}/categories/${id}`, values)
       .pipe(tap(() => this.categoriesChangedSource.next(true)));
   }
 }

@@ -33,7 +33,6 @@ export class AuthComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.user$.pipe(filter((user) => !!user)).subscribe(() => {
-      console.log('eal')
       this.router.navigate(['/admin'], {replaceUrl: true});
     });
     this.authService.getCurrentUser();

@@ -39,7 +39,7 @@ public class GetCategoryHandler : IRequestHandler<GetCategoryQuery, DetailedCate
         (
             category.Id,
             category.Name,
-            category.FormFields.Select(f => new FormFieldDto(f.Name, f.Type.ToString(), GetFormFieldOptions(f.Options)))
+            category.FormFields.Select(f => new FormFieldDto(f.Id, f.Name, f.Type.ToString(), GetFormFieldOptions(f.Options)))
         );
     }
 

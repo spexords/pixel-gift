@@ -31,7 +31,7 @@ export class CategoriesComponent {
   handleExistingCategoryClicked(menuItem: string, category: Category): void {
     switch (menuItem) {
       case 'Update':
-        this.handleUpdate();
+        this.handleUpdate(category.id);
         break;
       case 'Delete':
         this.handleDelete(category);
@@ -39,8 +39,8 @@ export class CategoriesComponent {
     }
   }
 
-  handleUpdate(): void {
-    const dialogRef = this.dialog.open(UpdateCategoryComponent);
+  handleUpdate(id: string): void {
+    this.dialog.open(UpdateCategoryComponent, { data: id });
   }
 
   handleDelete(category: Category): void {
