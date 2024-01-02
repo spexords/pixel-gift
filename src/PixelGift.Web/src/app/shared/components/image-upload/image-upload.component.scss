@@ -1,0 +1,9 @@
+.image-upload-wrapper {
+  display: flex;
+  flex-direction: column;
+  & > img {
+    height: 80px;
+    align-self: flex-start;
+    margin-bottom: 0.5rem;
+  }
+}

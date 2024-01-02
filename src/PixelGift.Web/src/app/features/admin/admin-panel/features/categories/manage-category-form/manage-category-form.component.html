@@ -19,7 +19,7 @@
         placeholder="Key"
       />
       <select placeholder="control" [formControl]="group.controls.fieldType">
-        <option [value]="option" *ngFor="let option of fieldTypeOptions">{{ option }}</option>
+        <option [value]="option.value" *ngFor="let option of fieldTypeOptions">{{ option.displayValue }}</option>
       </select>
       <div class="form-options">
         <img
@@ -36,7 +36,7 @@
         />
       </div>
       <ng-container
-        *ngIf="group.controls.fieldType.value === fieldTypeOptions[1]"
+        *ngIf="group.controls.fieldType.value === fieldTypeOptions[1].value"
       >
         <div class="field-addtional-data-container">
           <div

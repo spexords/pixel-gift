@@ -22,6 +22,8 @@
 .menu-container {
   position: absolute;
   right: .375rem;
+  top: calc(.375rem + 1.5rem);
+
   background-color: white;
   width: 10rem;
   z-index: 5;

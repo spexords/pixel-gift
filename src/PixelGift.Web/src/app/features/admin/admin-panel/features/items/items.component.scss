@@ -1,0 +1,23 @@
+:host {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 3rem;
+}
+
+.card-wrapper {
+  & > .info-group {
+    padding: 0.5rem 0;
+    & > .label {
+      color: #c0c;
+      font-size: 0.75rem;
+    }
+  }
+  & img {
+    height: 6rem;
+  }
+}
+
+.new-item {
+  color: aqua;
+  place-self: center;
+}

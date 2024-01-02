@@ -1,13 +1,43 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AdminPanelService } from '../../admin-panel.service';
+import { ConfirmationModalComponent } from 'src/app/shared/components/confirmation-modal/confirmation-modal.component';
+import { EditableCardComponent } from 'src/app/shared/components/editable-card/editable-card.component';
+import { ItemAdmin } from 'src/app/core/models';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateItemComponent } from './create-item/create-item.component';
 
 @Component({
   selector: 'app-items',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, EditableCardComponent, ConfirmationModalComponent],
   templateUrl: './items.component.html',
-  styleUrl: './items.component.scss'
+  styleUrl: './items.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemsComponent {
+  private adminPanelService = inject(AdminPanelService);
+  private dialog = inject(MatDialog);
 
+  existingItemMenuItems = ['Update', 'Delete'];
+  items$ = this.adminPanelService.items$;
+
+  handleExistingItemMenuClicked(menuItem: string, item: ItemAdmin): void {
+    switch (menuItem) {
+      case 'Update':
+        this.handleUpdateItem(item.id);
+        break;
+      case 'Delete':
+        this.handleDeleteItem(item.id);
+        break;
+    }
+  }
+
+  handleUpdateItem(id: string): void {}
+
+  handleDeleteItem(id: string): void {}
+
+  handleNewItem(): void {
+    this.dialog.open(CreateItemComponent);
+  }
 }

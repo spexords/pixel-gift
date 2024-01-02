@@ -18,7 +18,7 @@ import {
 } from '@angular/forms';
 import { CategoryPayloadRequest, FieldType } from 'src/app/core/models';
 import { v4 as uuidv4 } from 'uuid';
-import { enumToArray } from 'src/app/shared/utils';
+import { enumToSelectOptions } from 'src/app/shared/utils';
 
 type FormFieldForm = FormGroup<{
   id: FormControl<string | null>;
@@ -43,7 +43,7 @@ type CategoryForm = FormGroup<{
 export class ManageCategoryFormComponent {
   initialized = true;
   form = this.createForm();
-  fieldTypeOptions = enumToArray(FieldType);
+  fieldTypeOptions = enumToSelectOptions(FieldType);
 
   @Input() set data(data: CategoryPayloadRequest) {
     this.updateForm(data);

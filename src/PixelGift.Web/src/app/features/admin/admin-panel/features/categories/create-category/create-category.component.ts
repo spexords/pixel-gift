@@ -18,8 +18,6 @@ export class CreateCategoryComponent {
   private adminPanelService = inject(AdminPanelService);
 
   onSubmit(data: CategoryPayloadRequest): void {
-    console.log(data);
-
     this.adminPanelService.createCategory(data).subscribe({
       next: () => {
         alert('Category successfully created');

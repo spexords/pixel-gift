@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PixelGift.Application.Items.Dtos;
 using PixelGift.Application.Items.Queries;
-using PixelGift.Core.Entities;
 using PixelGift.Core.Exceptions;
 using PixelGift.Infrastructure.Data;
 using System.Net;

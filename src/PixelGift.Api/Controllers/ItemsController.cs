@@ -11,6 +11,24 @@ namespace PixelGift.Api.Controllers;
 
 public class ItemsController : BaseApiController
 {
+    [HttpGet]
+    [AuthorizeRole(UserRole.Admin)]
+    public async Task<IActionResult> GetItems()
+    {
+        var items = await Mediator.Send(new GetItemsQuery());
+
+        return Ok(items);
+    }
+
+    [HttpGet("{id}")]
+    [AuthorizeRole(UserRole.Admin)]
+    public async Task<IActionResult> GetItemById(Guid id)
+    {
+        var item = await Mediator.Send(new GetItemByIdQuery(id));
+
+        return Ok(item);
+    }
+
     [HttpGet("category/{categoryId}")]
     public async Task<IActionResult> GetItemsByCategory(Guid categoryId, [FromQuery] string lang)
     {

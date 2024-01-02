@@ -1,1 +1,1 @@
-export * from './enum-to-array';
+export * from './enum-utils';

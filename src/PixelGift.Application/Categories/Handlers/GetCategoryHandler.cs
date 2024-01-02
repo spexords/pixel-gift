@@ -32,7 +32,7 @@ public class GetCategoryHandler : IRequestHandler<GetCategoryQuery, DetailedCate
         if (category is null)
         {
             _logger.LogWarning($"Category with Id {request.Id} not found.");
-            throw new BaseApiException(HttpStatusCode.NotFound, new { Message = $"Could not find ${nameof(Category)} with id: {request.Id}." });
+            throw new BaseApiException(HttpStatusCode.NotFound, new { Message = $"Could not find {nameof(Category)} with id: {request.Id}." });
         }
 
         return new DetailedCategoryDto
