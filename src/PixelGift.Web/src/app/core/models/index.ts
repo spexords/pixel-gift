@@ -9,4 +9,6 @@ export * from './detailed-category.interface';
 export * from './detailed-item-admin.interface';
 export * from './item-admin.interface';
 export * from './item-payload-request.interface';
-export * from './select-option.interface'
+export * from './select-option.interface';
+export * from './promo-code.interface';
+export * from './promo-code-payload.interface';

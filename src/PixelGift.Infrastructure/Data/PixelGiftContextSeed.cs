@@ -25,6 +25,8 @@ public class PixelGiftContextSeed
 
             await SeedCategories(context, logger);
 
+            await SeedPromoCodes(context, logger);
+
             await context.SaveChangesAsync();
 
         }
@@ -32,6 +34,22 @@ public class PixelGiftContextSeed
         {
             logger.LogError(ex.Message);
         }
+    }
+
+    private static async Task SeedPromoCodes(PixelGiftContext context, ILogger<PixelGiftContextSeed> logger)
+    {
+        logger.LogInformation("Remove old Promo Codes");
+        context.PromoCodes.RemoveRange(context.PromoCodes);
+
+        var promoCodes = new[]
+        {
+            new PromoCode{Code = "GigaCode", Expiry = DateTime.Now.AddDays(15)},
+            new PromoCode{Code = "TRUSHIM00n", Expiry = DateTime.Now.AddDays(-25)},
+            new PromoCode{Code = "SMART_ME", Expiry = DateTime.Now.AddDays(3)},
+        };
+
+        logger.LogInformation("Creating new Promo Codes seed");
+        await context.PromoCodes.AddRangeAsync(promoCodes);
     }
 
     private static async Task SeedUsers(PixelGiftContext context, ILogger<PixelGiftContextSeed> logger)

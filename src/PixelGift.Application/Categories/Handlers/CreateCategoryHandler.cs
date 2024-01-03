@@ -23,7 +23,7 @@ public class CreateCategoryHandler : IRequestHandler<CreateCategoryCommand, Unit
 
     public async Task<Unit> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Checking in the database if the nameof already exists");
+        _logger.LogInformation("Checking in the database if the {name} already exists", request.Name);
 
         var categoryExists = await _context.Categories
             .AnyAsync(c => c.Name.ToLower() == request.Name.ToLower(), cancellationToken);

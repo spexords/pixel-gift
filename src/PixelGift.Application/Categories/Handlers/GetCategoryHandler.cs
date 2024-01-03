@@ -23,7 +23,7 @@ public class GetCategoryHandler : IRequestHandler<GetCategoryQuery, DetailedCate
 
     public async Task<DetailedCategoryDto> Handle(GetCategoryQuery request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Getting category: {id} from database", request.Id);
+        _logger.LogInformation("Getting {item}: {id} from database", nameof(Category), request.Id);
 
         var category = await _context.Categories
             .Include(c => c.FormFields)
