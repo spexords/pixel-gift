@@ -5,6 +5,6 @@ export interface DetailedItemAdmin {
   polishName: string;
   quantity: number;
   unitPrice: number;
-  categoryId: number;
+  categoryId: string;
 }
 

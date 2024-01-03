@@ -5,6 +5,7 @@ import {
   Observable,
   ReplaySubject,
   map,
+  pipe,
   switchMap,
   tap,
 } from 'rxjs';
@@ -12,6 +13,7 @@ import {
   Category,
   CategoryPayloadRequest,
   DetailedCategory,
+  DetailedItemAdmin,
   ItemAdmin,
   ItemPayloadRequest,
   User,
@@ -57,6 +59,12 @@ export class AdminPanelService {
       .pipe(tap(() => this.categoriesChangedSource.next(undefined)));
   }
 
+  deleteItem(id: string): Observable<unknown> {
+    return this.http
+      .delete(`${this.baseUrl}/items/${id}`)
+      .pipe(tap(() => this.itemsChangedSource.next(undefined)));
+  }
+
   createCategory(values: CategoryPayloadRequest): Observable<unknown> {
     return this.http
       .post(`${this.baseUrl}/categories`, values)
@@ -72,9 +80,19 @@ export class AdminPanelService {
       .pipe(tap(() => this.categoriesChangedSource.next(undefined)));
   }
 
+  getItem(id: string): Observable<DetailedItemAdmin> {
+    return this.http.get<DetailedItemAdmin>(`${this.baseUrl}/items/${id}`);
+  }
+
   createItem(values: ItemPayloadRequest): Observable<unknown> {
     return this.http
       .post(`${this.baseUrl}/items/category/${values.categoryId}`, values)
+      .pipe(tap(() => this.itemsChangedSource.next(undefined)));
+  }
+
+  updateItem(id: string, values: ItemPayloadRequest): Observable<unknown> {
+    return this.http
+      .put(`${this.baseUrl}/items/${id}`, values)
       .pipe(tap(() => this.itemsChangedSource.next(undefined)));
   }
 

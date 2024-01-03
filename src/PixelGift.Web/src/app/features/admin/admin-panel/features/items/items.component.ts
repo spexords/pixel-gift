@@ -6,6 +6,7 @@ import { EditableCardComponent } from 'src/app/shared/components/editable-card/e
 import { ItemAdmin } from 'src/app/core/models';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateItemComponent } from './create-item/create-item.component';
+import { UpdateItemComponent } from './update-item/update-item.component';
 
 @Component({
   selector: 'app-items',
@@ -28,14 +29,26 @@ export class ItemsComponent {
         this.handleUpdateItem(item.id);
         break;
       case 'Delete':
-        this.handleDeleteItem(item.id);
+        this.handleDeleteItem(item);
         break;
     }
   }
 
-  handleUpdateItem(id: string): void {}
+  handleUpdateItem(id: string): void {
+    this.dialog.open(UpdateItemComponent, { data: id });
+  }
 
-  handleDeleteItem(id: string): void {}
+  handleDeleteItem(item: ItemAdmin): void {
+    const dialogRef = this.dialog.open(ConfirmationModalComponent, {
+      data: `Are you sure you want to remove ${item.name}?`,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.adminPanelService.deleteItem(item.id).subscribe();
+      }
+    });
+  }
 
   handleNewItem(): void {
     this.dialog.open(CreateItemComponent);

@@ -24,8 +24,8 @@
     </select>
 
     <label for="image">Image:</label>
-    <app-image-upload (changed)="updateImageForm($event)" />
+    <app-image-upload [imageUrl]="form.controls.base64Image.value" (changed)="updateImageForm($event)" />
 
-    <button [disabled]="!form.valid" type="submit">create</button>
+    <button [disabled]="!form.valid" type="submit">{{initialized ? 'create' : 'update'}}</button>
   </form>
 </ng-container>

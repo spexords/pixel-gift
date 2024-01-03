@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ItemPayloadRequest } from 'src/app/core/models';
 import {
@@ -35,15 +35,19 @@ type ItemForm = FormGroup<{
   styleUrl: './manage-item-form.component.scss',
 })
 export class ManageItemFormComponent {
-  private adminPanelService = inject(AdminPanelService)
+  private adminPanelService = inject(AdminPanelService);
 
+  initialized = true;
   form = this.createForm();
   categories$ = this.adminPanelService.categoriesAsSelectOptions$;
 
+  @Input() set data(data: ItemPayloadRequest) {
+    this.updateForm(data);
+  }
   @Output() submitted = new EventEmitter<ItemPayloadRequest>();
 
   onSubmit(): void {
-    console.log(this.form.value)
+    console.log(this.form.value);
     this.submitted.emit(this.form.value as ItemPayloadRequest);
   }
 
@@ -63,5 +67,10 @@ export class ManageItemFormComponent {
     });
 
     return form;
+  }
+
+  private updateForm(data: ItemPayloadRequest) {
+    this.form.patchValue(data);
+    this.initialized = false;
   }
 }

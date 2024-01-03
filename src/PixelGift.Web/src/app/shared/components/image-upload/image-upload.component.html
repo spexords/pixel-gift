@@ -1,5 +1,9 @@
 <div class="image-upload-wrapper">
-  <img *ngIf="imageUrl" [src]="imageUrl" alt="Uploaded Image" />
+  <img
+    *ngIf="imageUrl"
+    [src]="'data:image;base64,' + imageUrl"
+    alt="Uploaded Image"
+  />
   <input
     class="image-input"
     #imageInput
