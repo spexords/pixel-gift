@@ -32,6 +32,6 @@ public class GetPromoCodeHandler : IRequestHandler<GetPromoCodeQuery, PromoCodeD
             throw new BaseApiException(HttpStatusCode.NotFound, new { Message = $"Could not find {nameof(PromoCode)} with id: {request.Id}." });
         }
 
-        return new PromoCodeDto(promoCode.Id, promoCode.Code, promoCode.Expiry);
+        return new PromoCodeDto(promoCode.Id, promoCode.Code, promoCode.Discount, promoCode.Expiry);
     }
 }

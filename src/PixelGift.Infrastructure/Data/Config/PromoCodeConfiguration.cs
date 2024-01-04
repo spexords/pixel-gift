@@ -9,5 +9,7 @@ public class PromoCodeConfiguration : IEntityTypeConfiguration<PromoCode>
     public void Configure(EntityTypeBuilder<PromoCode> builder)
     {
         builder.ToTable("PromoCodes");
+        builder.Property(p => p.Discount)
+            .HasPrecision(18, 2);
     }
 }

@@ -37,6 +37,7 @@ public class CreatePromoCodeHandler : IRequestHandler<CreatePromoCodeCommand, Un
         {
             Id = request.Id,
             Code = request.Code,
+            Discount = request.Discount,
             Expiry = request.Expiry
         };
 

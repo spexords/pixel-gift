@@ -31,7 +31,8 @@ public class UpdatePromoCodeHandler : IRequestHandler<UpdatePromoCodeCommand, Un
         }
 
         promoCode.Expiry = request.Expiry;
-        promoCode.Code = request.Code ?? promoCode.Code;
+        promoCode.Code = request.Code;
+        promoCode.Discount = request.Discount;
 
         await _context.SaveChangesAsync(cancellationToken);
 

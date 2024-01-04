@@ -16,6 +16,8 @@ import {
   DetailedItemAdmin,
   ItemAdmin,
   ItemPayloadRequest,
+  PromoCode,
+  PromoCodePayload,
   User,
 } from 'src/app/core/models';
 import { API_URL } from 'src/app/core/tokens/api-url.token';
@@ -32,12 +34,19 @@ export class AdminPanelService {
   private itemsChangedSource = new BehaviorSubject<unknown>(undefined);
   private itemsChanged$ = this.itemsChangedSource.asObservable();
 
+  private promoCodesChangedSource = new BehaviorSubject<unknown>(undefined);
+  private promoCodesChanged$ = this.promoCodesChangedSource.asObservable();
+
   user$ = this.userSource.asObservable();
 
   items$ = this.itemsChanged$.pipe(switchMap(() => this.getItems()));
 
   categories$ = this.categoriesChanged$.pipe(
     switchMap(() => this.getCategories())
+  );
+
+  promoCodes$ = this.promoCodesChanged$.pipe(
+    switchMap(() => this.getPromoCodes())
   );
 
   categoriesAsSelectOptions$ = this.categories$.pipe(
@@ -63,6 +72,12 @@ export class AdminPanelService {
     return this.http
       .delete(`${this.baseUrl}/items/${id}`)
       .pipe(tap(() => this.itemsChangedSource.next(undefined)));
+  }
+
+  deletePromoCode(id: string): Observable<unknown> {
+    return this.http
+      .delete(`${this.baseUrl}/promocodes/${id}`)
+      .pipe(tap(() => this.promoCodesChangedSource.next(undefined)));
   }
 
   createCategory(values: CategoryPayloadRequest): Observable<unknown> {
@@ -96,11 +111,27 @@ export class AdminPanelService {
       .pipe(tap(() => this.itemsChangedSource.next(undefined)));
   }
 
+  createPromoCode(values: PromoCodePayload): Observable<unknown> {
+    return this.http
+      .post(`${this.baseUrl}/promocodes`, values)
+      .pipe(tap(() => this.promoCodesChangedSource.next(undefined)));
+  }
+
+  updatePromoCode(id: string, values: PromoCodePayload): Observable<unknown> {
+    return this.http
+      .put(`${this.baseUrl}/promocodes/${id}`, values)
+      .pipe(tap(() => this.promoCodesChangedSource.next(undefined)));
+  }
+
   private getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(`${this.baseUrl}/categories`);
   }
 
   private getItems(): Observable<ItemAdmin[]> {
     return this.http.get<ItemAdmin[]>(`${this.baseUrl}/items`);
+  }
+
+  private getPromoCodes(): Observable<PromoCode[]> {
+    return this.http.get<PromoCode[]>(`${this.baseUrl}/promocodes`);
   }
 }

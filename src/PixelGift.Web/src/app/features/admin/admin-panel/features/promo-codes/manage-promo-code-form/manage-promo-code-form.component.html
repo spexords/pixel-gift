@@ -1,0 +1,14 @@
+<form (ngSubmit)="onSubmit()">
+  <label for="code">Code</label>
+  <input id="code" [formControl]="form.controls.code" type="text" />
+
+  <label for="discount">Discount</label>
+  <input id="discount" [formControl]="form.controls.discount" type="text" />
+
+  <label for="discount">Discount</label>
+  <input id="discount" [formControl]="form.controls.expiry" type="date" />
+
+  <button [disabled]="!form.valid" type="submit">
+    {{ initialized ? "create" : "update" }}
+  </button>
+</form>

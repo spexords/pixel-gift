@@ -43,9 +43,9 @@ public class PixelGiftContextSeed
 
         var promoCodes = new[]
         {
-            new PromoCode{Code = "GigaCode", Expiry = DateTime.Now.AddDays(15)},
-            new PromoCode{Code = "TRUSHIM00n", Expiry = DateTime.Now.AddDays(-25)},
-            new PromoCode{Code = "SMART_ME", Expiry = DateTime.Now.AddDays(3)},
+            new PromoCode{Code = "GigaCode", Discount = 0.5m, Expiry = DateTime.Now.AddDays(15)},
+            new PromoCode{Code = "TRUSHIM00n", Discount = 0.25m, Expiry = DateTime.Now.AddDays(-25)},
+            new PromoCode{Code = "SMART_ME", Discount = 0.1m, Expiry = DateTime.Now.AddDays(3)},
         };
 
         logger.LogInformation("Creating new Promo Codes seed");

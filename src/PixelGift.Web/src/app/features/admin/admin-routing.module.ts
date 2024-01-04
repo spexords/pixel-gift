@@ -5,6 +5,7 @@ import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 import { CategoriesComponent } from './admin-panel/features/categories/categories.component';
 import { ItemsComponent } from './admin-panel/features/items/items.component';
 import { authGuard } from './auth/auth.guard';
+import { PromoCodesComponent } from './admin-panel/features/promo-codes/promo-codes.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,7 @@ const routes: Routes = [
     children: [
       { path: 'categories', component: CategoriesComponent },
       { path: 'items', component: ItemsComponent },
+      { path: 'promo-codes', component: PromoCodesComponent },
     ],
   },
 ];
