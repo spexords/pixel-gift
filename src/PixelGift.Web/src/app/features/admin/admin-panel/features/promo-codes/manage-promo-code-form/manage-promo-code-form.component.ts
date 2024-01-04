@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -8,7 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
-import { PromoCodePayload } from 'src/app/core/models';
+import { PromoCodePayloadRequest } from 'src/app/core/models';
 
 type PromoCodeForm = FormGroup<{
   id: FormControl<string | null>;
@@ -28,7 +28,10 @@ export class ManagePromoCodeFormComponent {
   initialized = true;
   form = this.createForm();
 
-  @Output() submitted = new EventEmitter<PromoCodePayload>();
+  @Input() set data(data: PromoCodePayloadRequest) {
+    this.updateForm(data);
+  }
+  @Output() submitted = new EventEmitter<PromoCodePayloadRequest>();
 
   createForm(): PromoCodeForm {
     const form = new FormGroup({
@@ -46,6 +49,16 @@ export class ManagePromoCodeFormComponent {
   }
 
   onSubmit(): void {
-    this.submitted.emit(this.form.value as PromoCodePayload);
+    this.submitted.emit(this.form.value as PromoCodePayloadRequest);
+  }
+
+  updateExpiry(event: any) {
+    const date = new Date(event.target.value);
+    this.form.controls.expiry.patchValue(date, { emitEvent: false });
+  }
+
+  updateForm(data: PromoCodePayloadRequest) {
+    this.form.patchValue(data);
+    this.initialized = false;
   }
 }

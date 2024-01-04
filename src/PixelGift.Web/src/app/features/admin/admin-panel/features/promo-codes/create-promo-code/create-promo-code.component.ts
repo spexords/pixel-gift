@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogRef } from '@angular/material/dialog';
-import { PromoCodePayload } from 'src/app/core/models';
+import { PromoCodePayloadRequest } from 'src/app/core/models';
 import { AdminPanelService } from '../../../admin-panel.service';
 import { ManagePromoCodeFormComponent } from '../manage-promo-code-form/manage-promo-code-form.component';
 
@@ -17,7 +17,7 @@ export class CreatePromoCodeComponent {
   private dialogRef = inject(MatDialogRef<CreatePromoCodeComponent>);
   private adminPanelService = inject(AdminPanelService);
 
-  onSubmit(data: PromoCodePayload): void {
+  onSubmit(data: PromoCodePayloadRequest): void {
     this.adminPanelService.createPromoCode(data).subscribe({
       next: () => {
         alert('Promo Code successfully created');

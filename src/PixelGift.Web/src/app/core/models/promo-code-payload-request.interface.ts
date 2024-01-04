@@ -1,5 +1,5 @@
 
-export interface PromoCodePayload {
+export interface PromoCodePayloadRequest {
   id: string;
   code: string;
   discount: number;

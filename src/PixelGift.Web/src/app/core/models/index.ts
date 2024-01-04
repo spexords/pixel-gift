@@ -11,4 +11,4 @@ export * from './item-admin.interface';
 export * from './item-payload-request.interface';
 export * from './select-option.interface';
 export * from './promo-code.interface';
-export * from './promo-code-payload.interface';
+export * from './promo-code-payload-request.interface';

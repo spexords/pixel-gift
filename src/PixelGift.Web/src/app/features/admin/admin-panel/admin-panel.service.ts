@@ -17,7 +17,7 @@ import {
   ItemAdmin,
   ItemPayloadRequest,
   PromoCode,
-  PromoCodePayload,
+  PromoCodePayloadRequest,
   User,
 } from 'src/app/core/models';
 import { API_URL } from 'src/app/core/tokens/api-url.token';
@@ -60,6 +60,10 @@ export class AdminPanelService {
 
   getCategory(id: string): Observable<DetailedCategory> {
     return this.http.get<DetailedCategory>(`${this.baseUrl}/categories/${id}`);
+  }
+
+  getPromoCode(id: string): Observable<PromoCode> {
+    return this.http.get<PromoCode>(`${this.baseUrl}/promocodes/${id}`);
   }
 
   deleteCategory(id: string): Observable<unknown> {
@@ -111,13 +115,13 @@ export class AdminPanelService {
       .pipe(tap(() => this.itemsChangedSource.next(undefined)));
   }
 
-  createPromoCode(values: PromoCodePayload): Observable<unknown> {
+  createPromoCode(values: PromoCodePayloadRequest): Observable<unknown> {
     return this.http
       .post(`${this.baseUrl}/promocodes`, values)
       .pipe(tap(() => this.promoCodesChangedSource.next(undefined)));
   }
 
-  updatePromoCode(id: string, values: PromoCodePayload): Observable<unknown> {
+  updatePromoCode(id: string, values: PromoCodePayloadRequest): Observable<unknown> {
     return this.http
       .put(`${this.baseUrl}/promocodes/${id}`, values)
       .pipe(tap(() => this.promoCodesChangedSource.next(undefined)));
