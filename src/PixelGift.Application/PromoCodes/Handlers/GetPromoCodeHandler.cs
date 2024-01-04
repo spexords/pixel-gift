@@ -9,7 +9,7 @@ using System.Net;
 
 namespace PixelGift.Application.PromoCodes.Handlers;
 
-public class GetPromoCodeHandler : IRequestHandler<GetPromoCodeQuery, PromoCodeDto>
+public class GetPromoCodeHandler : IRequestHandler<GetPromoCodeQuery, DetailedPromoCodeDto>
 {
     private readonly PixelGiftContext _context;
     private readonly ILogger<GetPromoCodeHandler> _logger;
@@ -20,7 +20,7 @@ public class GetPromoCodeHandler : IRequestHandler<GetPromoCodeQuery, PromoCodeD
         _logger = logger;
     }
 
-    public async Task<PromoCodeDto> Handle(GetPromoCodeQuery request, CancellationToken cancellationToken)
+    public async Task<DetailedPromoCodeDto> Handle(GetPromoCodeQuery request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Getting {item}: {id} from database", nameof(PromoCode), request.Id);
 
@@ -32,6 +32,6 @@ public class GetPromoCodeHandler : IRequestHandler<GetPromoCodeQuery, PromoCodeD
             throw new BaseApiException(HttpStatusCode.NotFound, new { Message = $"Could not find {nameof(PromoCode)} with id: {request.Id}." });
         }
 
-        return new PromoCodeDto(promoCode.Id, promoCode.Code, promoCode.Discount, promoCode.Expiry);
+        return new DetailedPromoCodeDto(promoCode.Id, promoCode.Code, promoCode.Discount, promoCode.Expiry, promoCode.CategoryId);
     }
 }

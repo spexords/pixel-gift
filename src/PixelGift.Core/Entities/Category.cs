@@ -7,4 +7,6 @@ public class Category : BaseEntity
     public ICollection<Item> Items { get; } = new List<Item>();
 
     public ICollection<FormField> FormFields { get; } = new List<FormField>();
+
+    public ICollection<PromoCode> PromoCodes { get; } = new List<PromoCode>();
 }

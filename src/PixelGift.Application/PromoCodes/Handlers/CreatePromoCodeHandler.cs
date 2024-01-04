@@ -33,12 +33,22 @@ public class CreatePromoCodeHandler : IRequestHandler<CreatePromoCodeCommand, Un
             throw new BaseApiException(HttpStatusCode.BadRequest, new { Message = $"{nameof(PromoCode)}: {request.Code} already exsists" });
         }
 
+        var categoryExists = await _context.Categories.AnyAsync(c => c.Id == request.CategoryId, cancellationToken);
+
+        if(!categoryExists)
+        {
+            _logger.LogWarning("Could not find {item} - id: {id}", nameof(Category), request.CategoryId);
+
+            throw new BaseApiException(HttpStatusCode.BadRequest, new { Message = $"Could not find {nameof(Category)}: {request.CategoryId}" });
+        }
+
         var promoCode = new PromoCode
         {
             Id = request.Id,
             Code = request.Code,
             Discount = request.Discount,
-            Expiry = request.Expiry
+            Expiry = request.Expiry,
+            CategoryId = request.CategoryId
         };
 
         _context.PromoCodes.Add(promoCode);

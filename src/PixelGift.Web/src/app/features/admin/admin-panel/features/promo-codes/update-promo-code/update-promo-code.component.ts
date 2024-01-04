@@ -2,8 +2,8 @@ import { Component, Inject, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AdminPanelService } from '../../../admin-panel.service';
-import { PromoCodePayloadRequest } from 'src/app/core/models';
 import { ManagePromoCodeFormComponent } from '../manage-promo-code-form/manage-promo-code-form.component';
+import { PromoCodePayloadRequest } from 'src/app/core/models';
 
 @Component({
   selector: 'app-update-promo-code',

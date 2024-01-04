@@ -12,8 +12,10 @@ import {
 import {
   Category,
   CategoryPayloadRequest,
+  ChangePassword,
   DetailedCategory,
   DetailedItemAdmin,
+  DetailedPromoCode,
   ItemAdmin,
   ItemPayloadRequest,
   PromoCode,
@@ -58,12 +60,16 @@ export class AdminPanelService {
     )
   );
 
+  changePassword(values: ChangePassword): Observable<unknown> {
+    return this.http.post(`${this.baseUrl}/account/change-password`, values);
+  }
+
   getCategory(id: string): Observable<DetailedCategory> {
     return this.http.get<DetailedCategory>(`${this.baseUrl}/categories/${id}`);
   }
 
-  getPromoCode(id: string): Observable<PromoCode> {
-    return this.http.get<PromoCode>(`${this.baseUrl}/promocodes/${id}`);
+  getPromoCode(id: string): Observable<DetailedPromoCode> {
+    return this.http.get<DetailedPromoCode>(`${this.baseUrl}/promocodes/${id}`);
   }
 
   deleteCategory(id: string): Observable<unknown> {
@@ -121,7 +127,10 @@ export class AdminPanelService {
       .pipe(tap(() => this.promoCodesChangedSource.next(undefined)));
   }
 
-  updatePromoCode(id: string, values: PromoCodePayloadRequest): Observable<unknown> {
+  updatePromoCode(
+    id: string,
+    values: PromoCodePayloadRequest
+  ): Observable<unknown> {
     return this.http
       .put(`${this.baseUrl}/promocodes/${id}`, values)
       .pipe(tap(() => this.promoCodesChangedSource.next(undefined)));

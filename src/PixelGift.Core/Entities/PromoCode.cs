@@ -7,4 +7,8 @@ public class PromoCode : BaseEntity
     public decimal Discount { get; set; }
 
     public DateTime Expiry { get; set; }
+
+    public Guid CategoryId { get; set; }
+
+    public Category Category { get; set; } = null!;
 }

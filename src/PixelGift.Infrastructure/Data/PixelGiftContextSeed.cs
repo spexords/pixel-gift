@@ -25,8 +25,6 @@ public class PixelGiftContextSeed
 
             await SeedCategories(context, logger);
 
-            await SeedPromoCodes(context, logger);
-
             await context.SaveChangesAsync();
 
         }
@@ -34,22 +32,6 @@ public class PixelGiftContextSeed
         {
             logger.LogError(ex.Message);
         }
-    }
-
-    private static async Task SeedPromoCodes(PixelGiftContext context, ILogger<PixelGiftContextSeed> logger)
-    {
-        logger.LogInformation("Remove old Promo Codes");
-        context.PromoCodes.RemoveRange(context.PromoCodes);
-
-        var promoCodes = new[]
-        {
-            new PromoCode{Code = "GigaCode", Discount = 0.5m, Expiry = DateTime.Now.AddDays(15)},
-            new PromoCode{Code = "TRUSHIM00n", Discount = 0.25m, Expiry = DateTime.Now.AddDays(-25)},
-            new PromoCode{Code = "SMART_ME", Discount = 0.1m, Expiry = DateTime.Now.AddDays(3)},
-        };
-
-        logger.LogInformation("Creating new Promo Codes seed");
-        await context.PromoCodes.AddRangeAsync(promoCodes);
     }
 
     private static async Task SeedUsers(PixelGiftContext context, ILogger<PixelGiftContextSeed> logger)
@@ -89,6 +71,10 @@ public class PixelGiftContextSeed
 
         logger.LogInformation("Creating form fields seed for: {category}", category.Name);
         SeedFormFields(category);
+        
+        logger.LogInformation("Creating promo codes for: {category}", category.Name);
+        SeedPromoCodes(category);
+
     }
 
     private static void SeedItems(Category category)
@@ -192,6 +178,22 @@ public class PixelGiftContextSeed
         foreach (var formField in formFields)
         {
             category.FormFields.Add(formField);
+        }
+    }
+
+    private static void SeedPromoCodes(Category category)
+    {
+        var promoCodes = new[]
+        {
+            new PromoCode{Code = "GigaCode", Discount = 0.5m, Expiry = DateTime.Now.AddDays(15)},
+            new PromoCode{Code = "TRUSHIM00n", Discount = 0.25m, Expiry = DateTime.Now.AddDays(-25)},
+            new PromoCode{Code = "SMART_ME", Discount = 0.1m, Expiry = DateTime.Now.AddDays(3)},
+        };
+
+
+        foreach (var promoCode in promoCodes)
+        {
+            category.PromoCodes.Add(promoCode);
         }
     }
 }

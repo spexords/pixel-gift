@@ -1,8 +1,7 @@
-export interface PromoCode {
+export interface DetailedPromoCode {
   id: string;
   code: string;
   discount: number;
   expiry: Date;
-  category: string;
+  categoryId: string;
 }
-

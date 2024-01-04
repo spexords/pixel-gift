@@ -18,5 +18,10 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
             .WithOne(f => f.Category)
             .HasForeignKey(f => f.CategoryId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany<PromoCode>()
+            .WithOne(p => p.Category)
+            .HasForeignKey(p => p.CategoryId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

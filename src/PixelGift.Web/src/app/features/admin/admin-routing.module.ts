@@ -6,6 +6,7 @@ import { CategoriesComponent } from './admin-panel/features/categories/categorie
 import { ItemsComponent } from './admin-panel/features/items/items.component';
 import { authGuard } from './auth/auth.guard';
 import { PromoCodesComponent } from './admin-panel/features/promo-codes/promo-codes.component';
+import { AccountComponent } from './admin-panel/features/account/account.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,7 @@ const routes: Routes = [
       { path: 'categories', component: CategoriesComponent },
       { path: 'items', component: ItemsComponent },
       { path: 'promo-codes', component: PromoCodesComponent },
+      { path: 'account', component: AccountComponent },
     ],
   },
 ];

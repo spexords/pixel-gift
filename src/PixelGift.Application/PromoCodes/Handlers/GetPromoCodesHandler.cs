@@ -24,7 +24,8 @@ public class GetPromoCodesHandler : IRequestHandler<GetPromoCodesQuery, IEnumera
 
         var promoCodes = await _context.PromoCodes
             .AsNoTracking()
-            .Select(c => new PromoCodeDto(c.Id, c.Code,c.Discount, c.Expiry))
+            .Include(c => c.Category)
+            .Select(c => new PromoCodeDto(c.Id, c.Code,c.Discount, c.Expiry, c.Category.Name))
             .ToListAsync(cancellationToken);
 
         return promoCodes;

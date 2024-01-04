@@ -30,9 +30,19 @@ public class UpdatePromoCodeHandler : IRequestHandler<UpdatePromoCodeCommand, Un
             throw new BaseApiException(HttpStatusCode.NotFound, new { Message = $"Could not find ${nameof(PromoCode)} with id: {request.Id}." });
         }
 
+        var categoryExists = await _context.Categories.AnyAsync(c => c.Id == request.CategoryId, cancellationToken);
+
+        if (!categoryExists)
+        {
+            _logger.LogWarning("Could not find {item} - id: {id}", nameof(Category), request.CategoryId);
+
+            throw new BaseApiException(HttpStatusCode.BadRequest, new { Message = $"Could not find {nameof(Category)}: {request.CategoryId}" });
+        }
+
         promoCode.Expiry = request.Expiry;
         promoCode.Code = request.Code;
         promoCode.Discount = request.Discount;
+        promoCode.CategoryId = request.CategoryId;
 
         await _context.SaveChangesAsync(cancellationToken);
 

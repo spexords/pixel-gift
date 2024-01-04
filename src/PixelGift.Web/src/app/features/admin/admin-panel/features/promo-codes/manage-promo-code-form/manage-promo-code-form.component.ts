@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -9,9 +9,11 @@ import {
 } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
 import { PromoCodePayloadRequest } from 'src/app/core/models';
+import { AdminPanelService } from '../../../admin-panel.service';
 
 type PromoCodeForm = FormGroup<{
   id: FormControl<string | null>;
+  categoryId: FormControl<string | null>;
   code: FormControl<string | null>;
   discount: FormControl<number | null>;
   expiry: FormControl<Date | null>;
@@ -25,8 +27,12 @@ type PromoCodeForm = FormGroup<{
   styleUrl: './manage-promo-code-form.component.scss',
 })
 export class ManagePromoCodeFormComponent {
+  private adminPanelService = inject(AdminPanelService);
+
   initialized = true;
   form = this.createForm();
+  categories$ = this.adminPanelService.categoriesAsSelectOptions$;
+
 
   @Input() set data(data: PromoCodePayloadRequest) {
     this.updateForm(data);
@@ -36,6 +42,7 @@ export class ManagePromoCodeFormComponent {
   createForm(): PromoCodeForm {
     const form = new FormGroup({
       id: new FormControl(uuidv4()),
+      categoryId: new FormControl(''),
       code: new FormControl('', [Validators.required, Validators.minLength(2)]),
       discount: new FormControl(0, [
         Validators.required,
