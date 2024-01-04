@@ -1,0 +1,3 @@
+<ng-container *ngIf="item$ | async as item">
+  <app-manage-item-form [data]="item" (submitted)="onSubmit($event)" />
+</ng-container>

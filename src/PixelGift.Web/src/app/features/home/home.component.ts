@@ -16,12 +16,16 @@ import { CustomerFeedbacksComponent } from './customer-feedbacks/customer-feedba
 import { FaqComponent } from './faq/faq.component';
 import { NavbarService } from 'src/app/core/navbar/navbar.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NavbarComponent } from 'src/app/core/navbar/navbar.component';
+import { FooterComponent } from 'src/app/core/footer/footer.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
     CommonModule,
+    NavbarComponent,
+    FooterComponent,
     JumbotronComponent,
     CategoriesCardsComponent,
     ChooseUsComponent,

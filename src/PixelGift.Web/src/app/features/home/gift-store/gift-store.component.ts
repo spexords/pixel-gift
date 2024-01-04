@@ -4,8 +4,8 @@ import { StoreCategoriesComponent } from './store-categories/store-categories.co
 import { StoreItemsComponent } from './store-items/store-items.component';
 import { TranslocoPipe } from '@ngneat/transloco';
 import { GiftStoreService } from './gift-store.service';
-import { Category } from './models';
 import { combineLatest, map } from 'rxjs';
+import { Category } from 'src/app/core/models';
 
 @Component({
   selector: 'app-gift-store',

@@ -1,0 +1,19 @@
+:host {
+  display: contents;
+}
+
+nav {
+  cursor: pointer;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  & > .nav-item {
+    margin-bottom: 1.25rem;
+    padding: 1.5rem;
+    border: 1px solid white;
+    & > a {
+      color: white;
+      text-decoration: none;
+    }
+  }
+}

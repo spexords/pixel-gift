@@ -1,0 +1,3 @@
+<ng-container *ngIf="category$ | async as category" >
+  <app-manage-category-form [data]="category" (submitted)="onSubmit($event)"/>
+</ng-container>

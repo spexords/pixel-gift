@@ -1,0 +1,31 @@
+<ng-container *ngIf="categories$ | async as categories">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <label for="name">Name:</label>
+    <input [formControl]="form.controls.name" id="name" type="text" />
+
+    <label for="polishName">Polish Name:</label>
+    <input
+      [formControl]="form.controls.polishName"
+      id="polishName"
+      type="text"
+    />
+
+    <label for="quantity">Quantity:</label>
+    <input [formControl]="form.controls.quantity" id="quantity" type="text" />
+
+    <label for="unitPrice">Unit Price:</label>
+    <input [formControl]="form.controls.unitPrice" id="unitPrice" type="text" />
+
+    <label for="category">Category:</label>
+    <select [formControl]="form.controls.categoryId">
+      <option [value]="category.value" *ngFor="let category of categories">
+        {{ category.displayValue }}
+      </option>
+    </select>
+
+    <label for="image">Image:</label>
+    <app-image-upload [imageUrl]="form.controls.base64Image.value" (changed)="updateImageForm($event)" />
+
+    <button [disabled]="!form.valid" type="submit">{{initialized ? 'create' : 'update'}}</button>
+  </form>
+</ng-container>

@@ -1,0 +1,31 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <label for="oldPassword">Old Password</label>
+  <input
+    id="oldPassword"
+    [formControl]="form.controls.oldPassword"
+    type="password"
+  />
+
+  <label for="newPassword">New Password</label>
+  <input
+    id="newPassword"
+    [formControl]="form.controls.newPassword"
+    type="password"
+  />
+
+  <label for="confirmNewPassword">Confirm New Password</label>
+  <input
+    id="confirmNewPassword"
+    [formControl]="form.controls.confirmNewPassword"
+    type="password"
+  />
+
+  <div
+    class="errors"
+    *ngIf="form.errors?.['mismatch'] && (form.controls.confirmNewPassword.dirty || form.controls.confirmNewPassword.touched)"
+  >
+    Passwords don't match.
+  </div>
+
+  <button [disabled]="!form.valid" type="submit">Change Password</button>
+</form>

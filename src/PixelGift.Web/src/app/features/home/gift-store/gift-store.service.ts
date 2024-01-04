@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, Subject, combineLatest, map, switchMap, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/tokens/api-url.token';
-import { Category, Item } from './models';
 import { TranslocoService } from '@ngneat/transloco';
+import { Category, Item } from 'src/app/core/models';
 
 @Injectable({ providedIn: 'root' })
 export class GiftStoreService {

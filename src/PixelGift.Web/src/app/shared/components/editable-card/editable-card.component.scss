@@ -1,0 +1,38 @@
+:host {
+  display: block;
+  position: relative;
+  padding: 1.25rem;
+  border: 1px solid white;
+}
+
+.menu-button {
+  cursor: pointer;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: white;
+  position: absolute;
+  right: .375rem;
+  top: .375rem;
+  color: black;
+}
+
+.menu-container {
+  position: absolute;
+  right: .375rem;
+  top: calc(.375rem + 1.5rem);
+
+  background-color: white;
+  width: 10rem;
+  z-index: 5;
+
+
+  & > .menu-item {
+    padding: 1rem .5rem;
+    border-bottom: 1px solid black;
+    color: black;
+    cursor: pointer;
+  }
+}

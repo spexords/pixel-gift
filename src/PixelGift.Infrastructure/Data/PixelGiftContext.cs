@@ -14,6 +14,8 @@ public class PixelGiftContext : DbContext
 
     public DbSet<User> Users { get; set; }
 
+    public DbSet<FormField> FormFields { get; set; }
+
     public PixelGiftContext(DbContextOptions options) : base(options)
     {
     }

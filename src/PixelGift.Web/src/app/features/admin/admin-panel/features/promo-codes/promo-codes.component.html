@@ -1,0 +1,24 @@
+<ng-container *ngIf="promoCodes$ | async as promoCodes">
+  @for(promoCode of promoCodes; track promoCode.id) {
+  <app-editable-card
+    [menuItems]="existingItemMenuItems"
+    (menuItemClicked)="handleExistingItemMenuClicked($event, promoCode)"
+  >
+    <div>
+      <p>{{ promoCode.category }}</p>
+      <p>
+        {{ promoCode.code }}
+      </p>
+      <p>{{ promoCode.expiry | date : "mediumDate" }}</p>
+    </div>
+  </app-editable-card>
+  } @empty {
+  <p>No promo codes added yet !</p>
+  }
+  <app-editable-card
+    [menuItems]="['Add']"
+    (menuItemClicked)="handleCreatePromoCode()"
+  >
+    <p class="new-code">New Code</p>
+  </app-editable-card>
+</ng-container>

@@ -1,0 +1,19 @@
+<ng-container *ngIf="categories$ | async as categories">
+  @for(category of categories; track category.id) {
+  <app-editable-card
+    [menuItems]="existingCategoryMenuItems"
+    (menuItemClicked)="handleExistingCategoryClicked($event, category)"
+  >
+    <p>{{ category.name }}</p>
+  </app-editable-card>
+  } @empty {
+    <p>No categories added yet!</p>
+  }
+
+  <app-editable-card
+    [menuItems]="['Add']"
+    (menuItemClicked)="handleNewCategory()"
+  >
+    <p class="new-category">New Category</p>
+  </app-editable-card>
+</ng-container>

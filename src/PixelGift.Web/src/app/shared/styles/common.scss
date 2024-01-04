@@ -7,6 +7,7 @@ html {
 body {
   font-family: Goldman, sans-serif, Arial, sans-serif;
   font-size: 1rem;
+  color: white;
   background: linear-gradient(180deg, #0b1726 0%, #022042 100%);
   min-width: 100vw;
   min-height: 100vh;
@@ -28,6 +29,10 @@ button {
   border: 0.16rem solid #092545;
   padding: 0.75rem 2rem;
   background: linear-gradient(91deg, #fbc32e 0.69%, #d8a317 98.75%);
+
+  &:disabled {
+    opacity: 0.5;
+  }
 }
 
 h1 {

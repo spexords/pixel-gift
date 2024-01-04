@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using PixelGift.Application.Categories.Commands;
 using PixelGift.Core.Entities;
 using PixelGift.Core.Exceptions;
@@ -12,9 +13,9 @@ namespace PixelGift.Application.Categories.Handlers;
 public class CreateCategoryHandler : IRequestHandler<CreateCategoryCommand, Unit>
 {
     private readonly PixelGiftContext _context;
-    private readonly ILogger<GetCategoriesHandler> _logger;
+    private readonly ILogger<CreateCategoryCommand> _logger;
 
-    public CreateCategoryHandler(PixelGiftContext context, ILogger<GetCategoriesHandler> logger)
+    public CreateCategoryHandler(PixelGiftContext context, ILogger<CreateCategoryCommand> logger)
     {
         _context = context;
         _logger = logger;
@@ -22,12 +23,12 @@ public class CreateCategoryHandler : IRequestHandler<CreateCategoryCommand, Unit
 
     public async Task<Unit> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Checking in the database if the nameof already exists");
+        _logger.LogInformation("Checking in the database if the {name} already exists", request.Name);
 
-        var category = await _context.Categories
-            .FirstOrDefaultAsync(c => c.Name.ToLower() == request.Name.ToLower(), cancellationToken);
+        var categoryExists = await _context.Categories
+            .AnyAsync(c => c.Name.ToLower() == request.Name.ToLower(), cancellationToken);
 
-        if (category is not null)
+        if (categoryExists)
         {
             _logger.LogWarning("Attempted to create a category that already exists. Category Name: {CategoryName}", request.Name);
 
@@ -36,9 +37,32 @@ public class CreateCategoryHandler : IRequestHandler<CreateCategoryCommand, Unit
 
         _logger.LogInformation("Adding a new category to the database. Category Name: {CategoryName}", request.Name);
 
-        _context.Categories.Add(new Category { Id = request.Id, Name = request.Name });
+        var category = new Category
+        {
+            Id = request.Id,
+            Name = request.Name,
+        };
+
+        _context.Categories.Add(category);
+
+        foreach (var formField in request.FormFields)
+        {
+            var fieldType = Enum.Parse<FieldType>(formField.FieldType);
+
+            _context.FormFields.Add(new FormField
+            {
+                Id = formField.Id,
+                Name = formField.Name,
+                CategoryId = category.Id,
+                Category = category,
+                Options = fieldType == FieldType.Select ? string.Join(',', formField.Options) : null,
+                Type = fieldType
+            });
+        }
 
         await _context.SaveChangesAsync(cancellationToken);
+
+        _logger.LogInformation($"{nameof(Category)} with id {request.Id} created successfully.");
 
         return Unit.Value;
     }

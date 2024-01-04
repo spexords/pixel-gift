@@ -1,0 +1,28 @@
+<ng-container *ngIf="categories$ | async as categories">
+  <form (ngSubmit)="onSubmit()">
+    <label for="category">Categories</label>
+    <select id="category" [formControl]="form.controls.categoryId" type="text">
+      <option [value]="category.value" *ngFor="let category of categories">
+        {{ category.displayValue }}
+      </option>
+    </select>
+
+    <label for="code">Code</label>
+    <input id="code" [formControl]="form.controls.code" type="text" />
+
+    <label for="discount">Discount</label>
+    <input id="discount" [formControl]="form.controls.discount" type="text" />
+
+    <label for="expiry">Discount</label>
+    <input
+      id="expiry"
+      (change)="updateExpiry($event)"
+      [value]="form.controls.expiry.value | date : 'yyyy-MM-dd'"
+      type="date"
+    />
+
+    <button [disabled]="!form.valid" type="submit">
+      {{ initialized ? "create" : "update" }}
+    </button>
+  </form> </ng-container
+>c

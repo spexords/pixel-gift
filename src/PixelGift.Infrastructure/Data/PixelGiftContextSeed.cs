@@ -68,6 +68,13 @@ public class PixelGiftContextSeed
 
         logger.LogInformation("Creating items seed for: {category}", category.Name);
         SeedItems(category);
+
+        logger.LogInformation("Creating form fields seed for: {category}", category.Name);
+        SeedFormFields(category);
+        
+        logger.LogInformation("Creating promo codes for: {category}", category.Name);
+        SeedPromoCodes(category);
+
     }
 
     private static void SeedItems(Category category)
@@ -143,6 +150,50 @@ public class PixelGiftContextSeed
         foreach (var item in items)
         {
             category.Items.Add(item);
+        }
+    }
+
+    private static void SeedFormFields(Category category)
+    {
+        var formFields = new FormField[]
+        {
+            new FormField
+            {
+                Name = "region",
+                Type = FieldType.Select,
+                Options = "EUNE, EUW, NA"
+            },
+            new FormField
+            {
+                Name = "summoner name",
+                Type = FieldType.Input,
+            },
+            new FormField
+            {
+                Name = "email address",
+                Type = FieldType.Input
+            }
+        };
+
+        foreach (var formField in formFields)
+        {
+            category.FormFields.Add(formField);
+        }
+    }
+
+    private static void SeedPromoCodes(Category category)
+    {
+        var promoCodes = new[]
+        {
+            new PromoCode{Code = "GigaCode", Discount = 0.5m, Expiry = DateTime.Now.AddDays(15)},
+            new PromoCode{Code = "TRUSHIM00n", Discount = 0.25m, Expiry = DateTime.Now.AddDays(-25)},
+            new PromoCode{Code = "SMART_ME", Discount = 0.1m, Expiry = DateTime.Now.AddDays(3)},
+        };
+
+
+        foreach (var promoCode in promoCodes)
+        {
+            category.PromoCodes.Add(promoCode);
         }
     }
 }

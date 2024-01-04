@@ -40,6 +40,38 @@ namespace PixelGift.Infrastructure.Data.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("PixelGift.Core.Entities.FormField", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Options")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("FormFields");
+                });
+
             modelBuilder.Entity("PixelGift.Core.Entities.Identity.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -114,12 +146,18 @@ namespace PixelGift.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<DateTime>("Expiry")
                         .HasColumnType("datetime(6)");
@@ -129,7 +167,20 @@ namespace PixelGift.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("PromoCodes");
+                });
+
+            modelBuilder.Entity("PixelGift.Core.Entities.FormField", b =>
+                {
+                    b.HasOne("PixelGift.Core.Entities.Category", "Category")
+                        .WithMany("FormFields")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("PixelGift.Core.Entities.Item", b =>
@@ -143,9 +194,24 @@ namespace PixelGift.Infrastructure.Data.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("PixelGift.Core.Entities.PromoCode", b =>
+                {
+                    b.HasOne("PixelGift.Core.Entities.Category", "Category")
+                        .WithMany("PromoCodes")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("PixelGift.Core.Entities.Category", b =>
                 {
+                    b.Navigation("FormFields");
+
                     b.Navigation("Items");
+
+                    b.Navigation("PromoCodes");
                 });
 #pragma warning restore 612, 618
         }

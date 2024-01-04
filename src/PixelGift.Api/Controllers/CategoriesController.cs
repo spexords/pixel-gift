@@ -16,6 +16,15 @@ public class CategoriesController : BaseApiController
         return Ok(categories);
     }
 
+    [HttpGet("{id}")]
+    [AuthorizeRole(UserRole.Admin)]
+    public async Task<IActionResult> GetCategory(Guid id)
+    {
+        var category = await Mediator.Send(new GetCategoryQuery(id));
+
+        return Ok(category);
+    }
+
     [HttpPost]
     [AuthorizeRole(UserRole.Admin)]
     public async Task<IActionResult> CreateCategory(CreateCategoryCommand command)

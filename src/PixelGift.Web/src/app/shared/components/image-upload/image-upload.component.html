@@ -1,0 +1,14 @@
+<div class="image-upload-wrapper">
+  <img
+    *ngIf="imageUrl"
+    [src]="'data:image;base64,' + imageUrl"
+    alt="Uploaded Image"
+  />
+  <input
+    class="image-input"
+    #imageInput
+    type="file"
+    accept="image/*"
+    (change)="onFileSelected($event)"
+  />
+</div>

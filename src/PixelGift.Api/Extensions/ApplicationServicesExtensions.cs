@@ -50,8 +50,6 @@ public static class ApplicationServicesExtensions
         })
         .AddJwtBearer(opt =>
         {
-            opt.RequireHttpsMetadata = false;
-            opt.SaveToken = true;
             opt.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
