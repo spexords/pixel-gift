@@ -1,0 +1,14 @@
+:host {
+  display: contents;
+}
+
+section {
+  position: relative;
+  padding: 0 10rem;
+
+  & > h2 {
+    font-size: 5.625rem;
+    font-weight: bold;
+    letter-spacing: -0.5px;
+  }
+}

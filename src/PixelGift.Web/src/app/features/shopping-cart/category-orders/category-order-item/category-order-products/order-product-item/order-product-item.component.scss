@@ -1,0 +1,23 @@
+:host {
+  display: contents;
+}
+
+p {
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 1rem;
+  line-height: 117%;
+  letter-spacing: 0.2px;
+}
+
+.product-wrapper {
+  display: flex;
+  align-items: center;
+  column-gap: 1rem;
+  & > img {
+    width: 8rem;
+  }
+}
+
+.price {
+  font-size: 1.75rem;
+}

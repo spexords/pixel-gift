@@ -1,0 +1,24 @@
+:host {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1.375rem;
+  background-color: rgba(255, 255, 255, 0.06);
+  justify-content: space-between;
+  border-radius: 35px;
+  min-width: 110px;
+}
+
+.quantity {
+  color: white;
+  font-size: 1.875rem;
+  line-height: 117%;
+  letter-spacing: 0.2px;
+}
+
+.controls {
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.75rem;
+  line-height: 117%;
+  letter-spacing: 0.2px;
+}
