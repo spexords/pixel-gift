@@ -1,0 +1,15 @@
+p {
+  font-size: 1.375rem;
+  color: white;
+}
+
+img {
+  height: 1.5rem;
+}
+
+::ng-deep .xng-breadcrumb-separator {
+  font-size: 1.375rem;
+  padding: 0 4px;
+  color: white;
+  font-weight: 200;
+}
