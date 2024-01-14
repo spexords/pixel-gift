@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
   @ViewChild('chooseUs') chooseUs!: ChooseUsComponent;
 
   ngOnInit(): void {
-    this.navbarService.scrollToSection
+    this.navbarService.scrollToSection$
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((section) => {
         if (section === 'home') {

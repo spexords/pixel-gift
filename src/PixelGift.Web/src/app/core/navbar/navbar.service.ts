@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 })
 export class NavbarService {
   private scrollToSectionSource = new Subject<string>();
-  scrollToSection = this.scrollToSectionSource.asObservable();
+  scrollToSection$ = this.scrollToSectionSource.asObservable();
 
   scroll(section: string): void {
     this.scrollToSectionSource.next(section);

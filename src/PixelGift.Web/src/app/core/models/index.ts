@@ -14,3 +14,9 @@ export * from './promo-code.interface';
 export * from './promo-code-payload.request.interface';
 export * from './detailed-promo-code.interface';
 export * from './change-password.interface';
+export * from './order-category.interface';
+export * from './order-item.interface';
+export * from './order-preview.interface';
+export * from './order-summary.interface';
+export * from './basket-items.type';
+export * from './scrollable.interface'

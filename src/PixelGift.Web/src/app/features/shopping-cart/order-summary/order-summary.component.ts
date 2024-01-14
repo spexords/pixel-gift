@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { OrderSummary } from 'src/app/core/models';
 
 @Component({
   selector: 'app-order-summary',
@@ -9,4 +10,6 @@ import { CommonModule } from '@angular/common';
   styleUrl: './order-summary.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OrderSummaryComponent {}
+export class OrderSummaryComponent {
+  @Input({ required: true }) orderSummary!: OrderSummary;
+}

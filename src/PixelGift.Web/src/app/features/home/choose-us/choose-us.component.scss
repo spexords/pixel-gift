@@ -1,10 +1,7 @@
-:host {
+section {
   position: relative;
   display: grid;
   place-items: center;
-}
-
-section {
   padding-top: 11rem;
   & > .description {
     display: flex;

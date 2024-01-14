@@ -60,5 +60,46 @@ h2 {
 
 .active ::ng-deep {
   color: rgba(255, 255, 255, 0.92) !important;
-  border: .11rem solid #dea91b !important;
+  border: 0.11rem solid #dea91b !important;
+}
+
+.field-wrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1.5rem;
+  font-size: 1.25rem;
+  line-height: 170%;
+  text-transform: uppercase;
+
+  & > input,
+  & > select {
+    color: white;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 1.3125rem 1.75rem;
+    border: none;
+    &:focus-visible {
+      border: none;
+      outline: none;
+    }
+  }
+
+  & > input {
+    &::placeholder,
+    &:-ms-input-placeholder {
+      color: rgb(103, 112, 122);
+    }
+  }
+
+  // & option {
+  //   background-color: red !important;
+  // }
+
+  & option {
+    background-color: grey !important;
+  }
+
+  & > select {
+    
+  }
 }

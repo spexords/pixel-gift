@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CategoryOrderItemComponent } from './category-order-item/category-order-item.component';
+import { OrderCategory } from 'src/app/core/models';
 
 @Component({
   selector: 'app-category-orders',
@@ -10,4 +11,6 @@ import { CategoryOrderItemComponent } from './category-order-item/category-order
   styleUrl: './category-orders.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CategoryOrdersComponent {}
+export class CategoryOrdersComponent {
+  @Input({ required: true }) orderCategories!: OrderCategory[];
+}

@@ -5,7 +5,7 @@ import { StoreItemsComponent } from './store-items/store-items.component';
 import { TranslocoPipe } from '@ngneat/transloco';
 import { GiftStoreService } from './gift-store.service';
 import { combineLatest, map } from 'rxjs';
-import { Category } from 'src/app/core/models';
+import { Category, Scrollable } from 'src/app/core/models';
 
 @Component({
   selector: 'app-gift-store',
@@ -19,11 +19,11 @@ import { Category } from 'src/app/core/models';
   templateUrl: './gift-store.component.html',
   styleUrl: './gift-store.component.scss',
 })
-export class GiftStoreComponent {
+export class GiftStoreComponent implements Scrollable {
   private giftStoreService = inject(GiftStoreService);
 
   private categories$ = this.giftStoreService.getCategories();
-  
+
   private currentCategory$ = this.giftStoreService.currentCategoryChanged$;
 
   categoriesData$ = combineLatest([
@@ -41,10 +41,18 @@ export class GiftStoreComponent {
   @ViewChild('scrollTarget') scrollTarget!: ElementRef;
 
   scrollIntoView() {
-    this.scrollTarget.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    const element = this.scrollTarget.nativeElement.offsetTop;
+    window.scroll({
+      top: element,
+      behavior: 'smooth',
+    });
   }
 
   categorySelected(category: Category): void {
     this.giftStoreService.notifyCategoryChange(category);
+  }
+
+  addItemToShoppingCart(itemId: string): void {
+    this.giftStoreService.addItemToShoppingCart(itemId);
   }
 }

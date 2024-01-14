@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <Folder Include="Account\Queries\" />
+    <Folder Include="Orders\Queries\" />
   </ItemGroup>
 
   <PropertyGroup>

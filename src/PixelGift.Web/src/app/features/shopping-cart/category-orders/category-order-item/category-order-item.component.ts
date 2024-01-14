@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CategoryOrderFormComponent } from './category-order-form/category-order-form.component';
 import { CategoryOrderProductsComponent } from './category-order-products/category-order-products.component';
+import { OrderCategory } from 'src/app/core/models';
 
 @Component({
   selector: 'app-category-order-item',
@@ -15,4 +16,6 @@ import { CategoryOrderProductsComponent } from './category-order-products/catego
   styleUrl: './category-order-item.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CategoryOrderItemComponent {}
+export class CategoryOrderItemComponent {
+  @Input({required: true}) orderCategory!: OrderCategory; 
+}

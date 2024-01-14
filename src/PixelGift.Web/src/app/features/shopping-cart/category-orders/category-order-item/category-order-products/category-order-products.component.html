@@ -1,7 +1,4 @@
-<p class="header-label">PRODUCT</p>
-<p class="header-label">PRICE</p>
-<p class="header-label">QUANTITY</p>
-<p class="header-label">TOTAL</p>
-<div></div>
-<app-order-product-item/>
-
+<app-order-product-header />
+@for(orderItem of orderItems; track orderItem.id; let last = $last) {
+<app-order-product-item [last]="!!last" [orderItem]="orderItem" />
+}

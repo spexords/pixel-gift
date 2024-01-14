@@ -4,11 +4,19 @@
 
 section {
   position: relative;
-  padding: 0 10rem;
+  margin: 0 10rem;
 
   & > h2 {
     font-size: 5.625rem;
     font-weight: bold;
     letter-spacing: -0.5px;
+    margin-bottom: 7.5rem;
+  }
+
+  & > .category-order-info {
+    font-size: 1.625rem;
+    line-height: 170%;
+    letter-spacing: 0.2px;
+    margin-bottom: 4.375rem;
   }
 }

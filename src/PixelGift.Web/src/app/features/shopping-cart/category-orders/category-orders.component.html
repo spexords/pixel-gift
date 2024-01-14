@@ -3,6 +3,11 @@
     Shopping
     <span class="highlight">Cart</span>
   </h2>
-  <app-category-order-item/>
+  @for(orderCategory of orderCategories; track orderCategory.id; let index =
+  $index) {
+  <p class="category-order-info">
+    ORDER#{{ index + 1 }} - {{ orderCategory.name | uppercase }}
+  </p>
+  <app-category-order-item [orderCategory]="orderCategory" />
+  }
 </section>
-

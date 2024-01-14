@@ -1,1 +1,19 @@
-<p>order-summary works!</p>
+<section>
+  <h3>ORDER SUMMARY</h3>
+  <div class="price-wrapper">
+    <p class="price-label">Subtotal</p>
+    <p>{{orderSummary.subtotal}}$</p>
+  </div>
+  <div class="price-wrapper">
+    <p class="price-label">Discount</p>
+    <p>-{{orderSummary.discount ?? 0}}$</p>
+  </div>
+
+  <div class="separator"></div>
+
+  <div class="price-wrapper">
+    <p class="price-label">Total</p>
+    <p>{{orderSummary.total}}$</p>
+  </div>
+  <button>checkout</button>
+</section>
