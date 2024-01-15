@@ -1,12 +1,3 @@
 <app-nav-breadcrumb />
-<ng-container *ngIf="orderPreview$ | async as orderPreview">
-  @if(orderPreview.orderCategories.length > 0) {
-  <app-category-orders [orderCategories]="orderPreview.orderCategories" />
-  <app-order-summary [orderSummary]="orderPreview.orderSummary" />
-  } @else {
-  <div class="empty-state">
-    <h1>Empty Shopping Cart</h1>
-  </div>
-  }
-</ng-container>
+<router-outlet></router-outlet>
 <app-footer />

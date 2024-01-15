@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PixelGift.Application.Orders.Commands;
+using PixelGift.Core.Entities;
 
 namespace PixelGift.Api.Controllers;
 

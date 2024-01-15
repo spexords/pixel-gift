@@ -16,7 +16,6 @@ const routes: Routes = [
       import('./features/shopping-cart/shopping-cart.module').then(
         (mod) => mod.ShoppingCartModule
       ),
-    data: { breadcrumb: 'Shopping Cart' },
   },
   { path: '', component: HomeComponent, data: { breadcrumb: 'Home' } },
   { path: '**', redirectTo: '' },

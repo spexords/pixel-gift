@@ -1,19 +1,19 @@
 <section>
-  <h3>ORDER SUMMARY</h3>
+  <h3>{{ "shopping-cart.summary.header" | transloco }}</h3>
   <div class="price-wrapper">
-    <p class="price-label">Subtotal</p>
-    <p>{{orderSummary.subtotal}}$</p>
+    <p class="price-label">{{ "shopping-cart.summary.subtotal" | transloco }}</p>
+    <p>{{ orderSummary.subtotal }}$</p>
   </div>
   <div class="price-wrapper">
-    <p class="price-label">Discount</p>
-    <p>-{{orderSummary.discount ?? 0}}$</p>
+    <p class="price-label">{{ "shopping-cart.summary.discount" | transloco }}</p>
+    <p>-{{ orderSummary.discount ?? 0 }}$</p>
   </div>
 
   <div class="separator"></div>
 
   <div class="price-wrapper">
-    <p class="price-label">Total</p>
-    <p>{{orderSummary.total}}$</p>
+    <p class="price-label">{{ "shopping-cart.summary.total" | transloco }}</p>
+    <p>{{ orderSummary.total }}$</p>
   </div>
-  <button>checkout</button>
+  <button>{{ !checkout ? ("shopping-cart.summary.btn1" | transloco) : ("shopping-cart.summary.btn2" | transloco) }}</button>
 </section>

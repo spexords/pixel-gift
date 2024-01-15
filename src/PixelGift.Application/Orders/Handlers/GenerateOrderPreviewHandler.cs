@@ -43,7 +43,7 @@ public class GenerateOrderPreviewHandler : IRequestHandler<GenerateOrderPreviewC
             .Select(g => new OrderCategoryDto(
                 g.Key,
                 g.First().Category.Name,
-                g.Select(gi => GetOrderItem(request, gi)),
+                g.Select(gi => GetOrderItem(request, gi, request.Language)),
                 g.First().Category.FormFields.Select(gf => GetOrderFormField(gf))));
 
 
@@ -123,7 +123,14 @@ public class GenerateOrderPreviewHandler : IRequestHandler<GenerateOrderPreviewC
     private FormFieldDto GetOrderFormField(FormField formField) =>
          new FormFieldDto(formField.Id, formField.Name, formField.Type.ToString(), formField.Options?.Split(',').Select(opt => opt.Trim()) ?? Array.Empty<string>());
 
-    private OrderItemDto GetOrderItem(GenerateOrderPreviewCommand request, Item item) =>
-        new OrderItemDto(item.Id, item.Name, request.BasketItems[item.Id], item.UnitPrice, request.BasketItems[item.Id] * item.UnitPrice, item.Base64Image);
+    private OrderItemDto GetOrderItem(GenerateOrderPreviewCommand request, Item item, string language) =>
+        new OrderItemDto
+        (
+            item.Id, 
+            language == "en" ? item.Name : item.PolishName, 
+            request.BasketItems[item.Id], 
+            item.UnitPrice,
+            request.BasketItems[item.Id] * item.UnitPrice, 
+            item.Base64Image);
 
 }

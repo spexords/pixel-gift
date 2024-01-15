@@ -1,10 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { TranslocoService } from '@ngneat/transloco';
 import {
   BehaviorSubject,
   Observable,
   combineLatest,
   map,
+  of,
   switchMap,
   tap,
 } from 'rxjs';
@@ -33,6 +35,7 @@ export class ShoppingCartService {
   private promoCodesUpdatedSource = new BehaviorSubject<unknown>(undefined);
   private promoCodesUpdatedChanged$ =
     this.promoCodesUpdatedSource.asObservable();
+  private translocoService = inject(TranslocoService);
 
   constructor() {
     this.tryLoadFromLocalStorage();
@@ -49,6 +52,7 @@ export class ShoppingCartService {
   );
 
   orderPreview$ = combineLatest([
+    this.translocoService.langChanges$,
     this.basketUpdatedChanged$,
     this.promoCodesUpdatedChanged$,
   ]).pipe(switchMap(() => this.getOrderPreview()));
@@ -90,10 +94,16 @@ export class ShoppingCartService {
   }
 
   private getOrderPreview(): Observable<OrderPreview> {
-    return this.http.post<OrderPreview>(`${this.baseUrl}/orders/preview`, {
-      basketItems: this.basket,
-      promoCodes: this.getPromoCodeRequests(),
-    });
+    return this.http.post<OrderPreview>(
+      `${
+        this.baseUrl
+      }/orders/preview`,
+      {
+        basketItems: this.basket,
+        promoCodes: this.getPromoCodeRequests(),
+        language: this.translocoService.getActiveLang()
+      }
+    );
   }
 
   private saveToLocalStorage(): void {
