@@ -1,5 +1,5 @@
+<app-nav-breadcrumb />
 <ng-container *ngIf="orderPreview$ | async as orderPreview">
-  <app-nav-breadcrumb />
   @if(orderPreview.orderCategories.length > 0) {
   <app-category-orders [orderCategories]="orderPreview.orderCategories" />
   <app-order-summary [orderSummary]="orderPreview.orderSummary" />
@@ -8,6 +8,5 @@
     <h1>Empty Shopping Cart</h1>
   </div>
   }
-
-  <app-footer />
 </ng-container>
+<app-footer />

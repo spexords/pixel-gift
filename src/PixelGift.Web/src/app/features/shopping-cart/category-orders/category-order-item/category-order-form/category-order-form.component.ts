@@ -1,8 +1,10 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormField } from 'src/app/core/models';
@@ -12,6 +14,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-category-order-form',
@@ -26,9 +29,17 @@ export class CategoryOrderFormComponent implements OnInit {
   promoCodeControl = new FormControl<string>('');
 
   @Input({ required: true }) formFields!: FormField[];
+  @Output() promoCodeChanged = new EventEmitter<string>();
 
   ngOnInit(): void {
     this.initFormArray();
+    this.initPromoCodeBehaviour();
+  }
+
+  initPromoCodeBehaviour(): void {
+    this.promoCodeControl.valueChanges
+      .pipe(debounceTime(1000))
+      .subscribe((value) => this.promoCodeChanged.emit(value as string));
   }
 
   private initFormArray(): void {

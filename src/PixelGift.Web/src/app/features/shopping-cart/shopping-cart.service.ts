@@ -1,8 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, Observable, map, switchMap, tap } from 'rxjs';
-import { BasketItems, OrderPreview } from 'src/app/core/models';
+import {
+  BehaviorSubject,
+  Observable,
+  combineLatest,
+  map,
+  switchMap,
+  tap,
+} from 'rxjs';
+import {
+  BasketItems,
+  OrderPreview,
+  PromoCodeRequest,
+} from 'src/app/core/models';
 import { API_URL } from 'src/app/core/tokens/api-url.token';
+
+type PromoCodes = Record<string, string>;
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +29,10 @@ export class ShoppingCartService {
   private basketUpdatedChanged$ = this.basketUpdatedSource
     .asObservable()
     .pipe(tap(() => this.saveToLocalStorage()));
+  private promoCodes: PromoCodes = {};
+  private promoCodesUpdatedSource = new BehaviorSubject<unknown>(undefined);
+  private promoCodesUpdatedChanged$ =
+    this.promoCodesUpdatedSource.asObservable();
 
   constructor() {
     this.tryLoadFromLocalStorage();
@@ -31,9 +48,10 @@ export class ShoppingCartService {
     )
   );
 
-  orderPreview$ = this.basketUpdatedChanged$.pipe(
-    switchMap(() => this.getOrderPreview(this.basket))
-  );
+  orderPreview$ = combineLatest([
+    this.basketUpdatedChanged$,
+    this.promoCodesUpdatedChanged$,
+  ]).pipe(switchMap(() => this.getOrderPreview()));
 
   addItem(itemId: string): void {
     itemId in this.basket
@@ -66,9 +84,15 @@ export class ShoppingCartService {
     this.basketUpdatedSource.next(undefined);
   }
 
-  private getOrderPreview(values: BasketItems): Observable<OrderPreview> {
+  updatePromoCodes(categoryId: string, code: string): void {
+    this.promoCodes[categoryId] = code;
+    this.promoCodesUpdatedSource.next(undefined);
+  }
+
+  private getOrderPreview(): Observable<OrderPreview> {
     return this.http.post<OrderPreview>(`${this.baseUrl}/orders/preview`, {
-      basketItems: values,
+      basketItems: this.basket,
+      promoCodes: this.getPromoCodeRequests(),
     });
   }
 
@@ -86,5 +110,12 @@ export class ShoppingCartService {
 
       this.basketUpdatedSource.next(undefined);
     }
+  }
+
+  private getPromoCodeRequests(): PromoCodeRequest[] {
+    return Object.entries(this.promoCodes).map(([categoryId, code]) => ({
+      categoryId,
+      code,
+    }));
   }
 }

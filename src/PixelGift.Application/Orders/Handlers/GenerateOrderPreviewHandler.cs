@@ -8,7 +8,6 @@ using PixelGift.Application.PromoCodes.Dtos;
 using PixelGift.Core.Entities;
 using PixelGift.Core.Exceptions;
 using PixelGift.Infrastructure.Data;
-using System.Linq;
 using System.Net;
 
 namespace PixelGift.Application.Orders.Handlers;
@@ -55,32 +54,39 @@ public class GenerateOrderPreviewHandler : IRequestHandler<GenerateOrderPreviewC
 
     private async Task<OrderSummary> GetOrderSummary(IEnumerable<OrderCategoryDto> orderCategoriesDtos, IEnumerable<PromoCodeRequestDto> promoCodes, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Calculating order summary");
         _logger.LogInformation("Fetching valid PromoCodes from database");
         var validPromoCodes = await _context.PromoCodes
             .AsNoTracking()
-            .Where(p => promoCodes.Select(pc => pc.Code).Contains(p.Code) && 
-                        promoCodes.Select(pc => pc.CategoryId).Contains(p.CategoryId) &&
-                        p.Expiry < DateTime.Now)
+            .Where(p => DateTime.Now < p.Expiry)
             .ToListAsync(cancellationToken);
 
+        var validRequestedPromoCodes = new List<PromoCode>();
+
+        foreach (var promoCode in promoCodes)
+        {
+            var validPromoCode = validPromoCodes.FirstOrDefault(p => p.CategoryId == promoCode.CategoryId && p.Code == promoCode.Code);
+            if (validPromoCode is not null)
+            {
+                validRequestedPromoCodes.Add(validPromoCode);
+            }
+        }
 
         var subtotal = 0m;
         var discount = 0m;
         var total = 0m;
 
-        foreach(var orderCategory in orderCategoriesDtos)
+        foreach (var orderCategory in orderCategoriesDtos)
         {
             _logger.LogInformation("Calculating subtotal and discount for {category}", orderCategory.Name);
 
-            var validPromoCode = validPromoCodes.FirstOrDefault(p => p.CategoryId == orderCategory.Id);
+            var validPromoCode = validRequestedPromoCodes.FirstOrDefault(p => p.CategoryId == orderCategory.Id);
 
             var categorySubtotal = orderCategory.Items.Sum(i => i.Total);
 
-            if(validPromoCode is not null)
+            if (validPromoCode is not null)
             {
                 _logger.LogInformation("Found valid PromoCode");
-                discount += Math.Round(categorySubtotal * validPromoCode.Discount);
+                discount += Math.Round(categorySubtotal * validPromoCode.Discount, 2);
             }
 
             subtotal += categorySubtotal;

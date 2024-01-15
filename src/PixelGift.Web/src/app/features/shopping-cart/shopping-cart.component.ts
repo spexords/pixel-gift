@@ -5,7 +5,7 @@ import { FooterComponent } from 'src/app/core/footer/footer.component';
 import { CategoryOrdersComponent } from './category-orders/category-orders.component';
 import { OrderSummaryComponent } from './order-summary/order-summary.component';
 import { ShoppingCartService } from './shopping-cart.service';
-import { Observable, catchError, tap, throwError } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -26,8 +26,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class ShoppingCartComponent {
   private router = inject(Router);
   private shoppingCartService = inject(ShoppingCartService);
+
   orderPreview$ = this.shoppingCartService.orderPreview$.pipe(
-    tap((x) => console.log(x)),
     catchError((error) => this.handleOrderPreviewError(error))
   );
 

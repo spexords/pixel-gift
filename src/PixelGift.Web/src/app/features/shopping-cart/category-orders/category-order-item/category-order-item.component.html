@@ -1,2 +1,5 @@
-<app-category-order-form [formFields]="orderCategory.formFields" />
+<app-category-order-form
+  (promoCodeChanged)="onPromoCodeRequestChange($event)"
+  [formFields]="orderCategory.formFields"
+/>
 <app-category-order-products [orderItems]="orderCategory.items" />
