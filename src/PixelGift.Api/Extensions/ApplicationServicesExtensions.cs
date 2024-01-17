@@ -37,6 +37,7 @@ public static class ApplicationServicesExtensions
         @this.AddScoped<IJwtGenerator, JwtGenerator>();
         @this.AddScoped<IUserService, UserService>();
         @this.AddScoped<IOrderService, OrderService>();
+        @this.AddScoped<IPaymentService, PaymentService>();
 
         return @this;
     }

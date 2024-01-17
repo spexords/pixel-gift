@@ -12,6 +12,7 @@ import {
   tap,
 } from 'rxjs';
 import { BasketItems, FormFieldData, OrderPreview } from 'src/app/core/models';
+import { OrderPaymentIntent } from 'src/app/core/models/order-payment-intent.interface';
 import { API_URL } from 'src/app/core/tokens/api-url.token';
 
 type PromoCodes = Record<string, string>;
@@ -122,6 +123,16 @@ export class ShoppingCartService {
 
   getPromoCode(categoryId: string): string {
     return this.promoCodes[categoryId];
+  }
+
+  createOrderPaymentIntent(): Observable<OrderPaymentIntent> {
+    return this.http.post<OrderPaymentIntent>(
+      `${this.baseUrl}/payments/intent`,
+      {
+        basketItems: this.basket,
+        promoCodes: this.promoCodes,
+      }
+    );
   }
 
   private validateFormFieldsData(): void {

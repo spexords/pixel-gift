@@ -13,12 +13,4 @@ public class OrdersController : BaseApiController
 
         return Ok(orderPreview);
     }
-
-    [HttpPost("intent")]
-    public async Task<IActionResult> CreateOrderIntent(CreateOrderIntentCommand command)
-    {
-        var orderIntent = await Mediator.Send(command);
-
-        return Ok(orderIntent);
-    }
 }

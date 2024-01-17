@@ -1,6 +1,4 @@
-<p>order-checkout works!</p>
-<h1>xD</h1>
-<div #payment class="stripe-ele"></div>
+<div #payment class="stripe-element"></div>
 <ng-container *ngIf="orderPreview$ | async as orderPreview">
   <app-order-summary [orderSummary]="orderPreview.orderSummary" [checkout]="true" />
 </ng-container>
