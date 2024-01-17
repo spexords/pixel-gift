@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Azure.Core;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PixelGift.Application.Categories.Dtos;
@@ -9,6 +10,7 @@ using PixelGift.Core.Entities;
 using PixelGift.Core.Exceptions;
 using PixelGift.Infrastructure.Data;
 using System.Net;
+using System.Threading;
 
 namespace PixelGift.Application.Orders.Handlers;
 
@@ -38,50 +40,35 @@ public class GenerateOrderPreviewHandler : IRequestHandler<GenerateOrderPreviewC
 
         ValidateBasketItemsRequest(request.BasketItems, items);
 
-        var orderCategoriesDtos = items
-            .GroupBy(i => i.CategoryId)
-            .Select(g => new OrderCategoryDto(
-                g.Key,
-                g.First().Category.Name,
-                g.Select(gi => GetOrderItem(request, gi, request.Language)),
-                g.First().Category.FormFields.Select(gf => GetOrderFormField(gf))));
+        var orderCategories = GetOrderCategories(items, request.BasketItems, request.Language);
 
+        var summary = await GetOrderSummary(items, request.BasketItems, request.PromoCodes, cancellationToken);
 
-        var summary = await GetOrderSummary(orderCategoriesDtos, request.PromoCodes, cancellationToken);
-
-        return new OrderPreviewDto(orderCategoriesDtos, summary);
+        return new OrderPreviewDto(orderCategories, summary);
     }
 
-    private async Task<OrderSummary> GetOrderSummary(IEnumerable<OrderCategoryDto> orderCategoriesDtos, IEnumerable<PromoCodeRequestDto> promoCodes, CancellationToken cancellationToken)
+    private async Task<OrderSummary> GetOrderSummary(
+        IEnumerable<Item> items, 
+        Dictionary<Guid, int> basketItems, 
+        Dictionary<Guid, string> promoCodes, 
+        CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Fetching valid PromoCodes from database");
-        var validPromoCodes = await _context.PromoCodes
-            .AsNoTracking()
-            .Where(p => DateTime.Now < p.Expiry)
-            .ToListAsync(cancellationToken);
+        _logger.LogInformation("Calculating order summary");
 
-        var validRequestedPromoCodes = new List<PromoCode>();
-
-        foreach (var promoCode in promoCodes)
-        {
-            var validPromoCode = validPromoCodes.FirstOrDefault(p => p.CategoryId == promoCode.CategoryId && p.Code == promoCode.Code);
-            if (validPromoCode is not null)
-            {
-                validRequestedPromoCodes.Add(validPromoCode);
-            }
-        }
-
+        var validPromoCodes = await GetValidPromoCodes(promoCodes, cancellationToken);
         var subtotal = 0m;
         var discount = 0m;
         var total = 0m;
 
-        foreach (var orderCategory in orderCategoriesDtos)
+        foreach (var grouppedItems in items.GroupBy(i => i.CategoryId))
         {
-            _logger.LogInformation("Calculating subtotal and discount for {category}", orderCategory.Name);
+            var categoryId = grouppedItems.Key;
 
-            var validPromoCode = validRequestedPromoCodes.FirstOrDefault(p => p.CategoryId == orderCategory.Id);
+            _logger.LogInformation("Calculating subtotal and discount for CategoryId: {category}", categoryId);
 
-            var categorySubtotal = orderCategory.Items.Sum(i => i.Total);
+            var validPromoCode = validPromoCodes.FirstOrDefault(p => p.CategoryId == categoryId);
+
+            var categorySubtotal = grouppedItems.Sum(i => basketItems[i.Id] * i.UnitPrice);
 
             if (validPromoCode is not null)
             {
@@ -120,17 +107,48 @@ public class GenerateOrderPreviewHandler : IRequestHandler<GenerateOrderPreviewC
         }
     }
 
-    private FormFieldDto GetOrderFormField(FormField formField) =>
-         new FormFieldDto(formField.Id, formField.Name, formField.Type.ToString(), formField.Options?.Split(',').Select(opt => opt.Trim()) ?? Array.Empty<string>());
+    private async Task<IEnumerable<PromoCode>> GetValidPromoCodes(Dictionary<Guid, string> promoCodes, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation("Fetching valid PromoCodes from database");
+        var validPromoCodes = await _context.PromoCodes
+            .AsNoTracking()
+            .Where(p => DateTime.Now < p.Expiry)
+            .ToListAsync(cancellationToken);
 
-    private OrderItemDto GetOrderItem(GenerateOrderPreviewCommand request, Item item, string language) =>
+        var validRequestedPromoCodes = new List<PromoCode>();
+
+        foreach ((var categoryId, var code) in promoCodes)
+        {
+            var validPromoCode = validPromoCodes.FirstOrDefault(p => p.CategoryId == categoryId && p.Code == code);
+            if (validPromoCode is not null)
+            {
+                validRequestedPromoCodes.Add(validPromoCode);
+            }
+        }
+
+        return validRequestedPromoCodes;
+    }
+
+    private IEnumerable<OrderCategoryDto> GetOrderCategories(IEnumerable<Item> items, Dictionary<Guid, int> basketItems, string language) =>
+        items
+        .GroupBy(i => i.CategoryId)
+        .Select(g => new OrderCategoryDto(
+            g.Key,
+            g.First().Category.Name,
+            g.Select(gi => GetOrderItem(basketItems, gi, language)),
+            g.First().Category.FormFields.Select(gf => GetOrderFormField(gf))));
+
+    private FormFieldDto GetOrderFormField(FormField formField) =>
+        new FormFieldDto(formField.Id, formField.Name, formField.Type.ToString(), formField.Options?.Split(',').Select(opt => opt.Trim()) ?? Array.Empty<string>());
+
+    private OrderItemDto GetOrderItem(Dictionary<Guid, int> BasketItems, Item item, string language) =>
         new OrderItemDto
         (
             item.Id, 
             language == "en" ? item.Name : item.PolishName, 
-            request.BasketItems[item.Id], 
+            BasketItems[item.Id], 
             item.UnitPrice,
-            request.BasketItems[item.Id] * item.UnitPrice, 
+            BasketItems[item.Id] * item.UnitPrice, 
             item.Base64Image);
 
 }

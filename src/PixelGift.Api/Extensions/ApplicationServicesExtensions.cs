@@ -5,6 +5,7 @@ using PixelGift.Application.Categories.Queries;
 using PixelGift.Core.Interfaces;
 using PixelGift.Infrastructure.Data;
 using PixelGift.Infrastructure.Security;
+using PixelGift.Infrastructure.Services;
 using System.Text;
 
 namespace PixelGift.Api.Extensions;
@@ -35,7 +36,7 @@ public static class ApplicationServicesExtensions
         //own services
         @this.AddScoped<IJwtGenerator, JwtGenerator>();
         @this.AddScoped<IUserService, UserService>();
-
+        @this.AddScoped<IOrderService, OrderService>();
 
         return @this;
     }

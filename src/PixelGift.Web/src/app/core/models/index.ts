@@ -20,5 +20,4 @@ export * from './order-preview.interface';
 export * from './order-summary.interface';
 export * from './basket-items.type';
 export * from './scrollable.interface';
-export * from './promo-code-request.interface';
 export * from './form-field-data.interface';

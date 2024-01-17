@@ -11,12 +11,7 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import {
-  BasketItems,
-  FormFieldData,
-  OrderPreview,
-  PromoCodeRequest,
-} from 'src/app/core/models';
+import { BasketItems, FormFieldData, OrderPreview } from 'src/app/core/models';
 import { API_URL } from 'src/app/core/tokens/api-url.token';
 
 type PromoCodes = Record<string, string>;
@@ -140,7 +135,7 @@ export class ShoppingCartService {
   private getOrderPreview(): Observable<OrderPreview> {
     return this.http.post<OrderPreview>(`${this.baseUrl}/orders/preview`, {
       basketItems: this.basket,
-      promoCodes: this.getPromoCodeRequests(),
+      promoCodes: this.promoCodes,
       language: this.translocoService.getActiveLang(),
     });
   }
@@ -159,10 +154,10 @@ export class ShoppingCartService {
     }
   }
 
-  private getPromoCodeRequests(): PromoCodeRequest[] {
-    return Object.entries(this.promoCodes).map(([categoryId, code]) => ({
-      categoryId,
-      code,
-    }));
-  }
+  // private getPromoCodeRequests(): PromoCodeRequest[] {
+  //   return Object.entries(this.promoCodes).map(([categoryId, code]) => ({
+  //     categoryId,
+  //     code,
+  //   }));
+  // }
 }

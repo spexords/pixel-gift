@@ -6,7 +6,6 @@ namespace PixelGift.Application.Orders.Commands;
 
 public record GenerateOrderPreviewCommand(
     Dictionary<Guid, int> BasketItems, 
-    IEnumerable<PromoCodeRequestDto> PromoCodes, 
-    string Language) : IRequest<OrderPreviewDto>;
-
-public record CreateOrderIntentCommand(Dictionary<Guid, int> BasketItems, IEnumerable<PromoCodeRequestDto> PromoCodes)
+    Dictionary<Guid, string> PromoCodes, 
+    string Language) 
+    : IRequest<OrderPreviewDto>;
