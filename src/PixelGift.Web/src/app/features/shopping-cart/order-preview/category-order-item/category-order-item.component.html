@@ -1,5 +1,8 @@
 <app-category-order-form
   (promoCodeChanged)="onPromoCodeRequestChange($event)"
+  (formFieldsChanged)="onFormFieldDataChange($event)"
   [formFields]="orderCategory.formFields"
+  [formFieldsData]="existingFormFieldsData"
+  [promoCode]="existingPromoCode"
 />
 <app-category-order-products [orderItems]="orderCategory.items" />

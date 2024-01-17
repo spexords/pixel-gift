@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrderSummary } from 'src/app/core/models';
 import { TranslocoPipe } from '@ngneat/transloco';
@@ -14,4 +14,5 @@ import { TranslocoPipe } from '@ngneat/transloco';
 export class OrderSummaryComponent {
   @Input({ required: true }) orderSummary!: OrderSummary;
   @Input() checkout = false;
+  @Output() clicked = new EventEmitter();
 }

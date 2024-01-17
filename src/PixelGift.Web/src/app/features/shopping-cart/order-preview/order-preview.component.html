@@ -2,7 +2,9 @@
   <section>
     <h2>
       {{ "shopping-cart.header" | transloco }}
-      <span class="highlight">{{ "shopping-cart.header-highlight" | transloco }}</span>
+      <span class="highlight">{{
+        "shopping-cart.header-highlight" | transloco
+      }}</span>
     </h2>
 
     @if(orderPreview.orderCategories.length > 0) { @for(orderCategory of
@@ -18,5 +20,8 @@
     </div>
     }
   </section>
-  <app-order-summary [orderSummary]="orderPreview.orderSummary" />
+  <app-order-summary
+    (clicked)="onSummaryClick()"
+    [orderSummary]="orderPreview.orderSummary"
+  />
 </ng-container>

@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  Input,
   OnInit,
   inject,
 } from '@angular/core';
@@ -45,7 +44,13 @@ export class OrderPreviewComponent implements OnInit {
     this.translocoService
       .selectTranslate('shopping-cart.bc1')
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((value) => this.breadcrumbService.set('@shopping-cart', value));
+      .subscribe((value) =>
+        this.breadcrumbService.set('@shopping-cart', value)
+      );
+  }
+
+  onSummaryClick(): void {
+    this.shoppingCartService.tryMoveToCheckout();
   }
 
   private handleOrderPreviewError(error: HttpErrorResponse): Observable<never> {

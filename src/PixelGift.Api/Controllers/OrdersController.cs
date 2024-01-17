@@ -13,4 +13,10 @@ public class OrdersController : BaseApiController
 
         return Ok(orderPreview);
     }
+
+    [HttpPost("intent")]
+    public async Task<IActionResult> CreateOrderIntent()
+    {
+
+    }
 }
