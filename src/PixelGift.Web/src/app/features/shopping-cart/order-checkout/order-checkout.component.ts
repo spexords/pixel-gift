@@ -11,17 +11,22 @@ import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslocoService } from '@ngneat/transloco';
 import { BreadcrumbService } from 'xng-breadcrumb';
-import { combineLatest } from 'rxjs';
+import { combineLatest, firstValueFrom } from 'rxjs';
 import { OrderSummaryComponent } from '../order-summary/order-summary.component';
 import { ShoppingCartService } from '../shopping-cart.service';
-import { Appearance, loadStripe } from '@stripe/stripe-js';
+import {
+  Appearance,
+  Stripe,
+  StripeElements,
+  loadStripe,
+} from '@stripe/stripe-js';
 import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-order-checkout',
   standalone: true,
-  imports: [CommonModule, OrderSummaryComponent],
+  imports: [CommonModule, OrderSummaryComponent, ReactiveFormsModule],
   templateUrl: './order-checkout.component.html',
   styleUrl: './order-checkout.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,6 +36,13 @@ export class OrderCheckoutComponent implements OnInit {
   private breadcrumbService = inject(BreadcrumbService);
   private translocoService = inject(TranslocoService);
   private shoppingCartService = inject(ShoppingCartService);
+  private stripe: Stripe | null = null;
+  private elements: StripeElements | null = null;
+
+  emailFormField = new FormControl<string>('', [
+    Validators.required,
+    Validators.email,
+  ]);
 
   orderPreview$ = this.shoppingCartService.orderPreview$;
 
@@ -46,6 +58,8 @@ export class OrderCheckoutComponent implements OnInit {
       if (stripe === null) {
         alert('Could not create stripe');
       }
+
+      this.stripe = stripe;
 
       this.shoppingCartService
         .createOrderPaymentIntent()
@@ -78,12 +92,71 @@ export class OrderCheckoutComponent implements OnInit {
             appearance,
           });
 
+          this.elements = elements as StripeElements;
+
           if (elements) {
             const paymentElement = elements.create('payment');
             paymentElement.mount(this.payment?.nativeElement);
+
+            paymentElement.on('change', (event) => {
+              const errorElement = document.getElementById('payment-errors');
+
+              if (errorElement == null) {
+                return;
+              }
+
+              errorElement.textContent = event.complete
+                ? ''
+                : 'Please enter valid payment information.';
+            });
           }
         });
     });
+  }
+
+  async submitOrder(): Promise<void> {
+    try {
+      this.emailFormField.markAllAsTouched();
+      this.emailFormField.updateValueAndValidity();
+      console.log(this.emailFormField);
+      if (!this.emailFormField.valid) {
+        alert('Please fill all required fields');
+        return;
+      }
+
+      if (this.stripe == null || this.elements == null) {
+        alert('Failed to connect with Stripe payment gate');
+        return;
+      }
+
+      const payment = this.stripe.elements().getElement('payment');
+
+      if (payment) {
+        const errorElement = document.getElementById('payment-errors');
+        if (errorElement) {
+          alert('Please enter valid payment information.');
+          return;
+        }
+      }
+
+      await this.createOrder();
+      const stripeResult = await this.stripe.confirmPayment({
+        elements: this.elements,
+        confirmParams: {
+          return_url: this.getValidReturnUrl(),
+        },
+      });
+
+      console.log(stripeResult);
+
+      if (stripeResult.error) {
+        alert(stripeResult.error.message);
+      }
+    } catch (error: any) {
+      alert(
+        'Failed with order submit. Please contact administrator. You can find contact information on the bottom of the page.'
+      );
+    }
   }
 
   private updateBreadcrumb(): void {
@@ -97,9 +170,17 @@ export class OrderCheckoutComponent implements OnInit {
         this.breadcrumbService.set('@checkout', bc2);
       });
   }
+
+  private async createOrder(): Promise<unknown> {
+    return firstValueFrom(
+      this.shoppingCartService.createOrder(this.emailFormField.value as string)
+    );
+  }
+
+  private getValidReturnUrl(): string {
+    return environment.checkoutSucceededUrl;
+  }
 }
-
-
 
 // // Assuming 'stripe' is your Stripe.js instance
 // const elements = stripe?.elements({

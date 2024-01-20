@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PixelGift.Infrastructure.Data;
 
@@ -10,9 +11,11 @@ using PixelGift.Infrastructure.Data;
 namespace PixelGift.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(PixelGiftContext))]
-    partial class PixelGiftContextModelSnapshot : ModelSnapshot
+    [Migration("20240118204441_OrderEntity")]
+    partial class OrderEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -148,10 +151,6 @@ namespace PixelGift.Infrastructure.Data.Migrations
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.Property<string>("PaymentIntentId")
                         .IsRequired()

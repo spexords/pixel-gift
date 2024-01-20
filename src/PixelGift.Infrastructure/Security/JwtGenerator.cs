@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using PixelGift.Core.Entities.Identity;
+using PixelGift.Core.Entities.OrderAggregate.Identity;
 using PixelGift.Core.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

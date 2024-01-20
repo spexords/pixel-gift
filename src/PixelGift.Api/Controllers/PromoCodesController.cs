@@ -2,7 +2,7 @@
 using PixelGift.Api.Attributes;
 using PixelGift.Application.PromoCodes.Commands;
 using PixelGift.Application.PromoCodes.Queries;
-using PixelGift.Core.Entities.Identity;
+using PixelGift.Core.Entities.OrderAggregate.Identity;
 
 namespace PixelGift.Api.Controllers;
 

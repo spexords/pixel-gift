@@ -10,4 +10,6 @@ public interface IOrderService
         Dictionary<Guid, int> basketItems,
         Dictionary<Guid, string> promoCodes,
         CancellationToken cancellationToken);
+
+    public Task<IEnumerable<PromoCode>> GetValidPromoCodes(Dictionary<Guid, string> promoCodes, CancellationToken cancellationToken);
 }

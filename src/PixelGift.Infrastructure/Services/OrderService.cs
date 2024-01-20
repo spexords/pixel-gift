@@ -55,7 +55,7 @@ public class OrderService : IOrderService
         return new OrderSummary(subtotal, discount, total);
     }
 
-    private async Task<IEnumerable<PromoCode>> GetValidPromoCodes(Dictionary<Guid, string> promoCodes, CancellationToken cancellationToken)
+    public async Task<IEnumerable<PromoCode>> GetValidPromoCodes(Dictionary<Guid, string> promoCodes, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Fetching valid PromoCodes from database");
         var validPromoCodes = await _context.PromoCodes

@@ -1,4 +1,4 @@
-﻿namespace PixelGift.Core.Entities.Identity;
+﻿namespace PixelGift.Core.Entities.OrderAggregate.Identity;
 
 public class User : BaseEntity
 {

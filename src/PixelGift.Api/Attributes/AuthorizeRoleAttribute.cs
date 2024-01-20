@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using PixelGift.Core.Entities.Identity;
+using PixelGift.Core.Entities.OrderAggregate.Identity;
 
 namespace PixelGift.Api.Attributes;
 

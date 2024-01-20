@@ -91,16 +91,8 @@ h2 {
     }
   }
 
-  // & option {
-  //   background-color: red !important;
-  // }
-
   & option {
-    color: black !important;
-    background-color: white !important;
-  }
-
-  & > select {
-    
+    color: white !important;
+    background-color: black !important;
   }
 }

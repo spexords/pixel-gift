@@ -31,14 +31,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class OrderPreviewComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
-  private router = inject(Router);
   private shoppingCartService = inject(ShoppingCartService);
   private breadcrumbService = inject(BreadcrumbService);
   private translocoService = inject(TranslocoService);
 
-  orderPreview$ = this.shoppingCartService.orderPreview$.pipe(
-    catchError((error) => this.handleOrderPreviewError(error))
-  );
+  orderPreview$ = this.shoppingCartService.orderPreview$;
 
   ngOnInit(): void {
     this.translocoService
@@ -51,22 +48,5 @@ export class OrderPreviewComponent implements OnInit {
 
   onSummaryClick(): void {
     this.shoppingCartService.tryMoveToCheckout();
-  }
-
-  private handleOrderPreviewError(error: HttpErrorResponse): Observable<never> {
-    const code = error.status;
-    const message: string = error.error.errors.message;
-    if (
-      code == 400 &&
-      (message.includes('Could not find') ||
-        message.includes("Invalid requested item's quantity"))
-    ) {
-      alert(
-        'Invalid request - clearing basket. Please  complete your shopping cart again.'
-      );
-      this.router.navigate(['/']);
-      this.shoppingCartService.clearBasket();
-    }
-    return throwError(() => error);
   }
 }

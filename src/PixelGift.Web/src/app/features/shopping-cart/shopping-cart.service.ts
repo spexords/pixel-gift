@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
@@ -6,10 +6,13 @@ import { isEmpty } from 'lodash';
 import {
   BehaviorSubject,
   Observable,
+  catchError,
   combineLatest,
   map,
+  pipe,
   switchMap,
   tap,
+  throwError,
 } from 'rxjs';
 import { BasketItems, FormFieldData, OrderPreview } from 'src/app/core/models';
 import { OrderPaymentIntent } from 'src/app/core/models/order-payment-intent.interface';
@@ -41,6 +44,7 @@ export class ShoppingCartService {
     this.promoCodesUpdatedSource.asObservable();
 
   private categoryFormFieldsData: CategoryFormFieldsData = {};
+  private paymentIntentId: string | null = null;
 
   constructor() {
     this.tryLoadFromLocalStorage();
@@ -90,6 +94,8 @@ export class ShoppingCartService {
 
   clearBasket(): void {
     this.basket = {};
+    this.categoryFormFieldsData = {};
+    this.promoCodes = {};
     this.basketUpdatedSource.next(undefined);
   }
 
@@ -126,13 +132,43 @@ export class ShoppingCartService {
   }
 
   createOrderPaymentIntent(): Observable<OrderPaymentIntent> {
-    return this.http.post<OrderPaymentIntent>(
-      `${this.baseUrl}/payments/intent`,
-      {
+    return this.http
+      .post<OrderPaymentIntent>(`${this.baseUrl}/payments/intent`, {
         basketItems: this.basket,
         promoCodes: this.promoCodes,
-      }
-    );
+      })
+      .pipe(
+        tap((orderPaymentIntent) => {
+          this.paymentIntentId = orderPaymentIntent.paymentIntentId;
+        })
+      );
+  }
+
+  createOrder(email: string): Observable<unknown> {
+    return this.http.post(`${this.baseUrl}/orders`, {
+      basketItems: this.basket,
+      promoCodes: this.promoCodes,
+      categoryFormFieldsData: this.categoryFormFieldsData,
+      paymentIntentId: this.paymentIntentId,
+      email: email,
+    });
+  }
+
+  private handleOrderPreviewError(error: HttpErrorResponse): Observable<never> {
+    const code = error.status;
+    const message: string = error.error.errors.message;
+    if (
+      code == 400 &&
+      (message.includes('Could not find') ||
+        message.includes("Invalid requested item's quantity"))
+    ) {
+      alert(
+        'Invalid request - clearing basket. Please  complete your shopping cart again.'
+      );
+      this.router.navigate(['/']);
+      this.clearBasket();
+    }
+    return throwError(() => error);
   }
 
   private validateFormFieldsData(): void {
@@ -144,11 +180,13 @@ export class ShoppingCartService {
   }
 
   private getOrderPreview(): Observable<OrderPreview> {
-    return this.http.post<OrderPreview>(`${this.baseUrl}/orders/preview`, {
-      basketItems: this.basket,
-      promoCodes: this.promoCodes,
-      language: this.translocoService.getActiveLang(),
-    });
+    return this.http
+      .post<OrderPreview>(`${this.baseUrl}/orders/preview`, {
+        basketItems: this.basket,
+        promoCodes: this.promoCodes,
+        language: this.translocoService.getActiveLang(),
+      })
+      .pipe(catchError((error) => this.handleOrderPreviewError(error)));
   }
 
   private saveToLocalStorage(): void {

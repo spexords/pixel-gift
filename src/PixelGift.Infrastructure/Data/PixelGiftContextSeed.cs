@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PixelGift.Core.Entities;
-using PixelGift.Core.Entities.Identity;
+using PixelGift.Core.Entities.OrderAggregate.Identity;
 using PixelGift.Core.Extensions;
 
 namespace PixelGift.Infrastructure.Data;

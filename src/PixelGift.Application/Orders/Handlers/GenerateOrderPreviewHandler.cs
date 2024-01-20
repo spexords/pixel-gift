@@ -42,7 +42,7 @@ public class GenerateOrderPreviewHandler : IRequestHandler<GenerateOrderPreviewC
           .Where(i => basketItemIds.Contains(i.Id))
           .ToListAsync(cancellationToken);
 
-        ValidateBasketItemsRequest(request.BasketItems, items);
+        ValidateBasketItems(items, request.BasketItems);
 
         var orderCategories = GetOrderCategories(items, request.BasketItems, request.Language);
 
@@ -51,7 +51,7 @@ public class GenerateOrderPreviewHandler : IRequestHandler<GenerateOrderPreviewC
         return new OrderPreviewDto(orderCategories, summary);
     }
 
-    private void ValidateBasketItemsRequest(Dictionary<Guid, int> basketItems, IEnumerable<Item> items)
+    private void ValidateBasketItems(IEnumerable<Item> items, Dictionary<Guid, int> basketItems)
     {
         var itemsDictionary = items.ToDictionary(i => i.Id);
 

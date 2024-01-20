@@ -28,7 +28,7 @@ public static class ApplicationServicesExtensions
 
      
         var version = new MySqlServerVersion(new Version(8, 0, 35));
-        @this.AddDbContext<PixelGiftContext>(options => options.UseMySql(config.GetConnectionString("MySQL"), version));
+        @this.AddDbContext<PixelGiftContext>(options => options.UseMySql(config.GetConnectionString("MySQL"), version, options => options.UseMicrosoftJson()));
 
         @this.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(GetCategoriesQuery).Assembly));
         @this.AddHttpContextAccessor();

@@ -13,4 +13,12 @@ public class OrdersController : BaseApiController
 
         return Ok(orderPreview);
     }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateOrder(CreateOrderCommand command)
+    {
+        var order = await Mediator.Send(command);
+
+        return Ok(order);
+    }
 }
