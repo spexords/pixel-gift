@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PixelGift.Core.Dtos;
-using PixelGift.Core.Entities.OrderAggregate.Identity;
+using PixelGift.Core.Entities.Identity;
 using PixelGift.Core.Exceptions;
 using PixelGift.Core.Extensions;
 using PixelGift.Core.Interfaces;

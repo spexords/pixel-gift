@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PixelGift.Core.Entities;
+using PixelGift.Core.Entities.Identity;
 using PixelGift.Core.Entities.OrderAggregate;
-using PixelGift.Core.Entities.OrderAggregate.Identity;
 
 namespace PixelGift.Infrastructure.Data;
 

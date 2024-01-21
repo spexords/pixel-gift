@@ -9,12 +9,12 @@ import {
   catchError,
   combineLatest,
   map,
-  pipe,
   switchMap,
   tap,
   throwError,
 } from 'rxjs';
 import { BasketItems, FormFieldData, OrderPreview } from 'src/app/core/models';
+import { OrderCreated } from 'src/app/core/models/order-created.interface';
 import { OrderPaymentIntent } from 'src/app/core/models/order-payment-intent.interface';
 import { API_URL } from 'src/app/core/tokens/api-url.token';
 
@@ -96,6 +96,7 @@ export class ShoppingCartService {
     this.basket = {};
     this.categoryFormFieldsData = {};
     this.promoCodes = {};
+    this.paymentIntentId = null;
     this.basketUpdatedSource.next(undefined);
   }
 
@@ -144,14 +145,42 @@ export class ShoppingCartService {
       );
   }
 
-  createOrder(email: string): Observable<unknown> {
-    return this.http.post(`${this.baseUrl}/orders`, {
+  createOrder(email: string): Observable<OrderCreated> {
+    return this.http.post<OrderCreated>(`${this.baseUrl}/orders`, {
       basketItems: this.basket,
       promoCodes: this.promoCodes,
       categoryFormFieldsData: this.categoryFormFieldsData,
       paymentIntentId: this.paymentIntentId,
       email: email,
     });
+  }
+
+  handleOrderCreateError(error: HttpErrorResponse): Observable<never> {
+    const code = error.status;
+    const message: string = error.error.errors.message;
+    if (
+      code == 400 &&
+      (message.includes('Could not find') ||
+        message.includes("Invalid requested item's quantity") ||
+        message.includes('Could not create order'))
+    ) {
+      alert(
+        'Invalid request - clearing basket. Please complete your shopping cart again.'
+      );
+      this.router.navigate(['/']);
+      this.clearBasket();
+    }
+    return throwError(() => error);
+  }
+
+  private getOrderPreview(): Observable<OrderPreview> {
+    return this.http
+      .post<OrderPreview>(`${this.baseUrl}/orders/preview`, {
+        basketItems: this.basket,
+        promoCodes: this.promoCodes,
+        language: this.translocoService.getActiveLang(),
+      })
+      .pipe(catchError((error) => this.handleOrderPreviewError(error)));
   }
 
   private handleOrderPreviewError(error: HttpErrorResponse): Observable<never> {
@@ -179,16 +208,6 @@ export class ShoppingCartService {
     }
   }
 
-  private getOrderPreview(): Observable<OrderPreview> {
-    return this.http
-      .post<OrderPreview>(`${this.baseUrl}/orders/preview`, {
-        basketItems: this.basket,
-        promoCodes: this.promoCodes,
-        language: this.translocoService.getActiveLang(),
-      })
-      .pipe(catchError((error) => this.handleOrderPreviewError(error)));
-  }
-
   private saveToLocalStorage(): void {
     const basketSerialized = JSON.stringify(this.basket);
     window.localStorage.setItem(this.BASKET_KEY, basketSerialized);
@@ -202,11 +221,4 @@ export class ShoppingCartService {
       this.basketUpdatedSource.next(undefined);
     }
   }
-
-  // private getPromoCodeRequests(): PromoCodeRequest[] {
-  //   return Object.entries(this.promoCodes).map(([categoryId, code]) => ({
-  //     categoryId,
-  //     code,
-  //   }));
-  // }
 }

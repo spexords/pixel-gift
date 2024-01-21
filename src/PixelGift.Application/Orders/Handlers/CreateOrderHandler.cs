@@ -13,7 +13,7 @@ using System.Text.Json;
 
 namespace PixelGift.Application.Orders.Handlers;
 
-public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, Unit>
+public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, OrderCreated>
 {
     private readonly PixelGiftContext _context;
     private readonly IOrderService _orderService;
@@ -26,11 +26,11 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, Unit>
         _logger = logger;
     }
 
-    public async Task<Unit> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
+    public async Task<OrderCreated> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Creating order for payment intent id: {id}", request.PaymentIntentId);
 
-        ValidatePaymentIntentId(request.PaymentIntentId);
+        await ValidatePaymentIntentId(request.PaymentIntentId, cancellationToken);
 
         var basketItemIds = request.BasketItems.Keys.Select(k => k);
 
@@ -47,22 +47,24 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, Unit>
 
         var validPromoCodes = await _orderService.GetValidPromoCodes(request.PromoCodes, cancellationToken);
 
-        var order = CreateOrder(request, items, validPromoCodes);
+        var customerOrderId = _context.Orders.Max(i => i.CustomerOrderId) + 1;
+        var order = CreateOrder(request, items, validPromoCodes, customerOrderId);
 
         _logger.LogInformation("Add order to database");
         await _context.Orders.AddAsync(order);
         await _context.SaveChangesAsync();
 
-        return Unit.Value;
+        return new OrderCreated(customerOrderId);
     }
 
-    private Core.Entities.OrderAggregate.Order CreateOrder(CreateOrderCommand request, IEnumerable<Item> items, IEnumerable<PromoCode> validPromoCodes) =>
-        new PixelGift.Core.Entities.OrderAggregate.Order
+    private Order CreateOrder(CreateOrderCommand request, IEnumerable<Item> items, IEnumerable<PromoCode> validPromoCodes, int customerOrderId) =>
+        new()
         {
             Email = request.Email,
             CreatedAt = DateTime.Now,
             PaymentIntentId = request.PaymentIntentId,
             Status = Core.Entities.OrderAggregate.OrderStatus.New,
+            CustomerOrderId = customerOrderId,
             OrderCategories = items.GroupBy(i => i.CategoryId).Select(g => CreateOrderCategory(g, validPromoCodes, request)).ToList(),
         };
 
@@ -101,17 +103,28 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, Unit>
         return orderCategory;
     }
 
-    private void ValidatePaymentIntentId(string paymentIntentId)
+    private async Task ValidatePaymentIntentId(string paymentIntentId, CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(paymentIntentId))
         {
             throw new BaseApiException(HttpStatusCode.BadRequest, new { Message = $"Missing payment intent id" });
+        }
+
+        if (await _context.Orders.AnyAsync(o => o.PaymentIntentId == paymentIntentId, cancellationToken))
+        {
+            throw new BaseApiException(HttpStatusCode.BadRequest, new { Message = $"Order payment intent id already exists" });
         }
     }
 
     private void ValidateFormFieldsData(IEnumerable<FormField> formFields, Dictionary<Guid, IEnumerable<FormFieldDataDto>> categoryFormFieldsData)
     {
         _logger.LogInformation("Validating form fields data");
+
+        var requestFormFieldsCount = categoryFormFieldsData.Sum(x => x.Value.Count());
+        if (formFields.Count() != requestFormFieldsCount)
+        {
+            throw new BaseApiException(HttpStatusCode.BadRequest, new { Message = $"Invalid form fields data count" });
+        }
 
         foreach ((var categoryId, var formFieldsData) in categoryFormFieldsData)
         {

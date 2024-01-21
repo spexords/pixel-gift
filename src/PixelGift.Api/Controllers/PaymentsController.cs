@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 using PixelGift.Application.Payments.Commands;
 using Stripe;
 
@@ -6,13 +7,6 @@ namespace PixelGift.Api.Controllers;
 
 public class PaymentsController : BaseApiController
 {
-    private readonly IConfiguration _config;
-
-    public PaymentsController(IConfiguration config)
-    {
-        _config = config;
-    }
-
     [HttpPost("intent")]
     public async Task<IActionResult> CreateOrderIntent(CreateOrderPaymentIntentCommand command)
     {
@@ -21,35 +15,14 @@ public class PaymentsController : BaseApiController
         return Ok(orderIntent);
     }
 
+
+    // stripe listen --forward-to https://localhost:5100/api/payments/webhook -e payment_intent.succeeded,payment_intent.payment_failed
     [HttpPost("webhook")]
-    public async Task<IActionResult> StripeWebhook()
+    public async Task<IActionResult> StripeOrderPaidWebhook()
     {
-        //TODO: MOVE TO IREQUEST HANDLER
+        var json = await new StreamReader(Request.Body).ReadToEndAsync();
 
-        //var json = await new StreamReader(Request.Body).ReadToEndAsync();
-
-        //var stripeEvent = EventUtility.ConstructEvent(json, Request.Headers["Stripe-Signature"], _config["StripeSettings:WhSecret"]);
-
-        //PaymentIntent intent;
-        //Order order;
-
-        //switch (stripeEvent.Type)
-        //{
-        //    case "payment_intent.succeeded":
-        //        intent = (PaymentIntent)stripeEvent.Data.Object;
-        //        _logger.LogInformation("Payment succeded: ", intent.Id);
-        //        order = await _paymentService.UpdateOrderPaymentSucceded(intent.Id);
-        //        _logger.LogInformation("Order updated to payment received: ", order.Id);
-        //        break;
-        //    case "payment_intent.payment_failed":
-        //        intent = (PaymentIntent)stripeEvent.Data.Object;
-        //        _logger.LogInformation("Payment failed: ", intent.Id);
-        //        order = await _paymentService.UpdateOrderPaymentFailed(intent.Id);
-        //        _logger.LogInformation("Order updated to payment failed: ", order.Id);
-        //        break;
-        //    default:
-        //        break;
-        //}
+        await Mediator.Send(new StripeOrderPaidWebhookCommand(json, Request.Headers["Stripe-Signature"]!));
 
         return Ok();
     }

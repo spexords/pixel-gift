@@ -47,7 +47,6 @@ export class ManageItemFormComponent {
   @Output() submitted = new EventEmitter<ItemPayloadRequest>();
 
   onSubmit(): void {
-    console.log(this.form.value);
     this.submitted.emit(this.form.value as ItemPayloadRequest);
   }
 

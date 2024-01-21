@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PixelGift.Infrastructure.Data;
 
@@ -10,9 +11,11 @@ using PixelGift.Infrastructure.Data;
 namespace PixelGift.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(PixelGiftContext))]
-    partial class PixelGiftContextModelSnapshot : ModelSnapshot
+    [Migration("20240121090555_OrderCustomerId")]
+    partial class OrderCustomerId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

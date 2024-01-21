@@ -9,4 +9,4 @@ public record CreateOrderCommand(
     Dictionary<Guid, IEnumerable<FormFieldDataDto>> CategoryFormFieldsData,
     string PaymentIntentId,
     string Email)
-    : IRequest<Unit>;
+    : IRequest<OrderCreated>;

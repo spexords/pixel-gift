@@ -22,6 +22,7 @@ import {
 } from '@stripe/stripe-js';
 import { environment } from 'src/environments/environment';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { OrderCreated } from 'src/app/core/models/order-created.interface';
 
 @Component({
   selector: 'app-order-checkout',
@@ -118,7 +119,6 @@ export class OrderCheckoutComponent implements OnInit {
     try {
       this.emailFormField.markAllAsTouched();
       this.emailFormField.updateValueAndValidity();
-      console.log(this.emailFormField);
       if (!this.emailFormField.valid) {
         alert('Please fill all required fields');
         return;
@@ -139,15 +139,14 @@ export class OrderCheckoutComponent implements OnInit {
         }
       }
 
-      await this.createOrder();
+      const order = await this.createOrder();
       const stripeResult = await this.stripe.confirmPayment({
         elements: this.elements,
         confirmParams: {
-          return_url: this.getValidReturnUrl(),
+          return_url: this.getValidReturnUrl(order),
         },
       });
 
-      console.log(stripeResult);
 
       if (stripeResult.error) {
         alert(stripeResult.error.message);
@@ -171,16 +170,17 @@ export class OrderCheckoutComponent implements OnInit {
       });
   }
 
-  private async createOrder(): Promise<unknown> {
+  private async createOrder(): Promise<OrderCreated> {
     return firstValueFrom(
       this.shoppingCartService.createOrder(this.emailFormField.value as string)
     );
   }
 
-  private getValidReturnUrl(): string {
-    return environment.checkoutSucceededUrl;
+  private getValidReturnUrl(orderCreated: OrderCreated): string {
+    return `${environment.checkoutSucceededUrl}?orderCustomerId=${orderCreated.orderCustomerId}`;
   }
 }
+
 
 // // Assuming 'stripe' is your Stripe.js instance
 // const elements = stripe?.elements({

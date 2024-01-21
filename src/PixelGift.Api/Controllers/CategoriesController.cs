@@ -2,7 +2,7 @@
 using PixelGift.Api.Attributes;
 using PixelGift.Application.Categories.Commands;
 using PixelGift.Application.Categories.Queries;
-using PixelGift.Core.Entities.OrderAggregate.Identity;
+using PixelGift.Core.Entities.Identity;
 
 namespace PixelGift.Api.Controllers;
 

@@ -1,4 +1,4 @@
-﻿using PixelGift.Core.Entities.OrderAggregate.Identity;
+﻿using PixelGift.Core.Entities.Identity;
 
 namespace PixelGift.Core.Interfaces;
 

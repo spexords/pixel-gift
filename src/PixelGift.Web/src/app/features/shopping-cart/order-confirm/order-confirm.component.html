@@ -1,1 +1,8 @@
-<p>order-confirm works!</p>
+@if(paymentSucceeded) {
+<app-order-succeeded
+  (continueShoppingClicked)="continueShopping()"
+  [orderCustomerId]="orderCustomerId"
+/>
+}@else {
+<app-order-failed (tryAgainClicked)="tryAgain()" />
+}
