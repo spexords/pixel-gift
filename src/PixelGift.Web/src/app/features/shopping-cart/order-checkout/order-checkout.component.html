@@ -1,0 +1,20 @@
+<div class="field-wrapper mail-field">
+  <label for="main-mail">{{ "shopping-cart.checkout.mail" | transloco}}</label>
+  <input [formControl]="emailFormField" id="main-mail" type="text" />
+  <div class="errors"
+    *ngIf="
+      emailFormField.invalid && (emailFormField.dirty || emailFormField.touched)
+    "
+  >
+    <div *ngIf="emailFormField.hasError('required')">{{ "shopping-cart.checkout.mail-required" | transloco}}</div>
+    <div *ngIf="emailFormField.hasError('email')">{{ "shopping-cart.checkout.mail-invalid" | transloco}}</div>
+  </div>
+</div>
+<div #payment class="stripe-element"></div>
+<ng-container *ngIf="orderPreview$ | async as orderPreview">
+  <app-order-summary
+    [orderSummary]="orderPreview.orderSummary"
+    [checkout]="true"
+    (clicked)="submitOrder()"
+  />
+</ng-container>

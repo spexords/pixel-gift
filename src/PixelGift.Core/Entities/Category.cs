@@ -10,3 +10,23 @@ public class Category : BaseEntity
 
     public ICollection<PromoCode> PromoCodes { get; } = new List<PromoCode>();
 }
+
+/*
+ *{
+ *id,
+ *createdAt,
+ *status,
+ *basket: [
+ *{
+ *  promoCode:
+ *  category:
+ *  metaData: {
+ *    
+ *  },
+ *  items: [
+ *  
+ *  ]
+ *}
+ *
+ *
+ */

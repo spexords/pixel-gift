@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PixelGift.Api.Attributes;
 using PixelGift.Application.Items.Commands;
 using PixelGift.Application.Items.Queries;
-using PixelGift.Core.Entities;
 using PixelGift.Core.Entities.Identity;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace PixelGift.Api.Controllers;
 

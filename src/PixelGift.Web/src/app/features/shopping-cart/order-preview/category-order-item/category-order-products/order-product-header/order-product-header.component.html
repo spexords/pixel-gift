@@ -1,0 +1,8 @@
+<ng-container *ngIf="header$ | async as header">
+  @for(item of header; track item) {
+  <p class="header-label">
+    {{ item }}
+  </p>
+  }
+  <div></div>
+</ng-container>

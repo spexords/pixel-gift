@@ -1,5 +1,5 @@
 <section>
   @for(item of items; track item.id) {
-  <app-item-card [item]="item" />
+  <app-item-card (addPressed)="addPressed.emit($event)" [item]="item" />
   }
 </section>

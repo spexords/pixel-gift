@@ -1,0 +1,11 @@
+:host {
+  display: grid;
+  background-color: rgba(0, 0, 0, 0.16);
+  padding: 3.5rem;
+  grid-template-columns: 28% 10% 18% 18% auto;
+  column-gap: 3rem;
+  row-gap: 1.375rem;
+  align-items: center;
+  justify-items: start;
+  margin-bottom: 4rem;
+}

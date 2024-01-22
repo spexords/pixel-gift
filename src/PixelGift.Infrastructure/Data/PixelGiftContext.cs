@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PixelGift.Core.Entities;
 using PixelGift.Core.Entities.Identity;
+using PixelGift.Core.Entities.OrderAggregate;
 
 namespace PixelGift.Infrastructure.Data;
 
@@ -15,6 +16,8 @@ public class PixelGiftContext : DbContext
     public DbSet<User> Users { get; set; }
 
     public DbSet<FormField> FormFields { get; set; }
+
+    public DbSet<Order> Orders { get; set; }
 
     public PixelGiftContext(DbContextOptions options) : base(options)
     {

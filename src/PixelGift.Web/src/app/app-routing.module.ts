@@ -10,8 +10,15 @@ const routes: Routes = [
         (mod) => mod.AdminRoutingModule
       ),
   },
-  { path: '', component: HomeComponent },
-  { path: '**', redirectTo: ''}
+  {
+    path: 'shopping-cart',
+    loadChildren: () =>
+      import('./features/shopping-cart/shopping-cart.module').then(
+        (mod) => mod.ShoppingCartModule
+      ),
+  },
+  { path: '', component: HomeComponent, data: { breadcrumb: 'Home' } },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
@@ -19,4 +26,3 @@ const routes: Routes = [
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
-

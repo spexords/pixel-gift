@@ -6,9 +6,11 @@ import {
   inject,
 } from '@angular/core';
 import { ItemCardComponent } from 'src/app/features/home/gift-store/store-items/item-card/item-card.component';
-import { LangSwitcherComponent } from './lang-switcher/lang-switcher.component';
+import { LangSwitcherComponent } from '../../shared/components/lang-switcher/lang-switcher.component';
 import { NavbarService } from './navbar.service';
 import { TranslocoPipe } from '@ngneat/transloco';
+import { CartComponent } from './cart/cart.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -18,6 +20,8 @@ import { TranslocoPipe } from '@ngneat/transloco';
     ItemCardComponent,
     LangSwitcherComponent,
     TranslocoPipe,
+    CartComponent,
+    RouterLink
   ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],

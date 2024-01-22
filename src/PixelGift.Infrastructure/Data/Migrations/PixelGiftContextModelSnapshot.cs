@@ -140,6 +140,117 @@ namespace PixelGift.Infrastructure.Data.Migrations
                     b.ToTable("Items");
                 });
 
+            modelBuilder.Entity("PixelGift.Core.Entities.OrderAggregate.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("CustomerOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PaymentIntentId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("PixelGift.Core.Entities.OrderAggregate.OrderCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<string>("Metadata")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("PromoCode")
+                        .HasColumnType("longtext");
+
+                    b.Property<decimal>("Subtotal")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderCategory");
+                });
+
+            modelBuilder.Entity("PixelGift.Core.Entities.OrderAggregate.OrderItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("ItemName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid?>("OrderCategoryId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderCategoryId");
+
+                    b.ToTable("OrderItem");
+                });
+
             modelBuilder.Entity("PixelGift.Core.Entities.PromoCode", b =>
                 {
                     b.Property<Guid>("Id")
@@ -194,6 +305,20 @@ namespace PixelGift.Infrastructure.Data.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("PixelGift.Core.Entities.OrderAggregate.OrderCategory", b =>
+                {
+                    b.HasOne("PixelGift.Core.Entities.OrderAggregate.Order", null)
+                        .WithMany("OrderCategories")
+                        .HasForeignKey("OrderId");
+                });
+
+            modelBuilder.Entity("PixelGift.Core.Entities.OrderAggregate.OrderItem", b =>
+                {
+                    b.HasOne("PixelGift.Core.Entities.OrderAggregate.OrderCategory", null)
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderCategoryId");
+                });
+
             modelBuilder.Entity("PixelGift.Core.Entities.PromoCode", b =>
                 {
                     b.HasOne("PixelGift.Core.Entities.Category", "Category")
@@ -212,6 +337,16 @@ namespace PixelGift.Infrastructure.Data.Migrations
                     b.Navigation("Items");
 
                     b.Navigation("PromoCodes");
+                });
+
+            modelBuilder.Entity("PixelGift.Core.Entities.OrderAggregate.Order", b =>
+                {
+                    b.Navigation("OrderCategories");
+                });
+
+            modelBuilder.Entity("PixelGift.Core.Entities.OrderAggregate.OrderCategory", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 #pragma warning restore 612, 618
         }

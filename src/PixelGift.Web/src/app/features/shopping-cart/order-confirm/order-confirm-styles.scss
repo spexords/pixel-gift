@@ -1,0 +1,42 @@
+.order-status-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.16);
+  align-items: center;
+  padding: 12rem;
+  padding-top: 11rem;
+  padding-bottom: 5rem;
+  margin-top: 5rem;
+
+  & > {
+    .icon {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      top: 0;
+      transform: translateY(-50%);
+    }
+
+    .message-container {
+      margin: 3.75rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      row-gap: 1rem;
+
+      & > p {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 1.375rem;
+        letter-spacing: 0.2px;
+      }
+    }
+
+    h2 {
+      font-weight: normal;
+      font-size: 4.375rem;
+      line-height: 98.5%; /* 68.95px */
+      letter-spacing: -0.5px;
+    }
+  }
+}

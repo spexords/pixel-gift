@@ -24,7 +24,7 @@ public class UpdatePromoCodeHandler : IRequestHandler<UpdatePromoCodeCommand, Un
     {
         var promoCode = await _context.PromoCodes.SingleOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
 
-        if(promoCode is null)
+        if (promoCode is null)
         {
             _logger.LogWarning($"Could not find {nameof(PromoCode)} with id: {request.Id}");
             throw new BaseApiException(HttpStatusCode.NotFound, new { Message = $"Could not find ${nameof(PromoCode)} with id: {request.Id}." });
@@ -37,6 +37,13 @@ public class UpdatePromoCodeHandler : IRequestHandler<UpdatePromoCodeCommand, Un
             _logger.LogWarning("Could not find {item} - id: {id}", nameof(Category), request.CategoryId);
 
             throw new BaseApiException(HttpStatusCode.BadRequest, new { Message = $"Could not find {nameof(Category)}: {request.CategoryId}" });
+        }
+
+        if (!(request.Discount > 0 && request.Discount < 1.0m))
+        {
+            _logger.LogWarning("Invalid {promo} discount value", nameof(PromoCode));
+
+            throw new BaseApiException(HttpStatusCode.BadRequest, new { Message = $"Invalid {nameof(PromoCode)} discount value - it should be between 0 and 1.0" });
         }
 
         promoCode.Expiry = request.Expiry;

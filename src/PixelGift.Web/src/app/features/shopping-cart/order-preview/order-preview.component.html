@@ -1,0 +1,27 @@
+<ng-container *ngIf="orderPreview$ | async as orderPreview">
+  <section>
+    <h2>
+      {{ "shopping-cart.header" | transloco }}
+      <span class="highlight">{{
+        "shopping-cart.header-highlight" | transloco
+      }}</span>
+    </h2>
+
+    @if(orderPreview.orderCategories.length > 0) { @for(orderCategory of
+    orderPreview.orderCategories; track orderCategory.id; let index = $index) {
+    <p class="category-order-info">
+      {{ "shopping-cart.order" | transloco }}#{{ index + 1 }} -
+      {{ orderCategory.name | uppercase }}
+    </p>
+    <app-category-order-item [orderCategory]="orderCategory" />
+    } } @else {
+    <div class="empty-state">
+      <h1>Empty Shopping Cart</h1>
+    </div>
+    }
+  </section>
+  <app-order-summary
+    (clicked)="onSummaryClick()"
+    [orderSummary]="orderPreview.orderSummary"
+  />
+</ng-container>

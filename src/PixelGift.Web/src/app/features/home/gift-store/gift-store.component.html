@@ -13,7 +13,10 @@
   </ng-container>
 
   <ng-container *ngIf="items$ | async as items">
-    <app-store-items [items]="items" />
+    <app-store-items
+      (addPressed)="addItemToShoppingCart($event)"
+      [items]="items"
+    />
   </ng-container>
 
   <svg

@@ -1,0 +1,29 @@
+<form class="field-data-wrapper">
+  <div
+    class="field-wrapper"
+    *ngFor="let control of form.controls; let i = index; let last = last"
+  >
+    <label [for]="formFields[i].id">{{ formFields[i].name }}</label>
+    <ng-container [ngSwitch]="formFields[i].fieldType">
+      <select
+        [id]="formFields[i].id"
+        [formControl]="control"
+        *ngSwitchCase="'Select'"
+      >
+        <option *ngFor="let option of formFields[i].options" value="option">
+          {{ option }}
+        </option>
+      </select>
+      <input
+        [id]="formFields[i].id"
+        [formControl]="control"
+        [placeholder]="formFields[i].name"
+        *ngSwitchCase="'Input'"
+      />
+    </ng-container>
+  </div>
+  <div class="field-wrapper">
+    <label for="promo-code">discount code</label>
+    <input [formControl]="promoCodeControl" />
+  </div>
+</form>

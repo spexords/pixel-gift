@@ -8,6 +8,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { FaqAccordionComponent } from './faq-accordion/faq-accordion.component';
 import { TranslocoService } from '@ngneat/transloco';
+import { Scrollable } from 'src/app/core/models';
 
 @Component({
   selector: 'app-faq',
@@ -17,13 +18,17 @@ import { TranslocoService } from '@ngneat/transloco';
   styleUrl: './faq.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FaqComponent {
+export class FaqComponent implements Scrollable {
   translocoService = inject(TranslocoService);
   faqItems$ = this.translocoService.selectTranslate('faq');
 
   @ViewChild('scrollTarget') scrollTarget!: ElementRef;
 
   scrollIntoView() {
-    this.scrollTarget.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    const element = this.scrollTarget.nativeElement.offsetTop;
+    window.scroll({
+      top: element,
+      behavior: 'smooth',
+    });
   }
 }

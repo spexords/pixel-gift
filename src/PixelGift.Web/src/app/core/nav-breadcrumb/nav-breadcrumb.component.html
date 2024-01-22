@@ -1,0 +1,14 @@
+<xng-breadcrumb style="z-index: 5;">
+  <ng-container *xngBreadcrumbItem="let breadcrumb">
+    @if(breadcrumb === 'Home') {
+    <img src="assets/nav/home.png" alt="home" />
+    } @else {
+    <p>
+      {{ breadcrumb }}
+    </p>
+
+    }
+  </ng-container>
+</xng-breadcrumb>
+<div class="spatial"></div>
+<app-lang-switcher />

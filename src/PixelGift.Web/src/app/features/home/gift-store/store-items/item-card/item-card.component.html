@@ -4,5 +4,7 @@
 <div class="content-wrapper">
   <p class="price">${{ item.unitPrice }}</p>
   <p class="name">{{ item.name }}</p>
-  <button>{{ "buttons.cart" | transloco }}</button>
+  <button (click)="addPressed.emit(item.id)">
+    {{ "buttons.cart" | transloco }}
+  </button>
 </div>

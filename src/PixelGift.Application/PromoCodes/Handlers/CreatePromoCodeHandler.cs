@@ -42,6 +42,13 @@ public class CreatePromoCodeHandler : IRequestHandler<CreatePromoCodeCommand, Un
             throw new BaseApiException(HttpStatusCode.BadRequest, new { Message = $"Could not find {nameof(Category)}: {request.CategoryId}" });
         }
 
+        if(!(request.Discount > 0 && request.Discount < 1.0m))
+        {
+            _logger.LogWarning("Invalid {promo} discount value", nameof(PromoCode));
+
+            throw new BaseApiException(HttpStatusCode.BadRequest, new { Message = $"Invalid {nameof(PromoCode)} discount value - it should be between 0 and 1.0" });
+        }
+
         var promoCode = new PromoCode
         {
             Id = request.Id,

@@ -5,6 +5,7 @@ using PixelGift.Application.Categories.Queries;
 using PixelGift.Core.Interfaces;
 using PixelGift.Infrastructure.Data;
 using PixelGift.Infrastructure.Security;
+using PixelGift.Infrastructure.Services;
 using System.Text;
 
 namespace PixelGift.Api.Extensions;
@@ -27,7 +28,7 @@ public static class ApplicationServicesExtensions
 
      
         var version = new MySqlServerVersion(new Version(8, 0, 35));
-        @this.AddDbContext<PixelGiftContext>(options => options.UseMySql(config.GetConnectionString("MySQL"), version));
+        @this.AddDbContext<PixelGiftContext>(options => options.UseMySql(config.GetConnectionString("MySQL"), version, options => options.UseMicrosoftJson()));
 
         @this.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(GetCategoriesQuery).Assembly));
         @this.AddHttpContextAccessor();
@@ -35,7 +36,8 @@ public static class ApplicationServicesExtensions
         //own services
         @this.AddScoped<IJwtGenerator, JwtGenerator>();
         @this.AddScoped<IUserService, UserService>();
-
+        @this.AddScoped<IOrderService, OrderService>();
+        @this.AddScoped<IPaymentService, PaymentService>();
 
         return @this;
     }

@@ -4,18 +4,16 @@ import { Observable, Subject, combineLatest, map, switchMap, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/tokens/api-url.token';
 import { TranslocoService } from '@ngneat/transloco';
 import { Category, Item } from 'src/app/core/models';
+import { ShoppingCartService } from '../../shopping-cart/shopping-cart.service';
 
 @Injectable({ providedIn: 'root' })
 export class GiftStoreService {
   private http = inject(HttpClient);
-
   private baseUrl = inject(API_URL);
-
   private categoriesCache: Category[] = [];
-
   private currentCategorySource = new Subject<Category>();
-
   private translocoService = inject(TranslocoService);
+  private shoppingCartService = inject(ShoppingCartService);
 
   currentCategoryChanged$ = this.currentCategorySource.asObservable();
 
@@ -53,5 +51,9 @@ export class GiftStoreService {
     if (category) {
       this.notifyCategoryChange(category);
     }
+  }
+
+  addItemToShoppingCart(itemId: string): void {
+    this.shoppingCartService.addItem(itemId);
   }
 }

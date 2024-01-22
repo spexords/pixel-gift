@@ -12,6 +12,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.14" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" Version="7.0.0" />
+    <PackageReference Include="Stripe.net" Version="43.10.0" />
   </ItemGroup>
 
   <PropertyGroup>
