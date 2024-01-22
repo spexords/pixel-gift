@@ -13,12 +13,16 @@
     />
   </svg>
 
-  <h2>Thank you for your purchase!</h2>
+  <h2>{{ "shopping-cart.checkout.success.header" | transloco }}</h2>
 
   <div class="message-container">
-    <p>Your order number is #{{ orderCustomerId }}</p>
-    <p>We’ll email you an order confirmation with details and tracking info</p>
+    <p>
+      {{ "shopping-cart.checkout.success.order-number" | transloco }}{{ orderCustomerId }}
+    </p>
+    <p>{{ "shopping-cart.checkout.success.order-info" | transloco }}</p>
   </div>
 
-  <button (click)="continueShoppingClicked.emit()">continue shopping</button>
+  <button (click)="continueShoppingClicked.emit()">
+    {{ "shopping-cart.checkout.success.button" | transloco }}
+  </button>
 </div>

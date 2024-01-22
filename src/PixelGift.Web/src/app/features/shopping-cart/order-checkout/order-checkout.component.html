@@ -1,13 +1,13 @@
 <div class="field-wrapper mail-field">
-  <label for="main-mail">Contact EMAIL</label>
+  <label for="main-mail">{{ "shopping-cart.checkout.mail" | transloco}}</label>
   <input [formControl]="emailFormField" id="main-mail" type="text" />
   <div class="errors"
     *ngIf="
       emailFormField.invalid && (emailFormField.dirty || emailFormField.touched)
     "
   >
-    <div *ngIf="emailFormField.hasError('required')">Email is required.</div>
-    <div *ngIf="emailFormField.hasError('email')">Invalid email address.</div>
+    <div *ngIf="emailFormField.hasError('required')">{{ "shopping-cart.checkout.mail-required" | transloco}}</div>
+    <div *ngIf="emailFormField.hasError('email')">{{ "shopping-cart.checkout.mail-invalid" | transloco}}</div>
   </div>
 </div>
 <div #payment class="stripe-element"></div>

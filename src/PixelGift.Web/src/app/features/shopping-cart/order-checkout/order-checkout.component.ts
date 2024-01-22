@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TranslocoService } from '@ngneat/transloco';
+import { TranslocoPipe, TranslocoService } from '@ngneat/transloco';
 import { BreadcrumbService } from 'xng-breadcrumb';
 import { combineLatest, firstValueFrom } from 'rxjs';
 import { OrderSummaryComponent } from '../order-summary/order-summary.component';
@@ -27,7 +27,7 @@ import { OrderCreated } from 'src/app/core/models/order-created.interface';
 @Component({
   selector: 'app-order-checkout',
   standalone: true,
-  imports: [CommonModule, OrderSummaryComponent, ReactiveFormsModule],
+  imports: [CommonModule, OrderSummaryComponent, ReactiveFormsModule, TranslocoPipe],
   templateUrl: './order-checkout.component.html',
   styleUrl: './order-checkout.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
