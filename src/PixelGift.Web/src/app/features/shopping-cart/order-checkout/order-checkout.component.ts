@@ -23,11 +23,18 @@ import {
 import { environment } from 'src/environments/environment';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { OrderCreated } from 'src/app/core/models/order-created.interface';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-order-checkout',
   standalone: true,
-  imports: [CommonModule, OrderSummaryComponent, ReactiveFormsModule, TranslocoPipe],
+  imports: [
+    CommonModule,
+    OrderSummaryComponent,
+    ReactiveFormsModule,
+    TranslocoPipe,
+  ],
   templateUrl: './order-checkout.component.html',
   styleUrl: './order-checkout.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,6 +43,7 @@ export class OrderCheckoutComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
   private breadcrumbService = inject(BreadcrumbService);
   private translocoService = inject(TranslocoService);
+  private router = inject(Router);
   private shoppingCartService = inject(ShoppingCartService);
   private stripe: Stripe | null = null;
   private elements: StripeElements | null = null;
@@ -147,14 +155,30 @@ export class OrderCheckoutComponent implements OnInit {
         },
       });
 
-
       if (stripeResult.error) {
         alert(stripeResult.error.message);
       }
     } catch (error: any) {
-      alert(
-        'Failed with order submit. Please contact administrator. You can find contact information on the bottom of the page.'
-      );
+      if (error instanceof HttpErrorResponse) {
+        const code = error.status;
+        const message: string = error.error.errors.message;
+        if (
+          code == 400 &&
+          (message.includes('Could not find') ||
+            message.includes("Invalid requested item's quantity") ||
+            message.includes('Could not create order'))
+        ) {
+          alert(
+            'Could not realize your order - clearing basket. Please complete your shopping cart again.'
+          );
+          this.router.navigate(['/']);
+          this.shoppingCartService.clearBasket();
+        } else {
+          alert(
+            'Failed with order submit. Please contact administrator. You can find contact information on the bottom of the page.'
+          );
+        }
+      }
     }
   }
 
@@ -180,63 +204,3 @@ export class OrderCheckoutComponent implements OnInit {
     return `${environment.checkoutSucceededUrl}?orderCustomerId=${orderCreated.orderCustomerId}`;
   }
 }
-
-
-// // Assuming 'stripe' is your Stripe.js instance
-// const elements = stripe?.elements({
-//   clientSecret: orderPaymentIntent.clientSecret,
-//   appearance,
-// });
-
-// if (elements) {
-//   const paymentElement = elements.create('payment');
-//   paymentElement.mount(this.payment?.nativeElement);
-
-//   // Handle form submission or any other trigger event
-//   const form = document.getElementById('your-payment-form-id'); // Replace with your actual form ID
-//   form.addEventListener('submit', async (event) => {
-//     event.preventDefault();
-
-//     // Confirm the payment
-//     const { paymentIntent, error } = await stripe.confirmPayment({
-//       element: paymentElement,
-//       confirmParams: {
-//         // Additional confirmation parameters if needed
-//       },
-//     });
-
-//     if (error) {
-//       console.error(error);
-//       // Handle payment confirmation error
-//     } else if (paymentIntent.status === 'succeeded') {
-//       // Payment succeeded
-//       console.log('Payment succeeded:', paymentIntent);
-//     } else if (paymentIntent.status === 'requires_action') {
-//       // Additional action required, e.g., 3D Secure authentication
-//       const { error: actionError } = await stripe.handleCardAction(
-//         paymentIntent.payment_method
-//       );
-
-//       if (actionError) {
-//         console.error(actionError);
-//         // Handle card action error
-//       } else {
-//         // After handling the action, confirm the payment again
-//         const confirmedPayment = await stripe.confirmPayment({
-//           element: paymentElement,
-//           confirmParams: {
-//             payment_method: paymentIntent.payment_method,
-//           },
-//         });
-
-//         if (confirmedPayment.error) {
-//           console.error(confirmedPayment.error);
-//           // Handle confirmed payment error
-//         } else if (confirmedPayment.paymentIntent.status === 'succeeded') {
-//           // Payment succeeded after handling the action
-//           console.log('Payment succeeded:', confirmedPayment.paymentIntent);
-//         }
-//       }
-//     }
-//   });
-// }

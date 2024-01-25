@@ -1,0 +1,24 @@
+:host {
+  display: inline-block;
+}
+
+.default {
+  color: #dedede;
+}
+
+.critical {
+  color: #f18181;
+}
+
+.success {
+  color: #42ff00;
+}
+
+.info {
+  //color: #c3d8ff;
+  color: red;
+}
+
+.warning {
+  color: #ffb524;
+}

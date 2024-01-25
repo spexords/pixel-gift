@@ -1,4 +1,4 @@
 export enum FieldType {
   Input,
-  Select
+  Select,
 }

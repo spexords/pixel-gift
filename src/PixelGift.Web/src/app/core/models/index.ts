@@ -21,3 +21,6 @@ export * from './order-summary.interface';
 export * from './basket-items.type';
 export * from './scrollable.interface';
 export * from './form-field-data.interface';
+export * from './order-status.enum';
+export * from './order-admin.interface';
+export * from './order-search-params.interface';

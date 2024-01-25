@@ -1,0 +1,37 @@
+<form class="search-bar" [formGroup]="form">
+  <div class="field-wrapper">
+    <label for="order-id">Order Id</label>
+    <input
+      [formControl]="form.controls.customerOrderId"
+      id="order-id"
+      type="text"
+    />
+  </div>
+  <div class="field-wrapper">
+    <label for="status">Status</label>
+    <select [formControl]="form.controls.status" id="status">
+      <option *ngFor="let status of orderStatuses" [value]="status.value">
+        {{ status.displayValue }}
+      </option>
+    </select>
+  </div>
+</form>
+
+<ng-container *ngIf="orders$ | async as orders">
+  @for(order of orders; track order.id) {
+  <div class="order-wrapper">
+    <div class="col">
+      <p>Order Id: {{ order.customerOrderId }}</p>
+      <p>
+        Status: <app-status [status]="getCorrectStatus(order.status)">{{ order.status }}</app-status>
+      </p>
+      <p>Date: {{ order.createdAt | date : "HH:mm dd/MM/yyyy" }}</p>
+    </div>
+    <div class="col right">
+      <p>Email: {{ order.id }}</p>
+      <p>Payment Intent Id: {{ order.paymentIntentId }}</p>
+      <p>Total Price: {{ order.total }} PLN</p>
+    </div>
+  </div>
+  }
+</ng-container>
