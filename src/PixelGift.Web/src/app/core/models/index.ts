@@ -24,3 +24,6 @@ export * from './form-field-data.interface';
 export * from './order-status.enum';
 export * from './order-admin.interface';
 export * from './order-search-params.interface';
+export * from './detailed-order-admin.interface';
+export * from './order-category-admin.interface';
+export * from './order-item-admin.interface';

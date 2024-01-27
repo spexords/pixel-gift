@@ -11,6 +11,8 @@ import { OrderSearchParams, OrderStatus } from 'src/app/core/models';
 import { AdminPanelService } from '../../admin-panel.service';
 import { StatusComponent } from 'src/app/shared/components/status/status.component';
 import { Status } from 'src/app/shared/components/status/status.enum';
+import { MatDialog } from '@angular/material/dialog';
+import { ManageOrderComponent } from './manage-order/manage-order.component';
 
 @Component({
   selector: 'app-orders',
@@ -22,6 +24,8 @@ import { Status } from 'src/app/shared/components/status/status.enum';
 })
 export class OrdersComponent implements OnInit {
   private adminService = inject(AdminPanelService);
+  private dialog = inject(MatDialog);
+
   orderStatuses = [
     { value: '', displayValue: 'All' },
     ...enumToSelectOptions(OrderStatus),
@@ -53,6 +57,10 @@ export class OrdersComponent implements OnInit {
       default:
         return Status.Default;
     }
+  }
+
+  manageOrder(id: string): void {
+    this.dialog.open(ManageOrderComponent, { data: id });
   }
 
   initFormBehaviour() {

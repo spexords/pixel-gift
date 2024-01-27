@@ -17,6 +17,7 @@ import {
   ChangePassword,
   DetailedCategory,
   DetailedItemAdmin,
+  DetailedOrderAdmin,
   DetailedPromoCode,
   ItemAdmin,
   ItemPayloadRequest,
@@ -91,6 +92,10 @@ export class AdminPanelService {
     return this.http.get<DetailedPromoCode>(`${this.baseUrl}/promocodes/${id}`);
   }
 
+  getOrder(id: string): Observable<DetailedOrderAdmin> {
+    return this.http.get<DetailedOrderAdmin>(`${this.baseUrl}/orders/${id}`);
+  }
+
   deleteCategory(id: string): Observable<unknown> {
     return this.http
       .delete(`${this.baseUrl}/categories/${id}`)
@@ -122,6 +127,12 @@ export class AdminPanelService {
     return this.http
       .put(`${this.baseUrl}/categories/${id}`, values)
       .pipe(tap(() => this.categoriesChangedSource.next(undefined)));
+  }
+
+  updateOrder(id: string, status: string) {
+    return this.http
+      .put(`${this.baseUrl}/orders/${id}`, { status })
+      .pipe(tap(() => this.ordersChangedSource.next(undefined)));
   }
 
   getItem(id: string): Observable<DetailedItemAdmin> {

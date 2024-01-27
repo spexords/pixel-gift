@@ -1,0 +1,97 @@
+<ng-container *ngIf="order$ | async as order">
+  <div class="order-details">
+    <div class="top-details">
+      <p>Order Id: {{ order.customerOrderId }}</p>
+      <p>Intent Id: {{ order.paymentIntentId }}</p>
+      <p>Created At: {{ order.createdAt | date : "HH:mm dd/MM/yyyy" }}</p>
+      <p *ngIf="order.updatedAt">
+        Updated At: {{ order.updatedAt | date : "HH:mm dd/MM/yyyy" }}
+      </p>
+    </div>
+
+    @for (category of order.categories; track category.name) {
+    <div class="category-details">
+      <p>{{ category.name | uppercase }}</p>
+
+      <div class="category-content">
+        <div class="list-wrapper">
+          <p>Items:</p>
+          <ul>
+            @for (item of category.items; track item.name) {
+            <li>
+              {{ item.quantity }}x <strong>{{ item.name }}</strong> x
+              {{ item.unitPrice }}PLN = {{ item.quantity * item.unitPrice }}PLN
+            </li>
+            }
+          </ul>
+        </div>
+
+        <div class="list-wrapper">
+          <p>Data:</p>
+          <ul>
+            @for (data of category.metadata; track data.key) {
+            <li>
+              {{ data.key }}: <strong>{{ data.value }}</strong>
+            </li>
+            }
+          </ul>
+        </div>
+      </div>
+
+      <p>
+        Subtotal: {{ category.subtotal }}PLN
+        <span *ngIf="category.promoCode">
+          - {{ category.discount }}PLN (<strong>{{ category.promoCode }}</strong
+          >) = {{ category.total }}PLN</span
+        >
+      </p>
+    </div>
+    }
+
+    <div class="bottom-details">
+      <div class="status-wrapper">
+        <label for="status">Status:</label>
+        <select id="status" [formControl]="status">
+          <option *ngFor="let option of statuses" [value]="option.value">
+            {{ option.displayValue }}
+          </option>
+        </select>
+      </div>
+
+      <p class="total-price">Total: {{ order.total }}PLN</p>
+    </div>
+    <button (click)="updateOrder(order.id)">Update</button>
+  </div>
+
+  <div class="mailing-container">
+    <p>Email: {{ order.email }}</p>
+
+    <div class="mail-history">
+      <p>History:</p>
+      <div class="messages-container">
+        <div class="message-wrapper">
+          <p>Subject: x</p>
+          <p>date</p>
+          <p>Message: x</p>
+        </div>
+      </div>
+    </div>
+
+    <form [formGroup]="mailForm" class="new-mail" (ngSubmit)="sendMail($event)">
+      <p>New Mail:</p>
+
+      <label for="subject">Subject:</label>
+      <input [formControl]="mailForm.controls.subject" id="subject" />
+
+      <label for="message">Message:</label>
+      <textarea
+        id="message"
+        [formControl]="mailForm.controls.message"
+        cols="1"
+        rows="5"
+      ></textarea>
+
+      <button type="submit" [disabled]="!mailForm.valid">send</button>
+    </form>
+  </div>
+</ng-container>

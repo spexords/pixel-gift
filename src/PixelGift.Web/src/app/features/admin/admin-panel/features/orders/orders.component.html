@@ -19,11 +19,14 @@
 
 <ng-container *ngIf="orders$ | async as orders">
   @for(order of orders; track order.id) {
-  <div class="order-wrapper">
+  <div class="order-wrapper" (click)="manageOrder(order.id)">
     <div class="col">
       <p>Order Id: {{ order.customerOrderId }}</p>
       <p>
-        Status: <app-status [status]="getCorrectStatus(order.status)">{{ order.status }}</app-status>
+        Status:
+        <app-status [status]="getCorrectStatus(order.status)">{{
+          order.status
+        }}</app-status>
       </p>
       <p>Date: {{ order.createdAt | date : "HH:mm dd/MM/yyyy" }}</p>
     </div>
