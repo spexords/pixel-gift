@@ -1,9 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { isEmpty } from 'lodash';
 import {
   BehaviorSubject,
   Observable,
   ReplaySubject,
+  combineLatest,
   map,
   pipe,
   switchMap,
@@ -15,9 +17,12 @@ import {
   ChangePassword,
   DetailedCategory,
   DetailedItemAdmin,
+  DetailedOrderAdmin,
   DetailedPromoCode,
   ItemAdmin,
   ItemPayloadRequest,
+  OrderAdmin,
+  OrderSearchParams,
   PromoCode,
   PromoCodePayloadRequest,
   User,
@@ -38,6 +43,16 @@ export class AdminPanelService {
 
   private promoCodesChangedSource = new BehaviorSubject<unknown>(undefined);
   private promoCodesChanged$ = this.promoCodesChangedSource.asObservable();
+
+  private ordersChangedSource = new BehaviorSubject<unknown>(undefined);
+  private ordersChanged$ = this.ordersChangedSource.asObservable();
+  private ordersSearchParamsChangedSource =
+    new BehaviorSubject<OrderSearchParams>({
+      status: null,
+      customerOrderId: null,
+    });
+  private ordersSearchParamsChanged$ =
+    this.ordersSearchParamsChangedSource.asObservable();
 
   user$ = this.userSource.asObservable();
 
@@ -60,6 +75,11 @@ export class AdminPanelService {
     )
   );
 
+  orders$ = combineLatest([
+    this.ordersSearchParamsChanged$,
+    this.ordersChanged$,
+  ]).pipe(switchMap(([params]) => this.getOrders(params)));
+
   changePassword(values: ChangePassword): Observable<unknown> {
     return this.http.post(`${this.baseUrl}/account/change-password`, values);
   }
@@ -70,6 +90,10 @@ export class AdminPanelService {
 
   getPromoCode(id: string): Observable<DetailedPromoCode> {
     return this.http.get<DetailedPromoCode>(`${this.baseUrl}/promocodes/${id}`);
+  }
+
+  getOrder(id: string): Observable<DetailedOrderAdmin> {
+    return this.http.get<DetailedOrderAdmin>(`${this.baseUrl}/orders/${id}`);
   }
 
   deleteCategory(id: string): Observable<unknown> {
@@ -105,6 +129,12 @@ export class AdminPanelService {
       .pipe(tap(() => this.categoriesChangedSource.next(undefined)));
   }
 
+  updateOrder(id: string, status: string) {
+    return this.http
+      .put(`${this.baseUrl}/orders/${id}`, { status })
+      .pipe(tap(() => this.ordersChangedSource.next(undefined)));
+  }
+
   getItem(id: string): Observable<DetailedItemAdmin> {
     return this.http.get<DetailedItemAdmin>(`${this.baseUrl}/items/${id}`);
   }
@@ -136,6 +166,10 @@ export class AdminPanelService {
       .pipe(tap(() => this.promoCodesChangedSource.next(undefined)));
   }
 
+  notifyOrdersSearchParamsChanged(params: OrderSearchParams): void {
+    this.ordersSearchParamsChangedSource.next(params);
+  }
+
   private getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(`${this.baseUrl}/categories`);
   }
@@ -146,5 +180,22 @@ export class AdminPanelService {
 
   private getPromoCodes(): Observable<PromoCode[]> {
     return this.http.get<PromoCode[]>(`${this.baseUrl}/promocodes`);
+  }
+
+  private getOrders(searchParams: OrderSearchParams): Observable<OrderAdmin[]> {
+    let params = new HttpParams();
+
+    if (!isEmpty(searchParams.customerOrderId)) {
+      params = params.append(
+        'customerOrderId',
+        searchParams.customerOrderId as number
+      );
+    }
+
+    if (!isEmpty(searchParams.status)) {
+      params = params.append('status', searchParams.status as string);
+    }
+
+    return this.http.get<OrderAdmin[]>(`${this.baseUrl}/orders`, { params });
   }
 }

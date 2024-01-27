@@ -1,0 +1,83 @@
+:host {
+  display: grid;
+  width: 1200px;
+  max-height: 600px;
+  color: black;
+  padding: 1rem;
+  font-size: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  overflow-x: hidden;
+  gap: 1rem;
+}
+
+.order-details {
+  & > .top-details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.3rem;
+    padding: 0.5rem;
+    border-bottom: 1px solid black;
+  }
+
+  & > .category-details {
+    padding: 0.5rem;
+    & > .category-content {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  & > .list-wrapper {
+    & > ul {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  & > .bottom-details {
+    padding: 0.5rem;
+    font-size: 1rem;
+    display: flex;
+    margin: 0.5rem 0;
+    align-items: center;
+    justify-content: space-between;
+    & > .total-price {
+      text-align: right;
+    }
+  }
+
+  & > button {
+    width: 100%;
+  }
+}
+
+.mailing-container {
+  padding: 0.5rem;
+
+  & > .mail-history {
+    margin-top: 0.5rem;
+    & > .messages-container {
+      overflow-y: auto;
+      height: 125px;
+      overflow-x: hidden;
+      background-color: #eee;
+
+      & > .message-wrapper {
+        padding: 0.5rem;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        border-bottom: 1px solid black;
+      }
+    }
+  }
+
+  & > .new-mail {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+
+    & > button {
+      margin-top: 0.5rem;
+    }
+  }
+}

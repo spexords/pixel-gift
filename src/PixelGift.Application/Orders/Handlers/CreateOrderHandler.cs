@@ -47,7 +47,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, OrderCreat
 
         var validPromoCodes = await _orderService.GetValidPromoCodes(request.PromoCodes, cancellationToken);
 
-        var customerOrderId = _context.Orders.Max(i => i.CustomerOrderId) + 1;
+        var customerOrderId = GetNextCustomerOrderId();
         var order = CreateOrder(request, items, validPromoCodes, customerOrderId);
 
         _logger.LogInformation("Add order to database");
@@ -55,6 +55,18 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, OrderCreat
         await _context.SaveChangesAsync();
 
         return new OrderCreated(customerOrderId);
+    }
+
+    private int GetNextCustomerOrderId()
+    {
+        try
+        {
+            return _context.Orders.Max(i => i.CustomerOrderId) + 1;
+        }
+        catch
+        {
+            return 1;
+        }
     }
 
     private Order CreateOrder(CreateOrderCommand request, IEnumerable<Item> items, IEnumerable<PromoCode> validPromoCodes, int customerOrderId) =>

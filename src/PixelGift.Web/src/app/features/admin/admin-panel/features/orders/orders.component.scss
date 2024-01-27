@@ -1,0 +1,27 @@
+.search-bar {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6rem;
+  margin-bottom: 2.5rem;
+}
+
+.order-wrapper {
+  cursor: pointer;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border: 1px solid white;
+
+  & > .col {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 0.5rem;
+  }
+
+  & > .right {
+    text-align: right;
+  }
+}

@@ -80,7 +80,7 @@ public class GenerateOrderPreviewHandler : IRequestHandler<GenerateOrderPreviewC
             g.Key,
             g.First().Category.Name,
             g.Select(gi => GetOrderItem(basketItems, gi, language)),
-            g.First().Category.FormFields.Select(gf => GetOrderFormField(gf))));
+            g.First().Category.FormFields.OrderBy(f => f.Name).Select(gf => GetOrderFormField(gf))));
 
     private FormFieldDto GetOrderFormField(FormField formField) =>
         new FormFieldDto(formField.Id, formField.Name, formField.Type.ToString(), formField.Options?.Split(',').Select(opt => opt.Trim()) ?? Array.Empty<string>());

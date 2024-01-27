@@ -8,5 +8,4 @@ public record CreateOrderCommand(
     Dictionary<Guid, string> PromoCodes,
     Dictionary<Guid, IEnumerable<FormFieldDataDto>> CategoryFormFieldsData,
     string PaymentIntentId,
-    string Email)
-    : IRequest<OrderCreated>;
+    string Email) : IRequest<OrderCreated>;
