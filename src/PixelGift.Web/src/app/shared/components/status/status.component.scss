@@ -1,24 +1,19 @@
 :host {
-  display: inline-block;
-}
-
-.default {
-  color: #dedede;
-}
-
-.critical {
-  color: #f18181;
-}
-
-.success {
-  color: #42ff00;
-}
-
-.info {
-  //color: #c3d8ff;
-  color: red;
-}
-
-.warning {
-  color: #ffb524;
+  display: inline;
+  // other styles
+  &[data-status="default"] {
+    color: #dedede;
+  }
+  &[data-status="critical"] {
+    color: #f18181;
+  }
+  &[data-status="success"] {
+    color: #42ff00;
+  }
+  &[data-status="info"] {
+    color: #c3d8ff;
+  }
+  &[data-status="warning"] {
+    color: #ffb524;
+  }
 }

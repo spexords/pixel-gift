@@ -1,6 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostBinding,
+  Input,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Status } from './status.enum';
+import { Status } from './status.type';
 
 @Component({
   selector: 'app-status',
@@ -11,6 +16,7 @@ import { Status } from './status.enum';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StatusComponent {
-  statuses = Status;
-  @Input() status: Status = Status.Default;
+  @HostBinding('[attr.data-status]')
+  @Input()
+  status: Status = 'default';
 }

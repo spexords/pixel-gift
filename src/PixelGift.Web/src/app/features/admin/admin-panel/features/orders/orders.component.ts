@@ -10,9 +10,9 @@ import { enumToSelectOptions } from 'src/app/shared/utils';
 import { OrderSearchParams, OrderStatus } from 'src/app/core/models';
 import { AdminPanelService } from '../../admin-panel.service';
 import { StatusComponent } from 'src/app/shared/components/status/status.component';
-import { Status } from 'src/app/shared/components/status/status.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { ManageOrderComponent } from './manage-order/manage-order.component';
+import { Status } from 'src/app/shared/components/status/status.type';
 
 @Component({
   selector: 'app-orders',
@@ -44,18 +44,16 @@ export class OrdersComponent implements OnInit {
 
   getCorrectStatus(orderStatus: string): Status {
     switch (orderStatus) {
-      case OrderStatus[OrderStatus.New]:
-        return Status.Warning;
       case OrderStatus[OrderStatus.PaymentFailed]:
-        return Status.Critical;
+        return 'critical';
       case OrderStatus[OrderStatus.PaymentReceived]:
-        return Status.Success;
+        return 'success';
       case OrderStatus[OrderStatus.InProgress]:
-        return Status.Info;
+        return 'info';
       case OrderStatus[OrderStatus.Finished]:
-        return Status.Default;
+        return 'warning';
       default:
-        return Status.Default;
+        return 'default';
     }
   }
 
