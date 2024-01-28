@@ -45,6 +45,7 @@ export class ShoppingCartService {
 
   private categoryFormFieldsData: CategoryFormFieldsData = {};
   private paymentIntentId: string | null = null;
+  private validCheckout: boolean = false;
 
   constructor() {
     this.tryLoadFromLocalStorage();
@@ -112,6 +113,7 @@ export class ShoppingCartService {
   tryMoveToCheckout(): void {
     try {
       this.validateFormFieldsData();
+      this.validCheckout = true;
       this.router.navigate(['/shopping-cart/checkout']);
     } catch {
       const message =
@@ -143,6 +145,10 @@ export class ShoppingCartService {
           this.paymentIntentId = orderPaymentIntent.paymentIntentId;
         })
       );
+  }
+
+  canCheckout(): boolean {
+    return this.validCheckout;
   }
 
   createOrder(email: string): Observable<OrderCreated> {

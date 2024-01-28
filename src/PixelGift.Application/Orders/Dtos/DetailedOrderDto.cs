@@ -9,9 +9,15 @@ public record DetailedOrderDto(
     string Status, 
     string PaymentIntentId,
     IEnumerable<DetailedOrderCategoryDto> Categories,
+    IEnumerable<MailMessageDto> Messages,
     decimal Subtotal,
     decimal Discount,
     decimal Total);
+
+public record MailMessageDto(
+    string Subject,
+    DateTime CreatedAt,
+    string Content);
 
 public record DetailedOrderCategoryDto(
     string Name,

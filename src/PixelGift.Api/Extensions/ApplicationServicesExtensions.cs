@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using PixelGift.Application.Categories.Queries;
+using PixelGift.Core.Configuration;
 using PixelGift.Core.Interfaces;
 using PixelGift.Infrastructure.Data;
 using PixelGift.Infrastructure.Security;
@@ -38,6 +39,10 @@ public static class ApplicationServicesExtensions
         @this.AddScoped<IUserService, UserService>();
         @this.AddScoped<IOrderService, OrderService>();
         @this.AddScoped<IPaymentService, PaymentService>();
+        @this.AddScoped<IMailService, MailService>();
+
+        //configs
+        @this.Configure<SmtpConfiguration>(config.GetSection("SmtpConfiguration"));
 
         return @this;
     }

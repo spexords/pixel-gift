@@ -69,11 +69,14 @@
     <div class="mail-history">
       <p>History:</p>
       <div class="messages-container">
+        @for (message of order.messages; track message.subject) {
         <div class="message-wrapper">
-          <p>Subject: x</p>
-          <p>date</p>
-          <p>Message: x</p>
+          <p>Subject: {{ message.subject }}</p>
+          <p class="date">{{ message.createdAt | date : "HH:mm dd/MM/yyyy" }}</p>
+          <p class="content">Message:</p>
+          <p class="content" [innerHTML]="message.content | breakLines"></p>
         </div>
+        }
       </div>
     </div>
 

@@ -1,3 +1,4 @@
+import { MailMessage } from './mail-message-interface';
 import { OrderCategoryAdmin } from './order-category-admin.interface';
 
 export interface DetailedOrderAdmin {
@@ -9,9 +10,8 @@ export interface DetailedOrderAdmin {
   status: string;
   paymentIntentId: string;
   categories: OrderCategoryAdmin[];
+  messages: MailMessage[];
   subtotal: number;
   discount: number;
   total: number;
 }
-
-

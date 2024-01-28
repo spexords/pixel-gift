@@ -201,6 +201,6 @@ export class OrderCheckoutComponent implements OnInit {
   }
 
   private getValidReturnUrl(orderCreated: OrderCreated): string {
-    return `${environment.checkoutSucceededUrl}?orderCustomerId=${orderCreated.orderCustomerId}`;
+    return `${window.location.href}/confirm?orderCustomerId=${orderCreated.orderCustomerId}`;
   }
 }

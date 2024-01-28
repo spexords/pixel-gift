@@ -11,11 +11,12 @@ import { enumToSelectOptions } from 'src/app/shared/utils';
 import { OrderStatus } from 'src/app/core/models';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { tap } from 'rxjs';
+import { BreakLinesPipe } from 'src/app/shared/pipes/break-lines.pipe';
 
 @Component({
   selector: 'app-manage-order',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, BreakLinesPipe],
   templateUrl: './manage-order.component.html',
   styleUrl: './manage-order.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

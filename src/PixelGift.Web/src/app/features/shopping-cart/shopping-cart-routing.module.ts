@@ -4,6 +4,7 @@ import { ShoppingCartComponent } from './shopping-cart.component';
 import { OrderPreviewComponent } from './order-preview/order-preview.component';
 import { OrderCheckoutComponent } from './order-checkout/order-checkout.component';
 import { OrderConfirmComponent } from './order-confirm/order-confirm.component';
+import { orderCheckoutGuard } from './order-checkout/order-checkout.guard';
 
 const routes: Routes = [
   {
@@ -29,6 +30,7 @@ const routes: Routes = [
           },
           {
             path: '',
+            canActivate: [orderCheckoutGuard],
             component: OrderCheckoutComponent,
             data: {
               breadcrumb: {
