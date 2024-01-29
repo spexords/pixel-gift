@@ -1,11 +1,12 @@
 <footer>
   <div class="pre-footer">
     <div class="contact">
-      <h4>{{'footer.contact-header' | transloco}}</h4>
+      <h4>{{ "footer.contact-header" | transloco }}</h4>
       <div class="contact-links">
         <app-contact-link
+          (click)="redirectToDiscord()"
           icon="assets/footer/discord.png"
-          link="https://pixelgift.store/discord"
+          [link]="discordInviteUrl"
           [size]="44"
         />
         <app-contact-link

@@ -10,6 +10,8 @@ public class Order : BaseEntity
 
     public IEnumerable<OrderCategory> OrderCategories { get; set; } = new List<OrderCategory>();
 
+    public IEnumerable<Message> Messages { get; set; } = new List<Message>();
+
     public string PaymentIntentId { get; set; } = default!;
 
     public decimal Subtotal => OrderCategories.Sum(c => c.Subtotal);

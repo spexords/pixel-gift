@@ -11,6 +11,7 @@ import { NavbarService } from './navbar.service';
 import { TranslocoPipe } from '@ngneat/transloco';
 import { CartComponent } from './cart/cart.component';
 import { RouterLink } from '@angular/router';
+import { DiscordService } from '../services/discord.service';
 
 @Component({
   selector: 'app-navbar',
@@ -21,7 +22,7 @@ import { RouterLink } from '@angular/router';
     LangSwitcherComponent,
     TranslocoPipe,
     CartComponent,
-    RouterLink
+    RouterLink,
   ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
@@ -30,9 +31,15 @@ import { RouterLink } from '@angular/router';
 export class NavbarComponent {
   isScrollAtTop = true;
   navbarService = inject(NavbarService);
+  discordService = inject(DiscordService);
 
   @HostListener('window:scroll', [])
   onWindowScroll(): void {
     this.isScrollAtTop = window.scrollY < 50;
+  }
+
+  redirectToDiscord(): void {
+    console.log('kekw')
+    this.discordService.redirectToDiscord();
   }
 }

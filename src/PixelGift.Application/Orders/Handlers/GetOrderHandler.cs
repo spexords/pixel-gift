@@ -3,10 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PixelGift.Application.Oders.Queries;
 using PixelGift.Application.Orders.Dtos;
-using PixelGift.Core.Entities;
+using PixelGift.Core.Entities.OrderAggregate;
 using PixelGift.Core.Exceptions;
 using PixelGift.Infrastructure.Data;
-using Stripe.Climate;
 using System.Net;
 using System.Text.Json;
 
@@ -28,6 +27,7 @@ public class GetOrderHandler : IRequestHandler<GetOrderQuery, DetailedOrderDto>
         _logger.LogInformation("Getting {item}: {id} from database", nameof(Order), request.Id);
 
         var order = await _context.Orders
+            .Include(o => o.Messages)
             .Include(o => o.OrderCategories)
             .ThenInclude(c => c.OrderItems)
             .FirstOrDefaultAsync(o => o.Id == request.Id, cancellationToken);
@@ -40,7 +40,7 @@ public class GetOrderHandler : IRequestHandler<GetOrderQuery, DetailedOrderDto>
         return MapOrder(order);
     }
 
-    private DetailedOrderDto MapOrder(Core.Entities.OrderAggregate.Order order) =>
+    private DetailedOrderDto MapOrder(Order order) =>
         new DetailedOrderDto
         (
             order.Id,
@@ -59,6 +59,12 @@ public class GetOrderHandler : IRequestHandler<GetOrderQuery, DetailedOrderDto>
                 c.Total,
                 JsonSerializer.Deserialize<IEnumerable<FormFieldDataDto>>(c.Metadata)!,
                 c.OrderItems.Select(i => new DetailedOrderItemDto(i.ItemName, i.Quantity, i.UnitPrice))
+            )),
+            order.Messages.Select(m => new MailMessageDto
+            (
+                m.Subject,
+                m.CreatedAt!.Value,
+                m.Content
             )),
             order.Subtotal,
             order.Discount,

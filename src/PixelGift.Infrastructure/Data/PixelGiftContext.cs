@@ -19,6 +19,8 @@ public class PixelGiftContext : DbContext
 
     public DbSet<Order> Orders { get; set; }
 
+    public DbSet<Message> Messages { get; set; }
+
     public PixelGiftContext(DbContextOptions options) : base(options)
     {
     }
