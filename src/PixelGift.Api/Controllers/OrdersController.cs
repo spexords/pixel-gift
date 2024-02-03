@@ -53,4 +53,14 @@ public class OrdersController : BaseApiController
 
         return Ok();
     }
+
+    [AuthorizeRole(UserRole.Admin)]
+    [HttpPost("{id}/send-message")]
+    public async Task<IActionResult> SendMessage(Guid id, [FromBody] SendMessageCommand command)
+    {
+        command = command with { OrderId = id };
+        await Mediator.Send(command);
+
+        return Ok();
+    }
 }

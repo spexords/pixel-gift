@@ -5,11 +5,13 @@ import {
   BehaviorSubject,
   Observable,
   ReplaySubject,
+  catchError,
   combineLatest,
   map,
   pipe,
   switchMap,
   tap,
+  throwError,
 } from 'rxjs';
 import {
   Category,
@@ -21,6 +23,7 @@ import {
   DetailedPromoCode,
   ItemAdmin,
   ItemPayloadRequest,
+  MailMessageRequest,
   OrderAdmin,
   OrderSearchParams,
   PromoCode,
@@ -168,6 +171,21 @@ export class AdminPanelService {
 
   notifyOrdersSearchParamsChanged(params: OrderSearchParams): void {
     this.ordersSearchParamsChangedSource.next(params);
+  }
+
+  sendOrderMessage(
+    id: string,
+    values: MailMessageRequest
+  ): Observable<unknown> {
+    return this.http
+      .post(`${this.baseUrl}/orders/${id}/send-message`, values)
+      .pipe(
+        catchError((error) => {
+          const message: string = error.error.errors.message;
+          alert(message);
+          return throwError(() => error);
+        })
+      );
   }
 
   private getCategories(): Observable<Category[]> {
