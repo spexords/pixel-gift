@@ -96,7 +96,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, OrderCreat
             {
                 ItemId = i.Id,
                 ItemName = i.Name,
-                Quantity = i.Quantity,
+                Quantity = request.BasketItems[i.Id],
                 UnitPrice = i.UnitPrice
             }).ToList(),
             PromoCode = validPromoCode?.Code,

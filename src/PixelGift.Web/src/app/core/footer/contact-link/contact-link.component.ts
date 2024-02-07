@@ -13,4 +13,9 @@ export class ContactLinkComponent {
   @Input({ required: true }) icon!: string;
   @Input({ required: true }) size!: number;
   @Input() link?: string;
+  @Input() mail = false;
+
+  get href(): string {
+    return `${this.mail ? 'mailto:' : ''}${this.link}`;
+  }
 }

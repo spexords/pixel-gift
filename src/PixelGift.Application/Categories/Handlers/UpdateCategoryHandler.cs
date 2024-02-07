@@ -121,12 +121,13 @@ public class UpdateCategoryHandler : IRequestHandler<UpdateCategoryCommand, Unit
                 var newFormField = new FormField
                 {
                     Id = requestFormField.Id,
+                    CategoryId = category.Id,
                     Name = requestFormField.Name,
                     Options = fieldType == FieldType.Select ? string.Join(',', requestFormField.Options) : null,
                     Type = fieldType
                 };
 
-                category.FormFields.Add(newFormField);
+                _context.FormFields.Add(newFormField);
             }
         }
     }

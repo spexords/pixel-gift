@@ -30,8 +30,8 @@ export class GiftStoreService {
     return this.http.get<Category[]>(`${this.baseUrl}/categories`).pipe(
       tap((categories) => {
         this.categoriesCache = categories;
-        // TODO: remove later its league of legeneds
-        this.currentCategorySource.next(categories[2]);
+        this.currentCategorySource.next(categories[0]);
+
       })
     );
   }

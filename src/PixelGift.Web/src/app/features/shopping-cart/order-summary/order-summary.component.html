@@ -4,20 +4,20 @@
     <p class="price-label">
       {{ "shopping-cart.summary.subtotal" | transloco }}
     </p>
-    <p>{{ orderSummary.subtotal }}$</p>
+    <p>{{ orderSummary.subtotal }}PLN</p>
   </div>
   <div class="price-wrapper">
     <p class="price-label">
       {{ "shopping-cart.summary.discount" | transloco }}
     </p>
-    <p>-{{ orderSummary.discount ?? 0 }}$</p>
+    <p>-{{ orderSummary.discount ?? 0 }}PLN</p>
   </div>
 
   <div class="separator"></div>
 
   <div class="price-wrapper">
     <p class="price-label">{{ "shopping-cart.summary.total" | transloco }}</p>
-    <p>{{ orderSummary.total }}$</p>
+    <p>{{ orderSummary.total }}PLN</p>
   </div>
   <button (click)="clicked.emit()">
     {{

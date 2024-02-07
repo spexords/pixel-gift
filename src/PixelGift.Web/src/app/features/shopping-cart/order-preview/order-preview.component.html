@@ -20,8 +20,10 @@
     </div>
     }
   </section>
+  @if(orderPreview.orderCategories.length > 0) {
   <app-order-summary
     (clicked)="onSummaryClick()"
     [orderSummary]="orderPreview.orderSummary"
   />
+  }
 </ng-container>
