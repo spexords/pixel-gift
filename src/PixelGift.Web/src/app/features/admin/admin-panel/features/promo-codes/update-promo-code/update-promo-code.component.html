@@ -1,4 +1,4 @@
-<ng-container *ngIf="promoCode$ | async as promoCode">
+<ng-container *ngrxLet="promoCode$ as promoCode">
   <app-manage-promo-code-form
     [data]="promoCode"
     (submitted)="onSubmit($event)"

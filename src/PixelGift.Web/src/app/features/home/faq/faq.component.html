@@ -1,6 +1,6 @@
 <section #scrollTarget>
   <h2>FAQ</h2>
-  <div class="faqs-container" *ngIf="faqItems$ | async as faqItems">
+  <div class="faqs-container" *ngrxLet="faqItems$ as faqItems">
     @for(faq of faqItems; track faq.question ) {
     <app-faq-accordion [question]="faq.question" [answer]="faq.answer" />
     }

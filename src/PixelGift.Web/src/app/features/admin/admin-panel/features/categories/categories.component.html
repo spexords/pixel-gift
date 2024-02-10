@@ -1,4 +1,4 @@
-<ng-container *ngIf="categories$ | async as categories">
+<ng-container *ngrxLet="categories$ as categories">
   @for(category of categories; track category.id) {
   <app-editable-card
     [menuItems]="existingCategoryMenuItems"
@@ -7,7 +7,7 @@
     <p>{{ category.name }}</p>
   </app-editable-card>
   } @empty {
-    <p>No categories added yet!</p>
+  <p>No categories added yet!</p>
   }
 
   <app-editable-card

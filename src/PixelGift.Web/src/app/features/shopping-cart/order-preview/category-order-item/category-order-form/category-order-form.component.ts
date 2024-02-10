@@ -1,85 +1,60 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   EventEmitter,
   Input,
-  OnInit,
   Output,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormField, FormFieldData } from 'src/app/core/models';
-import {
-  FormArray,
-  FormControl,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { debounceTime } from 'rxjs';
+import { FormField, SelectOption } from 'src/app/core/models';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Subscription, debounceTime } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TextInputComponent } from 'src/app/shared/components/text-input/text-input.component';
+import { SelectInputComponent } from 'src/app/shared/components/select-input/select-input.component';
 
 @Component({
   selector: 'app-category-order-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    TextInputComponent,
+    SelectInputComponent,
+  ],
   templateUrl: './category-order-form.component.html',
   styleUrl: './category-order-form.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CategoryOrderFormComponent implements OnInit {
-  form = new FormArray<FormControl<string | null>>([]);
-  promoCodeControl = new FormControl<string>('');
+export class CategoryOrderFormComponent {
+  private subscription: Subscription | undefined = undefined;
+  private destroyRef = inject(DestroyRef);
+  form!: FormGroup;
 
   @Input({ required: true }) formFields!: FormField[];
-  @Input() formFieldsData!: FormFieldData[];
-  @Input() promoCode!: string;
+  @Input({ required: true }) set categoryForm(form: FormGroup) {
+    this.updateForm(form);
+  }
   @Output() promoCodeChanged = new EventEmitter<string>();
-  @Output() formFieldsChanged = new EventEmitter<FormFieldData[]>();
 
-  ngOnInit(): void {
-    this.initFormArray();
-    this.initPromoCodeBehaviour();
-    this.tryUpdateFormFieldsData();
-    this.tryUpdatePromoCode();
+  getSelectOptions(values: string[]): SelectOption<unknown>[] {
+    return values.map((value) => ({ value, displayValue: value }));
   }
 
-  initPromoCodeBehaviour(): void {
-    this.promoCodeControl.valueChanges
-      .pipe(debounceTime(1000))
-      .subscribe((value) => this.promoCodeChanged.emit(value as string));
-  }
-
-  private initFormArray(): void {
-    for (const formField of this.formFields) {
-      this.form.push(
-        new FormControl<string>(
-          formField.fieldType === 'Select' ? formField.options[0] : '',
-          [Validators.required, Validators.minLength(2)]
-        )
-      );
+  private updateForm(form: FormGroup) {
+    this.form = form;
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
-
-    this.emitFormFields(this.form.value);
-
-    this.form.valueChanges.pipe(debounceTime(200)).subscribe((values) => {
-      this.emitFormFields(values);
-    });
-  }
-
-  private emitFormFields(values: (string | null)[]) {
-    this.formFieldsChanged.emit(
-      this.formFields.map((value, index) => ({
-        key: value.name,
-        value: values[index] as string,
-      }))
-    );
-  }
-
-  private tryUpdateFormFieldsData(): void {
-    for (let i = 0; i < this.formFieldsData.length; i++) {
-      this.form.controls[i].patchValue(this.formFieldsData[i].value);
-    }
-  }
-
-  tryUpdatePromoCode() {
-    this.promoCodeControl.patchValue(this.promoCode);
+    this.subscription = form
+      .get('promoCode')
+      ?.valueChanges.pipe(
+        takeUntilDestroyed(this.destroyRef),
+        debounceTime(400)
+      )
+      .subscribe((promoCode) => {
+        this.promoCodeChanged.emit(promoCode);
+      });
   }
 }

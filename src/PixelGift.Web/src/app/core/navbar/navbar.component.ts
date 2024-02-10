@@ -39,7 +39,6 @@ export class NavbarComponent {
   }
 
   redirectToDiscord(): void {
-    console.log('kekw')
     this.discordService.redirectToDiscord();
   }
 }

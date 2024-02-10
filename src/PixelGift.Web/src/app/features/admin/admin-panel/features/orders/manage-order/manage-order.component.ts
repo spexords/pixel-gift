@@ -20,13 +20,20 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { tap } from 'rxjs';
+import { BehaviorSubject, Subject, switchMap, tap } from 'rxjs';
 import { BreakLinesPipe } from 'src/app/shared/pipes/break-lines.pipe';
+import { LetDirective } from '@ngrx/component';
 
 @Component({
   selector: 'app-manage-order',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, BreakLinesPipe],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    BreakLinesPipe,
+    LetDirective,
+  ],
   templateUrl: './manage-order.component.html',
   styleUrl: './manage-order.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,6 +41,7 @@ import { BreakLinesPipe } from 'src/app/shared/pipes/break-lines.pipe';
 export class ManageOrderComponent {
   private dialogRef = inject(MatDialogRef<ManageOrderComponent>);
   private adminPanelService = inject(AdminPanelService);
+  private refreshOrder = new BehaviorSubject<undefined>(undefined);
 
   statuses = enumToSelectOptions(OrderStatus);
   status = new FormControl<string>('');
@@ -46,11 +54,15 @@ export class ManageOrderComponent {
 
   constructor(@Inject(MAT_DIALOG_DATA) public id: string) {}
 
-  order$ = this.adminPanelService.getOrder(this.id).pipe(
-    tap((order) => {
-      this.updateMissingDetails(order);
-      this.initDefaultSubject(order.customerOrderId);
-    })
+  order$ = this.refreshOrder.asObservable().pipe(
+    switchMap(() =>
+      this.adminPanelService.getOrder(this.id).pipe(
+        tap((order) => {
+          this.updateMissingDetails(order);
+          this.initDefaultSubject(order.customerOrderId);
+        })
+      )
+    )
   );
 
   updateOrder(id: string): void {
@@ -65,7 +77,14 @@ export class ManageOrderComponent {
     event.preventDefault();
     this.adminPanelService
       .sendOrderMessage(this.id, this.mailForm.value as MailMessageRequest)
-      .subscribe();
+      .subscribe({
+        next: () => {
+          alert('Email sent');
+          this.refreshOrder.next(undefined);
+          this.mailForm.controls.content.patchValue('');
+        },
+        error: () => alert('Could not send email'),
+      });
   }
 
   private updateMissingDetails(order: DetailedOrderAdmin) {

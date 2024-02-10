@@ -17,7 +17,7 @@
   </div>
 </form>
 
-<ng-container *ngIf="orders$ | async as orders">
+<ng-container *ngrxLet="orders$ as orders">
   @for(order of orders; track order.id) {
   <div class="order-wrapper" (click)="manageOrder(order.id)">
     <div class="col">

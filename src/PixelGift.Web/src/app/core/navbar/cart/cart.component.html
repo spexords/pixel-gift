@@ -5,7 +5,7 @@
     height="28"
     alt="cart menu icon"
   />
-  <ng-container *ngIf="itemsCount$ | async as itemsCount">
+  <ng-container *ngrxLet="itemsCount$ as itemsCount">
     <div class="items-count" *ngIf="itemsCount > 0">
       {{ itemsCount > 9 ? "9+" : itemsCount }}
     </div>

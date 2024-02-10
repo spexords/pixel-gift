@@ -1,0 +1,16 @@
+<div class="field-wrapper">
+  <label [for]="label">{{ label }}</label>
+  <select
+    [id]="label"
+    [disabled]="disabled"
+    (blur)="onTouch()"
+    [(ngModel)]="value"
+  >
+    @for(option of options; track option.value) {
+    <option [value]="option.value">{{ option.displayValue }}</option>
+    }
+  </select>
+</div>
+@if(controlDir?.control?.touched && controlDir?.control?.errors) {
+<app-error-validation-messages [errors]="controlDir?.control?.errors" />
+}

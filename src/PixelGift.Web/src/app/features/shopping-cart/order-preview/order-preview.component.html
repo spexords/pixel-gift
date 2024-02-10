@@ -1,4 +1,4 @@
-<ng-container *ngIf="orderPreview$ | async as orderPreview">
+<ng-container *ngrxLet="orderPreview$ as orderPreview">
   <section>
     <h2>
       {{ "shopping-cart.header" | transloco }}
@@ -13,8 +13,13 @@
       {{ "shopping-cart.order" | transloco }}#{{ index + 1 }} -
       {{ orderCategory.name | uppercase }}
     </p>
-    <app-category-order-item [orderCategory]="orderCategory" />
-    } } @else {
+    @if(orderForm) {
+    <app-category-order-item
+      [orderCategory]="orderCategory"
+      [orderCategoryForm]="$any(orderForm.get(orderCategory.id))"
+      (promoCodeChanged)="onPromoCodeChange(orderCategory.id, $event)"
+    />
+    } } } @else {
     <div class="empty-state">
       <h1>Empty Shopping Cart</h1>
     </div>

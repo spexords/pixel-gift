@@ -11,6 +11,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { ImageUploadComponent } from 'src/app/shared/components/image-upload/image-upload.component';
 import { AdminPanelService } from '../../../admin-panel.service';
+import { LetDirective } from '@ngrx/component';
 
 type ItemForm = FormGroup<{
   id: FormControl<string | null>;
@@ -30,6 +31,7 @@ type ItemForm = FormGroup<{
     ReactiveFormsModule,
     FormsModule,
     ImageUploadComponent,
+    LetDirective
   ],
   templateUrl: './manage-item-form.component.html',
   styleUrl: './manage-item-form.component.scss',

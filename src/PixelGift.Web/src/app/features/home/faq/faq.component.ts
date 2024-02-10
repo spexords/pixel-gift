@@ -9,11 +9,12 @@ import { CommonModule } from '@angular/common';
 import { FaqAccordionComponent } from './faq-accordion/faq-accordion.component';
 import { TranslocoService } from '@ngneat/transloco';
 import { Scrollable } from 'src/app/core/models';
+import { LetDirective } from '@ngrx/component';
 
 @Component({
   selector: 'app-faq',
   standalone: true,
-  imports: [CommonModule, FaqAccordionComponent],
+  imports: [CommonModule, FaqAccordionComponent, LetDirective],
   templateUrl: './faq.component.html',
   styleUrl: './faq.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

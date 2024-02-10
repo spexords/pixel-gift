@@ -4,11 +4,12 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AdminPanelService } from '../../../admin-panel.service';
 import { ManagePromoCodeFormComponent } from '../manage-promo-code-form/manage-promo-code-form.component';
 import { PromoCodePayloadRequest } from 'src/app/core/models';
+import { LetDirective } from '@ngrx/component';
 
 @Component({
   selector: 'app-update-promo-code',
   standalone: true,
-  imports: [CommonModule, ManagePromoCodeFormComponent],
+  imports: [CommonModule, ManagePromoCodeFormComponent, LetDirective],
   templateUrl: './update-promo-code.component.html',
   styleUrl: './update-promo-code.component.scss',
 })

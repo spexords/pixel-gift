@@ -1,4 +1,4 @@
-<ng-container *ngIf="order$ | async as order">
+<ng-container *ngrxLet="order$ as order">
   <div class="order-details">
     <div class="top-details">
       <p>Order Id: {{ order.customerOrderId }}</p>
@@ -72,7 +72,9 @@
         @for (message of order.messages; track message.subject) {
         <div class="message-wrapper">
           <p>Subject: {{ message.subject }}</p>
-          <p class="date">{{ message.createdAt | date : "HH:mm dd/MM/yyyy" }}</p>
+          <p class="date">
+            {{ message.createdAt | date : "HH:mm dd/MM/yyyy" }}
+          </p>
           <p class="content">Message:</p>
           <p class="content" [innerHTML]="message.content | breakLines"></p>
         </div>

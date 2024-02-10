@@ -1,4 +1,4 @@
-<ng-container *ngIf="categories$ | async as categories">
+<ng-container *ngrxLet="categories$ as categories">
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <label for="name">Name:</label>
     <input [formControl]="form.controls.name" id="name" type="text" />

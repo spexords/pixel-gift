@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   DestroyRef,
   OnInit,
@@ -8,13 +9,13 @@ import {
 import { CommonModule } from '@angular/common';
 import { CategoryOrderItemComponent } from './category-order-item/category-order-item.component';
 import { ShoppingCartService } from '../shopping-cart.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { catchError, Observable, throwError } from 'rxjs';
 import { OrderSummaryComponent } from '../order-summary/order-summary.component';
 import { TranslocoPipe, TranslocoService } from '@ngneat/transloco';
 import { BreadcrumbService } from 'xng-breadcrumb';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { OrderPreviewFormService } from './order-preview-form.service';
+import { LetDirective } from '@ngrx/component';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-order-preview',
@@ -24,20 +25,29 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     CategoryOrderItemComponent,
     OrderSummaryComponent,
     TranslocoPipe,
+    LetDirective,
   ],
   templateUrl: './order-preview.component.html',
   styleUrl: './order-preview.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrderPreviewComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
   private shoppingCartService = inject(ShoppingCartService);
+  private orderPreviewFormService = inject(OrderPreviewFormService);
   private breadcrumbService = inject(BreadcrumbService);
   private translocoService = inject(TranslocoService);
+  private cdr = inject(ChangeDetectorRef);
 
   orderPreview$ = this.shoppingCartService.orderPreview$;
+  orderForm: FormGroup | null = null;
 
   ngOnInit(): void {
+    this.updateBreadcrumb();
+    this.initOrderFormUpdate();
+    window.scrollTo(0, 0);
+  }
+
+  private updateBreadcrumb(): void {
     this.translocoService
       .selectTranslate('shopping-cart.bc1')
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -46,7 +56,21 @@ export class OrderPreviewComponent implements OnInit {
       );
   }
 
+  private initOrderFormUpdate() {
+    this.orderPreviewFormService.formChanged$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((form) => {
+        this.orderForm = form;
+      });
+  }
+
+  onPromoCodeChange(categoryId: string, promoCode: string): void {
+    this.shoppingCartService.updatePromoCodes(categoryId, promoCode);
+  }
+
   onSummaryClick(): void {
-    this.shoppingCartService.tryMoveToCheckout();
+    this.orderForm?.markAllAsTouched();
+    this.cdr.detectChanges();
+    this.shoppingCartService.tryMoveToCheckout(this.orderForm as FormGroup);
   }
 }

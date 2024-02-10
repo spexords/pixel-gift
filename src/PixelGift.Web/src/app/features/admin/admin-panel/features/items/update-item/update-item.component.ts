@@ -5,11 +5,12 @@ import { AdminPanelService } from '../../../admin-panel.service';
 import { CreateCategoryComponent } from '../../categories/create-category/create-category.component';
 import { ItemPayloadRequest } from 'src/app/core/models';
 import { ManageItemFormComponent } from '../manage-item-form/manage-item-form.component';
+import { LetDirective } from '@ngrx/component';
 
 @Component({
   selector: 'app-update-item',
   standalone: true,
-  imports: [CommonModule, ManageItemFormComponent],
+  imports: [CommonModule, ManageItemFormComponent, LetDirective],
   templateUrl: './update-item.component.html',
   styleUrl: './update-item.component.scss',
 })

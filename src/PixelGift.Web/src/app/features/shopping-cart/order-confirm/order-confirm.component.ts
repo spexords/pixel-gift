@@ -32,7 +32,7 @@ export class OrderConfirmComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private paymentStatus!: string;
-  
+
   orderCustomerId!: string;
 
   ngOnInit(): void {
@@ -63,6 +63,7 @@ export class OrderConfirmComponent implements OnInit {
     this.route.queryParams.pipe(first()).subscribe((params) => {
       this.paymentStatus = params['redirect_status'] as string;
       this.orderCustomerId = params['orderCustomerId'] as string;
+      this.translocoService.setActiveLang(params['lang'] as string);
     });
   }
 

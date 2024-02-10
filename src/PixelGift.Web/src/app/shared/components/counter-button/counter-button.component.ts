@@ -1,10 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, Self } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ControlValueAccessor,
-  FormControl,
   NG_VALUE_ACCESSOR,
-  NgControl,
   ReactiveFormsModule,
 } from '@angular/forms';
 

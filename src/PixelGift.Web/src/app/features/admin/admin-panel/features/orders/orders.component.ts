@@ -13,11 +13,12 @@ import { StatusComponent } from 'src/app/shared/components/status/status.compone
 import { MatDialog } from '@angular/material/dialog';
 import { ManageOrderComponent } from './manage-order/manage-order.component';
 import { Status } from 'src/app/shared/components/status/status.type';
+import { LetDirective } from '@ngrx/component';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, StatusComponent],
+  imports: [CommonModule, ReactiveFormsModule, StatusComponent, LetDirective],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   DestroyRef,
   ElementRef,
@@ -25,6 +26,8 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { OrderCreated } from 'src/app/core/models/order-created.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { LetDirective } from '@ngrx/component';
+import { TextInputComponent } from 'src/app/shared/components/text-input/text-input.component';
 
 @Component({
   selector: 'app-order-checkout',
@@ -34,6 +37,8 @@ import { Router } from '@angular/router';
     OrderSummaryComponent,
     ReactiveFormsModule,
     TranslocoPipe,
+    LetDirective,
+    TextInputComponent,
   ],
   templateUrl: './order-checkout.component.html',
   styleUrl: './order-checkout.component.scss',
@@ -41,6 +46,7 @@ import { Router } from '@angular/router';
 })
 export class OrderCheckoutComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
   private breadcrumbService = inject(BreadcrumbService);
   private translocoService = inject(TranslocoService);
   private router = inject(Router);
@@ -126,9 +132,14 @@ export class OrderCheckoutComponent implements OnInit {
   async submitOrder(): Promise<void> {
     try {
       this.emailFormField.markAllAsTouched();
-      this.emailFormField.updateValueAndValidity();
+      this.cdr.detectChanges();
       if (!this.emailFormField.valid) {
-        alert('Please fill all required fields');
+        alert(
+          this.translocoService.getActiveLang() === 'en'
+            ? 'Please fill all required fields'
+            : 'Proszę wypełnić wszystkie wymagane pola'
+        );
+        this.shoppingCartService.navigateToErrors();
         return;
       }
 
@@ -142,7 +153,11 @@ export class OrderCheckoutComponent implements OnInit {
       if (payment) {
         const errorElement = document.getElementById('payment-errors');
         if (errorElement) {
-          alert('Please enter valid payment information.');
+          alert(
+            this.translocoService.getActiveLang() === 'en'
+              ? 'Please enter valid payment information'
+              : 'Proszę podać prawidłowe dane do płatności'
+          );
           return;
         }
       }
@@ -169,13 +184,17 @@ export class OrderCheckoutComponent implements OnInit {
             message.includes('Could not create order'))
         ) {
           alert(
-            'Could not realize your order - clearing basket. Please complete your shopping cart again.'
+            this.translocoService.getActiveLang() === 'en'
+              ? 'Invalid request - clearing basket. Please complete your shopping cart again'
+              : 'Nieprawidłowe żądanie - czyszczenie koszyka. Proszę wypełnić koszyk ponownie'
           );
           this.router.navigate(['/']);
           this.shoppingCartService.clearBasket();
         } else {
           alert(
-            'Failed with order submit. Please contact administrator. You can find contact information on the bottom of the page.'
+            this.translocoService.getActiveLang() === 'en'
+              ? 'Failed with order submit. Please contact administrator. You can find contact information on the bottom of the page.'
+              : 'Nie udało się przesłać zamówienia. Skontaktuj się z administratorem. Dane kontaktowe znajdziesz na dole strony.'
           );
         }
       }
@@ -201,6 +220,8 @@ export class OrderCheckoutComponent implements OnInit {
   }
 
   private getValidReturnUrl(orderCreated: OrderCreated): string {
-    return `${window.location.href}/confirm?orderCustomerId=${orderCreated.orderCustomerId}`;
+    return `${window.location.href}/confirm?orderCustomerId=${
+      orderCreated.orderCustomerId
+    }&lang=${this.translocoService.getActiveLang()}`;
   }
 }
