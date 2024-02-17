@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Injectable, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
@@ -17,7 +17,6 @@ import {
 import { BasketItems, FormFieldData, OrderPreview } from 'src/app/core/models';
 import { OrderCreated } from 'src/app/core/models/order-created.interface';
 import { OrderPaymentIntent } from 'src/app/core/models/order-payment-intent.interface';
-import { API_URL } from 'src/app/core/tokens/api-url.token';
 
 type PromoCodes = Record<string, string>;
 
@@ -29,7 +28,6 @@ type CategoryFormFieldsData = Record<string, FormFieldData[]>;
 export class ShoppingCartService {
   private readonly BASKET_KEY = 'basket';
   private http = inject(HttpClient);
-  private baseUrl = inject(API_URL);
   private translocoService = inject(TranslocoService);
   private router = inject(Router);
 
@@ -175,7 +173,7 @@ export class ShoppingCartService {
 
   createOrderPaymentIntent(): Observable<OrderPaymentIntent> {
     return this.http
-      .post<OrderPaymentIntent>(`${this.baseUrl}/payments/intent`, {
+      .post<OrderPaymentIntent>('payments/intent', {
         basketItems: this.basket,
         promoCodes: this.promoCodes,
       })
@@ -191,7 +189,7 @@ export class ShoppingCartService {
   }
 
   createOrder(email: string): Observable<OrderCreated> {
-    return this.http.post<OrderCreated>(`${this.baseUrl}/orders`, {
+    return this.http.post<OrderCreated>(`orders`, {
       basketItems: this.basket,
       promoCodes: this.promoCodes,
       categoryFormFieldsData: this.categoryFormFieldsData,
@@ -222,7 +220,7 @@ export class ShoppingCartService {
 
   private getOrderPreview(): Observable<OrderPreview> {
     return this.http
-      .post<OrderPreview>(`${this.baseUrl}/orders/preview`, {
+      .post<OrderPreview>(`orders/preview`, {
         basketItems: this.basket,
         promoCodes: this.promoCodes,
         language: this.translocoService.getActiveLang(),

@@ -44,9 +44,11 @@ export class CategoryOrderFormComponent {
 
   private updateForm(form: FormGroup) {
     this.form = form;
+
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+
     this.subscription = form
       .get('promoCode')
       ?.valueChanges.pipe(

@@ -16,6 +16,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { OrderPreviewFormService } from './order-preview-form.service';
 import { LetDirective } from '@ngrx/component';
 import { FormGroup } from '@angular/forms';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-order-preview',
@@ -37,13 +38,15 @@ export class OrderPreviewComponent implements OnInit {
   private breadcrumbService = inject(BreadcrumbService);
   private translocoService = inject(TranslocoService);
   private cdr = inject(ChangeDetectorRef);
+  private orderForm: FormGroup | null = null;
 
   orderPreview$ = this.shoppingCartService.orderPreview$;
-  orderForm: FormGroup | null = null;
+  orderForm$ = this.orderPreviewFormService.formChanged$.pipe(
+    tap((form) => (this.orderForm = form))
+  );
 
   ngOnInit(): void {
     this.updateBreadcrumb();
-    this.initOrderFormUpdate();
     window.scrollTo(0, 0);
   }
 
@@ -54,14 +57,6 @@ export class OrderPreviewComponent implements OnInit {
       .subscribe((value) =>
         this.breadcrumbService.set('@shopping-cart', value)
       );
-  }
-
-  private initOrderFormUpdate() {
-    this.orderPreviewFormService.formChanged$
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((form) => {
-        this.orderForm = form;
-      });
   }
 
   onPromoCodeChange(categoryId: string, promoCode: string): void {

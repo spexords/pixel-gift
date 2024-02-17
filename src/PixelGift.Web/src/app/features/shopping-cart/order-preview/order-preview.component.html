@@ -1,4 +1,6 @@
-<ng-container *ngrxLet="orderPreview$ as orderPreview">
+<ng-container
+  *ngrxLet="{ orderPreview: orderPreview$, orderForm: orderForm$ } as data"
+>
   <section>
     <h2>
       {{ "shopping-cart.header" | transloco }}
@@ -7,16 +9,17 @@
       }}</span>
     </h2>
 
-    @if(orderPreview.orderCategories.length > 0) { @for(orderCategory of
-    orderPreview.orderCategories; track orderCategory.id; let index = $index) {
+    @if(data.orderPreview.orderCategories.length > 0) { @for(orderCategory of
+    data.orderPreview.orderCategories; track orderCategory.id; let index =
+    $index) {
     <p class="category-order-info">
       {{ "shopping-cart.order" | transloco }}#{{ index + 1 }} -
       {{ orderCategory.name | uppercase }}
     </p>
-    @if(orderForm) {
+    @if(data.orderForm) {
     <app-category-order-item
       [orderCategory]="orderCategory"
-      [orderCategoryForm]="$any(orderForm.get(orderCategory.id))"
+      [orderCategoryForm]="$any(data.orderForm.get(orderCategory.id))"
       (promoCodeChanged)="onPromoCodeChange(orderCategory.id, $event)"
     />
     } } } @else {
@@ -25,10 +28,10 @@
     </div>
     }
   </section>
-  @if(orderPreview.orderCategories.length > 0) {
+  @if(data.orderPreview.orderCategories.length > 0) {
   <app-order-summary
     (clicked)="onSummaryClick()"
-    [orderSummary]="orderPreview.orderSummary"
+    [orderSummary]="data.orderPreview.orderSummary"
   />
   }
 </ng-container>

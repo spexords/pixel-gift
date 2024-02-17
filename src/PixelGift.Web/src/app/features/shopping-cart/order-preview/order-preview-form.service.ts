@@ -14,10 +14,10 @@ export class OrderPreviewFormService {
   formChanged$ = this.formSource.asObservable();
 
   constructor() {
-    this.updateFormIfChanged();
+    this.updateFormIfOrderPreviewChanged();
   }
 
-  updateFormIfChanged(): void {
+  updateFormIfOrderPreviewChanged(): void {
     this.shoppingCartService.orderPreview$
       .pipe(distinctUntilChanged(compareOrderPreview))
       .subscribe((orderPreview) => {

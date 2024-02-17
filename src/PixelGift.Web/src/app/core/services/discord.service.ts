@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { DISCORD_INVITE_URL } from '../tokens/discord-invite-url.token';
+import { DISCORD_INVITE_URL } from '../tokens';
 
 @Injectable({
   providedIn: 'root',

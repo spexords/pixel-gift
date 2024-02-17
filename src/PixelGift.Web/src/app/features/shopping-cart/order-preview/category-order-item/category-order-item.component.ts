@@ -21,7 +21,6 @@ import { FormGroup } from '@angular/forms';
   ],
   templateUrl: './category-order-item.component.html',
   styleUrl: './category-order-item.component.scss',
-  //changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryOrderItemComponent {
   @Input({ required: true }) orderCategory!: OrderCategory;

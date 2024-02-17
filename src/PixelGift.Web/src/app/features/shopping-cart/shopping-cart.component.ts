@@ -11,12 +11,10 @@ import { RouterOutlet } from '@angular/router';
     CommonModule,
     NavBreadcrumbComponent,
     FooterComponent,
-    RouterOutlet
+    RouterOutlet,
   ],
   templateUrl: './shopping-cart.component.html',
   styleUrl: './shopping-cart.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ShoppingCartComponent {
-
-}
+export class ShoppingCartComponent {}
