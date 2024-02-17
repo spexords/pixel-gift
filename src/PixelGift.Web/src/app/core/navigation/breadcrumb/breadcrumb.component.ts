@@ -4,13 +4,13 @@ import { BreadcrumbModule, BreadcrumbService } from 'xng-breadcrumb';
 import { LangSwitcherComponent } from 'src/app/shared/components/lang-switcher/lang-switcher.component';
 
 @Component({
-  selector: 'app-nav-breadcrumb',
+  selector: 'app-breadcrumb',
   standalone: true,
   imports: [CommonModule, BreadcrumbModule, LangSwitcherComponent],
-  templateUrl: './nav-breadcrumb.component.html',
-  styleUrl: './nav-breadcrumb.component.scss',
+  templateUrl: './breadcrumb.component.html',
+  styleUrl: './breadcrumb.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NavBreadcrumbComponent {
+export class BreadcrumbComponent {
   bcService = inject(BreadcrumbService);
 }

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslocoPipe } from '@ngneat/transloco';
-import { NavbarService } from 'src/app/core/navbar/navbar.service';
+import { NavbarService } from 'src/app/core/navigation/navbar/navbar.service';
 
 @Component({
   selector: 'app-jumbotron',

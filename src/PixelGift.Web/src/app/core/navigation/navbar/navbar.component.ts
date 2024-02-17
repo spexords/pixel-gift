@@ -6,12 +6,12 @@ import {
   inject,
 } from '@angular/core';
 import { ItemCardComponent } from 'src/app/features/home/gift-store/store-items/item-card/item-card.component';
-import { LangSwitcherComponent } from '../../shared/components/lang-switcher/lang-switcher.component';
 import { NavbarService } from './navbar.service';
 import { TranslocoPipe } from '@ngneat/transloco';
 import { CartComponent } from './cart/cart.component';
 import { RouterLink } from '@angular/router';
-import { DiscordService } from '../services/discord.service';
+import { LangSwitcherComponent } from 'src/app/shared/components/lang-switcher/lang-switcher.component';
+import { DiscordService } from '../../services/discord.service';
 
 @Component({
   selector: 'app-navbar',

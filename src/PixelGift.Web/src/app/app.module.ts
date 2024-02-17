@@ -5,7 +5,6 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './features/home/home.component';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { TranslocoRootModule } from './transloco-root.module';
-import { NavbarComponent } from './core/navbar/navbar.component';
 import { FooterComponent } from './core/footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from 'src/environments/environment';
@@ -14,6 +13,7 @@ import { BreadcrumbModule } from 'xng-breadcrumb';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { API_URL, DISCORD_INVITE_URL } from './core/tokens';
 import { baseUrlInterceptor, loadingInterceptor } from './core/interceptors';
+import { NavbarComponent } from './core/navigation/navbar/navbar.component';
 
 @NgModule({
   declarations: [AppComponent],

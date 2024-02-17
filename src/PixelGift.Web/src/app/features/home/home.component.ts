@@ -14,10 +14,10 @@ import { InfoCardsComponent } from './info-cards/info-cards.component';
 import { GiftStoreComponent } from './gift-store/gift-store.component';
 import { CustomerFeedbacksComponent } from './customer-feedbacks/customer-feedbacks.component';
 import { FaqComponent } from './faq/faq.component';
-import { NavbarService } from 'src/app/core/navbar/navbar.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NavbarComponent } from 'src/app/core/navbar/navbar.component';
 import { FooterComponent } from 'src/app/core/footer/footer.component';
+import { NavbarComponent } from 'src/app/core/navigation/navbar/navbar.component';
+import { NavbarService } from 'src/app/core/navigation/navbar/navbar.service';
 
 @Component({
   selector: 'app-home',
