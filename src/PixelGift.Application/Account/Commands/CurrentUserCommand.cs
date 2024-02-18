@@ -1,6 +1,6 @@
-﻿using MediatR;
+﻿using PixelGift.Application.Abstractions.Commands;
 using PixelGift.Core.Dtos;
 
 namespace PixelGift.Application.Account.Commands;
 
-public record CurrentUserCommand() : IRequest<UserDto>;
+public record CurrentUserCommand() : ICommand<UserDto>;

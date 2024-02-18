@@ -1,6 +1,6 @@
-﻿using MediatR;
+﻿using PixelGift.Application.Abstractions.Queries;
 using PixelGift.Application.Categories.Dtos;
 
 namespace PixelGift.Application.Categories.Queries;
 
-public record GetCategoriesQuery : IRequest<IEnumerable<CategoryDto>>;
+public record GetCategoriesQuery : IQuery<IEnumerable<CategoryDto>>;

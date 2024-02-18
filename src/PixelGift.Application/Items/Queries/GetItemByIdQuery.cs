@@ -1,6 +1,6 @@
-﻿using MediatR;
+﻿using PixelGift.Application.Abstractions.Queries;
 using PixelGift.Application.Items.Dtos;
 
 namespace PixelGift.Application.Items.Queries;
 
-public record GetItemByIdQuery(Guid Id) : IRequest<DetailedItemAdminDto>;
+public record GetItemByIdQuery(Guid Id) : IQuery<DetailedItemAdminDto>;

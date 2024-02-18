@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PixelGift.Application.Abstractions.Commands;
 using PixelGift.Application.PromoCodes.Commands;
 using PixelGift.Core.Entities;
 using PixelGift.Core.Exceptions;
@@ -9,7 +10,7 @@ using System.Net;
 
 namespace PixelGift.Application.PromoCodes.Handlers;
 
-public class CreatePromoCodeHandler : IRequestHandler<CreatePromoCodeCommand, Unit>
+public class CreatePromoCodeHandler : ICommandHandler<CreatePromoCodeCommand, Unit>
 {
     private readonly PixelGiftContext _context;
     private readonly ILogger<CreatePromoCodeHandler> _logger;
@@ -28,8 +29,6 @@ public class CreatePromoCodeHandler : IRequestHandler<CreatePromoCodeCommand, Un
 
         if (codeExists)
         {
-            _logger.LogWarning("Attempted to create a {item} that already exists - {code}", nameof(PromoCode), request.Code);
-
             throw new BaseApiException(HttpStatusCode.BadRequest, new { Message = $"{nameof(PromoCode)}: {request.Code} already exsists" });
         }
 
@@ -37,15 +36,11 @@ public class CreatePromoCodeHandler : IRequestHandler<CreatePromoCodeCommand, Un
 
         if(!categoryExists)
         {
-            _logger.LogWarning("Could not find {item} - id: {id}", nameof(Category), request.CategoryId);
-
             throw new BaseApiException(HttpStatusCode.BadRequest, new { Message = $"Could not find {nameof(Category)}: {request.CategoryId}" });
         }
 
         if(!(request.Discount > 0 && request.Discount < 1.0m))
         {
-            _logger.LogWarning("Invalid {promo} discount value", nameof(PromoCode));
-
             throw new BaseApiException(HttpStatusCode.BadRequest, new { Message = $"Invalid {nameof(PromoCode)} discount value - it should be between 0 and 1.0" });
         }
 
@@ -62,7 +57,7 @@ public class CreatePromoCodeHandler : IRequestHandler<CreatePromoCodeCommand, Un
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation($"{nameof(PromoCode)} with id {request.Id} created successfully.");
+        _logger.LogInformation("{entity} with id {request.Id} created successfully.", nameof(PromoCode));
 
         return Unit.Value;
     }

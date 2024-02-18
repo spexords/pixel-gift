@@ -1,13 +1,14 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using PixelGift.Application.Abstractions.Commands;
 using PixelGift.Application.Payments.Commands;
 using PixelGift.Core.Interfaces;
 using Stripe;
 
 namespace PixelGift.Application.Payments.Handlers;
 
-public class StripeOrderPaidWebhookHandler : IRequestHandler<StripeOrderPaidWebhookCommand, Unit>
+public class StripeOrderPaidWebhookHandler : ICommandHandler<StripeOrderPaidWebhookCommand, Unit>
 {
     private readonly ILogger<StripeOrderPaidWebhookHandler> _logger;
     private readonly IConfiguration _config;

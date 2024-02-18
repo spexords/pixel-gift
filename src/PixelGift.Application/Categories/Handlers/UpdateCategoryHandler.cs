@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PixelGift.Application.Abstractions.Commands;
 using PixelGift.Application.Categories.Commands;
 using PixelGift.Core.Entities;
 using PixelGift.Core.Exceptions;
@@ -9,7 +10,7 @@ using System.Net;
 
 namespace PixelGift.Application.Categories.Handlers;
 
-public class UpdateCategoryHandler : IRequestHandler<UpdateCategoryCommand, Unit>
+public class UpdateCategoryHandler : ICommandHandler<UpdateCategoryCommand, Unit>
 {
     private readonly PixelGiftContext _context;
     private readonly ILogger<UpdateCategoryHandler> _logger;

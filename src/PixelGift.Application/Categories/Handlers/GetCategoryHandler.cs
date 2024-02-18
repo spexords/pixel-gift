@@ -1,6 +1,6 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PixelGift.Application.Abstractions.Queries;
 using PixelGift.Application.Categories.Dtos;
 using PixelGift.Application.Categories.Queries;
 using PixelGift.Core.Entities;
@@ -10,7 +10,7 @@ using System.Net;
 
 namespace PixelGift.Application.Categories.Handlers;
 
-public class GetCategoryHandler : IRequestHandler<GetCategoryQuery, DetailedCategoryDto>
+public class GetCategoryHandler : IQueryHandler<GetCategoryQuery, DetailedCategoryDto>
 {
     private readonly PixelGiftContext _context;
     private readonly ILogger<GetCategoryHandler> _logger;

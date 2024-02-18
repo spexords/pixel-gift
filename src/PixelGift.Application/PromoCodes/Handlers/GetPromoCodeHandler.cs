@@ -1,5 +1,5 @@
-﻿using MediatR;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
+using PixelGift.Application.Abstractions.Queries;
 using PixelGift.Application.PromoCodes.Dtos;
 using PixelGift.Application.PromoCodes.Queries;
 using PixelGift.Core.Entities;
@@ -9,7 +9,7 @@ using System.Net;
 
 namespace PixelGift.Application.PromoCodes.Handlers;
 
-public class GetPromoCodeHandler : IRequestHandler<GetPromoCodeQuery, DetailedPromoCodeDto>
+public class GetPromoCodeHandler : IQueryHandler<GetPromoCodeQuery, DetailedPromoCodeDto>
 {
     private readonly PixelGiftContext _context;
     private readonly ILogger<GetPromoCodeHandler> _logger;
@@ -28,7 +28,6 @@ public class GetPromoCodeHandler : IRequestHandler<GetPromoCodeQuery, DetailedPr
 
         if (promoCode is null)
         {
-            _logger.LogWarning($"Category with Id {request.Id} not found.");
             throw new BaseApiException(HttpStatusCode.NotFound, new { Message = $"Could not find {nameof(PromoCode)} with id: {request.Id}." });
         }
 

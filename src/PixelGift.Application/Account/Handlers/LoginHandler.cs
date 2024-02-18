@@ -1,4 +1,4 @@
-﻿using MediatR;
+﻿using PixelGift.Application.Abstractions.Commands;
 using PixelGift.Application.Account.Commands;
 using PixelGift.Core.Dtos;
 using PixelGift.Core.Exceptions;
@@ -7,7 +7,7 @@ using System.Net;
 
 namespace PixelGift.Application.Account.Handlers;
 
-public class LoginHandler : IRequestHandler<LoginCommand, UserDto>
+public class LoginHandler : ICommandHandler<LoginCommand, UserDto>
 {
     private readonly IUserService _userService;
 

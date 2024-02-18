@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PixelGift.Application.Abstractions.Commands;
 using PixelGift.Application.Orders.Commands;
 using PixelGift.Core.Entities.OrderAggregate;
 using PixelGift.Core.Exceptions;
@@ -9,7 +10,7 @@ using System.Net;
 
 namespace PixelGift.Application.Orders.Handlers;
 
-public class UpdateOrderHandler : IRequestHandler<UpdateOrderCommand, Unit>
+public class UpdateOrderHandler : ICommandHandler<UpdateOrderCommand, Unit>
 {
     private readonly PixelGiftContext _context;
     private readonly ILogger<UpdateOrderHandler> _logger;

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PixelGift.Application.Abstractions.Commands;
 using PixelGift.Application.PromoCodes.Commands;
 using PixelGift.Core.Entities;
 using PixelGift.Core.Exceptions;
@@ -9,7 +10,7 @@ using System.Net;
 
 namespace PixelGift.Application.PromoCodes.Handlers;
 
-public class UpdatePromoCodeHandler : IRequestHandler<UpdatePromoCodeCommand, Unit>
+public class UpdatePromoCodeHandler : ICommandHandler<UpdatePromoCodeCommand, Unit>
 {
     private readonly PixelGiftContext _context;
     private readonly ILogger<UpdatePromoCodeHandler> _logger;
@@ -26,7 +27,6 @@ public class UpdatePromoCodeHandler : IRequestHandler<UpdatePromoCodeCommand, Un
 
         if (promoCode is null)
         {
-            _logger.LogWarning($"Could not find {nameof(PromoCode)} with id: {request.Id}");
             throw new BaseApiException(HttpStatusCode.NotFound, new { Message = $"Could not find ${nameof(PromoCode)} with id: {request.Id}." });
         }
 
@@ -34,15 +34,11 @@ public class UpdatePromoCodeHandler : IRequestHandler<UpdatePromoCodeCommand, Un
 
         if (!categoryExists)
         {
-            _logger.LogWarning("Could not find {item} - id: {id}", nameof(Category), request.CategoryId);
-
             throw new BaseApiException(HttpStatusCode.BadRequest, new { Message = $"Could not find {nameof(Category)}: {request.CategoryId}" });
         }
 
         if (!(request.Discount > 0 && request.Discount < 1.0m))
         {
-            _logger.LogWarning("Invalid {promo} discount value", nameof(PromoCode));
-
             throw new BaseApiException(HttpStatusCode.BadRequest, new { Message = $"Invalid {nameof(PromoCode)} discount value - it should be between 0 and 1.0" });
         }
 

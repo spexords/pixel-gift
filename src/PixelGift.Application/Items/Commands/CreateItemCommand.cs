@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using PixelGift.Application.Abstractions.Commands;
 
 namespace PixelGift.Application.Items.Commands;
 
@@ -9,4 +10,4 @@ public record CreateItemCommand(
     string Base64Image, 
     int Quantity, 
     decimal UnitPrice,
-    Guid CategoryId) : IRequest<Unit>;
+    Guid CategoryId) : ICommand<Unit>;

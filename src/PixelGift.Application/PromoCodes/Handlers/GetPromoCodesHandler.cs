@@ -1,13 +1,13 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PixelGift.Application.Abstractions.Queries;
 using PixelGift.Application.PromoCodes.Dtos;
 using PixelGift.Application.PromoCodes.Queries;
 using PixelGift.Infrastructure.Data;
 
 namespace PixelGift.Application.PromoCodes.Handlers;
 
-public class GetPromoCodesHandler : IRequestHandler<GetPromoCodesQuery, IEnumerable<PromoCodeDto>>
+public class GetPromoCodesHandler : IQueryHandler<GetPromoCodesQuery, IEnumerable<PromoCodeDto>>
 {
     private readonly PixelGiftContext _context;
     private readonly ILogger<GetPromoCodesHandler> _logger;

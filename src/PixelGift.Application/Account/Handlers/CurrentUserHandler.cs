@@ -1,11 +1,11 @@
-﻿using MediatR;
+﻿using PixelGift.Application.Abstractions.Commands;
 using PixelGift.Application.Account.Commands;
 using PixelGift.Core.Dtos;
 using PixelGift.Core.Interfaces;
 
 namespace PixelGift.Application.Account.Handlers;
 
-public class CurrentUserHandler : IRequestHandler<CurrentUserCommand, UserDto>
+public class CurrentUserHandler : ICommandHandler<CurrentUserCommand, UserDto>
 {
     private readonly IUserService _userService;
 

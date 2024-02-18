@@ -1,6 +1,6 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PixelGift.Application.Abstractions.Queries;
 using PixelGift.Application.Items.Dtos;
 using PixelGift.Application.Items.Queries;
 using PixelGift.Core.Entities;
@@ -10,7 +10,7 @@ using System.Net;
 
 namespace PixelGift.Application.Items.Handlers;
 
-public class GetItemByIdHandler : IRequestHandler<GetItemByIdQuery, DetailedItemAdminDto>
+public class GetItemByIdHandler : IQueryHandler<GetItemByIdQuery, DetailedItemAdminDto>
 {
     private readonly PixelGiftContext _context;
     private readonly ILogger<GetItemByIdHandler> _logger;

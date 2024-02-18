@@ -1,10 +1,11 @@
 ﻿using MediatR;
+using PixelGift.Application.Abstractions.Commands;
 using PixelGift.Application.Account.Commands;
 using PixelGift.Core.Interfaces;
 
 namespace PixelGift.Application.Account.Handlers;
 
-public class ChangePasswordHandler : IRequestHandler<ChangePasswordCommand, Unit>
+public class ChangePasswordHandler : ICommandHandler<ChangePasswordCommand, Unit>
 {
     private readonly IUserService _userService;
 

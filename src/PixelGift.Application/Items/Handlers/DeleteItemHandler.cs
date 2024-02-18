@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
+using PixelGift.Application.Abstractions.Commands;
 using PixelGift.Application.Items.Commands;
 using PixelGift.Core.Entities;
 using PixelGift.Core.Exceptions;
@@ -8,7 +9,7 @@ using System.Net;
 
 namespace PixelGift.Application.Items.Handlers;
 
-public class DeleteItemHandler : IRequestHandler<DeleteItemCommand, Unit>
+public class DeleteItemHandler : ICommandHandler<DeleteItemCommand, Unit>
 {
     private readonly PixelGiftContext _context;
     private readonly ILogger<CreateItemHandler> _logger;

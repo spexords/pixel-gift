@@ -1,6 +1,6 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PixelGift.Application.Abstractions.Queries;
 using PixelGift.Application.Oders.Queries;
 using PixelGift.Application.Orders.Dtos;
 using PixelGift.Core.Entities.OrderAggregate;
@@ -11,7 +11,7 @@ using System.Text.Json;
 
 namespace PixelGift.Application.Orders.Handlers;
 
-public class GetOrderHandler : IRequestHandler<GetOrderQuery, DetailedOrderDto>
+public class GetOrderHandler : IQueryHandler<GetOrderQuery, DetailedOrderDto>
 {
     private readonly PixelGiftContext _context;
     private readonly ILogger<GetOrderHandler> _logger;

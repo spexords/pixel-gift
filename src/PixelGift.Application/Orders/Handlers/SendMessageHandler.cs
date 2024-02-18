@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PixelGift.Application.Abstractions.Commands;
 using PixelGift.Application.Orders.Commands;
 using PixelGift.Core.Entities;
 using PixelGift.Core.Entities.OrderAggregate;
@@ -11,7 +12,7 @@ using System.Net;
 
 namespace PixelGift.Application.Orders.Handlers;
 
-public class SendMessageHandler : IRequestHandler<SendMessageCommand, Unit>
+public class SendMessageHandler : ICommandHandler<SendMessageCommand, Unit>
 {
     private readonly PixelGiftContext _context;
     private readonly ILogger<SendMessageHandler> _logger;

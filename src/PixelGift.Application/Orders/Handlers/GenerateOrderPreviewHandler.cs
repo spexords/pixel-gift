@@ -1,22 +1,18 @@
-﻿using Azure.Core;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PixelGift.Application.Abstractions.Commands;
 using PixelGift.Application.Categories.Dtos;
 using PixelGift.Application.Orders.Commands;
 using PixelGift.Application.Orders.Dtos;
-using PixelGift.Application.PromoCodes.Dtos;
-using PixelGift.Core.Dtos;
 using PixelGift.Core.Entities;
 using PixelGift.Core.Exceptions;
 using PixelGift.Core.Interfaces;
 using PixelGift.Infrastructure.Data;
 using System.Net;
-using System.Threading;
 
 namespace PixelGift.Application.Orders.Handlers;
 
-public class GenerateOrderPreviewHandler : IRequestHandler<GenerateOrderPreviewCommand, OrderPreviewDto>
+public class GenerateOrderPreviewHandler : ICommandHandler<GenerateOrderPreviewCommand, OrderPreviewDto>
 {
     private readonly PixelGiftContext _context;
     private readonly ILogger<GenerateOrderPreviewCommand> _logger;

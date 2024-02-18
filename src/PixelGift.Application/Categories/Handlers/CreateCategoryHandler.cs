@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using PixelGift.Application.Abstractions.Commands;
 using PixelGift.Application.Categories.Commands;
 using PixelGift.Core.Entities;
 using PixelGift.Core.Exceptions;
@@ -10,7 +10,7 @@ using System.Net;
 
 namespace PixelGift.Application.Categories.Handlers;
 
-public class CreateCategoryHandler : IRequestHandler<CreateCategoryCommand, Unit>
+public class CreateCategoryHandler : ICommandHandler<CreateCategoryCommand, Unit>
 {
     private readonly PixelGiftContext _context;
     private readonly ILogger<CreateCategoryCommand> _logger;
@@ -30,8 +30,6 @@ public class CreateCategoryHandler : IRequestHandler<CreateCategoryCommand, Unit
 
         if (categoryExists)
         {
-            _logger.LogWarning("Attempted to create a category that already exists. Category Name: {CategoryName}", request.Name);
-
             throw new BaseApiException(HttpStatusCode.BadRequest, new { Message = $"Category: {request.Name} already exsists" });
         }
 

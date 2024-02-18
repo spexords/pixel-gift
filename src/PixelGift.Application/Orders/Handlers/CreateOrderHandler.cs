@@ -1,6 +1,6 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PixelGift.Application.Abstractions.Commands;
 using PixelGift.Application.Orders.Commands;
 using PixelGift.Application.Orders.Dtos;
 using PixelGift.Core.Entities;
@@ -13,7 +13,7 @@ using System.Text.Json;
 
 namespace PixelGift.Application.Orders.Handlers;
 
-public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, OrderCreated>
+public class CreateOrderHandler : ICommandHandler<CreateOrderCommand, OrderCreated>
 {
     private readonly PixelGiftContext _context;
     private readonly IOrderService _orderService;

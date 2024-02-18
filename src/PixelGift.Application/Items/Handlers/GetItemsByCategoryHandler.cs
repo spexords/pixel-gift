@@ -1,6 +1,6 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PixelGift.Application.Abstractions.Queries;
 using PixelGift.Application.Items.Dtos;
 using PixelGift.Application.Items.Queries;
 using PixelGift.Core.Exceptions;
@@ -9,7 +9,7 @@ using System.Net;
 
 namespace PixelGift.Application.Items.Handlers;
 
-public class GetItemsByCategoryHandler : IRequestHandler<GetItemsByCategoryQuery, IEnumerable<ItemDto>>
+public class GetItemsByCategoryHandler : IQueryHandler<GetItemsByCategoryQuery, IEnumerable<ItemDto>>
 {
     private readonly PixelGiftContext _context;
     private readonly ILogger<GetItemsByCategoryHandler> _logger;

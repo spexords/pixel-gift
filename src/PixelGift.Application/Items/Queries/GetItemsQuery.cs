@@ -1,6 +1,6 @@
-﻿using MediatR;
+﻿using PixelGift.Application.Abstractions.Queries;
 using PixelGift.Application.Items.Dtos;
 
 namespace PixelGift.Application.Items.Queries;
 
-public record GetItemsQuery() : IRequest<IEnumerable<ItemAdminDto>>;
+public record GetItemsQuery() : IQuery<IEnumerable<ItemAdminDto>>;

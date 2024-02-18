@@ -1,6 +1,6 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PixelGift.Application.Abstractions.Commands;
 using PixelGift.Application.Payments.Commands;
 using PixelGift.Core.Dtos;
 using PixelGift.Core.Interfaces;
@@ -8,7 +8,7 @@ using PixelGift.Infrastructure.Data;
 
 namespace PixelGift.Application.Payments.Handlers;
 
-public class CreateOrderIntentHandler : IRequestHandler<CreateOrderPaymentIntentCommand, OrderPaymentIntent>
+public class CreateOrderIntentHandler : ICommandHandler<CreateOrderPaymentIntentCommand, OrderPaymentIntent>
 {
     private readonly IPaymentService _paymentService;
     private readonly PixelGiftContext _context;

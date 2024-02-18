@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
+using PixelGift.Application.Abstractions.Commands;
 using PixelGift.Application.Categories.Commands;
 using PixelGift.Core.Entities;
 using PixelGift.Core.Exceptions;
@@ -8,7 +9,7 @@ using System.Net;
 
 namespace PixelGift.Application.Categories.Handlers;
 
-public class DeleteCategoryHandler : IRequestHandler<DeleteCategoryCommand, Unit>
+public class DeleteCategoryHandler : ICommandHandler<DeleteCategoryCommand, Unit>
 {
     private readonly PixelGiftContext _context;
     private readonly ILogger<DeleteCategoryHandler> _logger;
@@ -27,7 +28,6 @@ public class DeleteCategoryHandler : IRequestHandler<DeleteCategoryCommand, Unit
 
         if (category is null)
         {
-            _logger.LogWarning($"Could not find {nameof(Category)} with id: {request.Id}");
             throw new BaseApiException(HttpStatusCode.NotFound, new { Message = $"Could not find ${nameof(Category)} with id: {request.Id}." });
         }
 
