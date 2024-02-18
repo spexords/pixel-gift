@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using PixelGift.Application.Categories.Queries;
+using PixelGift.Application.Categories.GetCategories;
 using PixelGift.Core.Configuration;
 using PixelGift.Core.Interfaces;
 using PixelGift.Infrastructure.Data;
