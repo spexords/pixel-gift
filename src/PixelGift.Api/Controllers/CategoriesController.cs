@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PixelGift.Api.Attributes;
-using PixelGift.Application.Categories.CreateCategory;
-using PixelGift.Application.Categories.DeleteCategory;
-using PixelGift.Application.Categories.GetCategories;
-using PixelGift.Application.Categories.GetCategory;
-using PixelGift.Application.Categories.UpdateCategory;
+using PixelGift.Application.Categories.Commands.CreateCategory;
+using PixelGift.Application.Categories.Commands.DeleteCategory;
+using PixelGift.Application.Categories.Commands.UpdateCategory;
+using PixelGift.Application.Categories.Queries.GetCategories;
+using PixelGift.Application.Categories.Queries.GetCategory;
 using PixelGift.Core.Entities.Identity;
 
 namespace PixelGift.Api.Controllers;

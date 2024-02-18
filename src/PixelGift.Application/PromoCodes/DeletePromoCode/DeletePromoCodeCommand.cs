@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using PixelGift.Application.Abstractions.Commands;
+using PixelGift.Core.Messaging.Commands;
 
 namespace PixelGift.Application.PromoCodes.DeletePromoCode;
 

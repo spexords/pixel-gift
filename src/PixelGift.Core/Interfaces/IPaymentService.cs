@@ -10,9 +10,4 @@ public interface IPaymentService
         Dictionary<Guid, int> basketItems,
         Dictionary<Guid, string> promoCodes,
         CancellationToken cancellationToken);
-
-    public Task UpdateOrderPaymentSucceeded(string paymentIntentId, CancellationToken cancellationToken);
-
-    public Task UpdateOrderPaymentFailed(string paymentIntentId, CancellationToken cancellationToken);
-
 }

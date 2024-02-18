@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PixelGift.Application.Account.ChangePassword;
-using PixelGift.Application.Account.CurrentUser;
-using PixelGift.Application.Account.Login;
+using PixelGift.Application.Account.Commands.ChangePassword;
+using PixelGift.Application.Account.Commands.Login;
+using PixelGift.Application.Account.Commands.CurrentUser;
 
 namespace PixelGift.Api.Controllers;
 

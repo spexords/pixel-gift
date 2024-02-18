@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PixelGift.Api.Attributes;
-using PixelGift.Application.Orders.CreateOrder;
-using PixelGift.Application.Orders.GenerateOrderPreview;
-using PixelGift.Application.Orders.GetOrder;
-using PixelGift.Application.Orders.GetOrders;
-using PixelGift.Application.Orders.SendMessage;
-using PixelGift.Application.Orders.UpdateOrder;
+using PixelGift.Application.Orders.Commands.CreateOrder;
+using PixelGift.Application.Orders.Commands.GenerateOrderPreview;
+using PixelGift.Application.Orders.Commands.SendMessage;
+using PixelGift.Application.Orders.Commands.UpdateOrder;
+using PixelGift.Application.Orders.Queries.GetOrder;
+using PixelGift.Application.Orders.Queries.GetOrders;
 using PixelGift.Core.Entities.Identity;
 
 namespace PixelGift.Api.Controllers;

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using PixelGift.Application.Abstractions.Commands;
+using PixelGift.Core.Messaging.Commands;
 using PixelGift.Core.Entities;
 using PixelGift.Core.Exceptions;
 using PixelGift.Infrastructure.Data;

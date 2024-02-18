@@ -1,4 +1,4 @@
-﻿using PixelGift.Application.Abstractions.Queries;
+﻿using PixelGift.Core.Messaging.Queries;
 
 namespace PixelGift.Application.PromoCodes.GetPromoCode;
 

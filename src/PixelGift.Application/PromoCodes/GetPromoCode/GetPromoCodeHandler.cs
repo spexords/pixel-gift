@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using PixelGift.Application.Abstractions.Queries;
+using PixelGift.Core.Messaging.Queries;
 using PixelGift.Core.Entities;
 using PixelGift.Core.Exceptions;
 using PixelGift.Infrastructure.Data;

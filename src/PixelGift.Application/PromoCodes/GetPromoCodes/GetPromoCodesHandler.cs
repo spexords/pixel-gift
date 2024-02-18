@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using PixelGift.Application.Abstractions.Queries;
+using PixelGift.Core.Messaging.Queries;
 using PixelGift.Infrastructure.Data;
 
 namespace PixelGift.Application.PromoCodes.GetPromoCodes;
