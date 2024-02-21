@@ -29,9 +29,10 @@ export class LangSwitcherComponent implements OnInit {
   }
 
   setLang() {
-    const lang = window.localStorage.getItem('lang');
-    if (lang) {
-      this.transolocoService.setActiveLang(lang);
+    const activeLang = this.transolocoService.getActiveLang();
+    const destinationLang = window.localStorage.getItem('lang');
+    if (destinationLang && destinationLang !== activeLang) {
+      this.transolocoService.setActiveLang(destinationLang);
     }
     this.flag = flags[this.transolocoService.getActiveLang()];
   }

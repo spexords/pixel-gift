@@ -41,6 +41,8 @@ public class StripeOrderPaidWebhookHandler : ICommandHandler<StripeOrderPaidWebh
                 break;
         }
 
+        _logger.LogInformation("Stripe Payment handled");
+
         return Unit.Value;
     }
 }

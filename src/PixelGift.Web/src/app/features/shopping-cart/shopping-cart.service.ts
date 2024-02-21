@@ -8,6 +8,7 @@ import {
   Observable,
   catchError,
   combineLatest,
+  debounceTime,
   map,
   shareReplay,
   switchMap,
@@ -65,6 +66,7 @@ export class ShoppingCartService {
     this.basketUpdatedChanged$,
     this.promoCodesUpdatedChanged$,
   ]).pipe(
+    debounceTime(0),
     switchMap(() => this.getOrderPreview()),
     shareReplay()
   );
