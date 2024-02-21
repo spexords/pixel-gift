@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
-using PixelGift.Application.Payments.Commands;
-using Stripe;
+using PixelGift.Application.Payments.Commands.CreateOrderPaymentIntent;
+using PixelGift.Application.Payments.Commands.StripeOrderPaidWebhook;
 
 namespace PixelGift.Api.Controllers;
 

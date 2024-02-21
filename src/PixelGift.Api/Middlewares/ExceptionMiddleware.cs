@@ -1,6 +1,6 @@
 ﻿using PixelGift.Core.Exceptions;
-using System.Net.Mime;
 using System.Net;
+using System.Net.Mime;
 
 namespace PixelGift.Api.Middlewares;
 

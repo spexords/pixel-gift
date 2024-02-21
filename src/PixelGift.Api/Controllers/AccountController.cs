@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PixelGift.Application.Account.Commands;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using PixelGift.Application.Account.Commands.ChangePassword;
+using PixelGift.Application.Account.Commands.Login;
+using PixelGift.Application.Account.Commands.CurrentUser;
 
 namespace PixelGift.Api.Controllers;
 

@@ -27,3 +27,4 @@ export * from './order-search-params.interface';
 export * from './detailed-order-admin.interface';
 export * from './order-category-admin.interface';
 export * from './order-item-admin.interface';
+export * from './mail-message-request.interface';

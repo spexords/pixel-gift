@@ -2,7 +2,7 @@
   <img alt="store item icon" [src]="'data:image;base64,' + item.base64Image" />
 </div>
 <div class="content-wrapper">
-  <p class="price">${{ item.unitPrice }}</p>
+  <p class="price">{{ item.unitPrice }}PLN</p>
   <p class="name">{{ item.name }}</p>
   <button (click)="addPressed.emit(item.id)">
     {{ "buttons.cart" | transloco }}

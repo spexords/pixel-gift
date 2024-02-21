@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PixelGift.Api.Attributes;
-using PixelGift.Application.Items.Commands;
-using PixelGift.Application.Items.Queries;
+using PixelGift.Application.Items.Commands.CreateItem;
+using PixelGift.Application.Items.Commands.UpdateItem;
+using PixelGift.Application.Items.Commands.DeleteItem;
+using PixelGift.Application.Items.Queries.GetItemById;
+using PixelGift.Application.Items.Queries.GetItems;
+using PixelGift.Application.Items.Queries.GetItemsByCategory;
 using PixelGift.Core.Entities.Identity;
 
 namespace PixelGift.Api.Controllers;

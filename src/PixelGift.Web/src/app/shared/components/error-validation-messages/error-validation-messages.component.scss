@@ -1,0 +1,9 @@
+:host {
+  display: block;
+  margin-top: 0.25rem;
+  margin-left: 0.5rem;
+  & > .error-validation {
+    color: #db4e39;
+    font-size: 0.75rem;
+  }
+}

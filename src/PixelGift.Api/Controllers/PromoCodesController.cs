@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PixelGift.Api.Attributes;
-using PixelGift.Application.PromoCodes.Commands;
-using PixelGift.Application.PromoCodes.Queries;
+using PixelGift.Application.PromoCodes.CreatePromoCode;
+using PixelGift.Application.PromoCodes.DeletePromoCode;
+using PixelGift.Application.PromoCodes.GetPromoCode;
+using PixelGift.Application.PromoCodes.GetPromoCodes;
+using PixelGift.Application.PromoCodes.UpdatePromoCode;
 using PixelGift.Core.Entities.Identity;
 
 namespace PixelGift.Api.Controllers;

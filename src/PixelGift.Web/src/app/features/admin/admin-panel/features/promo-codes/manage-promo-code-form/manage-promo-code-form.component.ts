@@ -10,6 +10,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { PromoCodePayloadRequest } from 'src/app/core/models';
 import { AdminPanelService } from '../../../admin-panel.service';
+import { LetDirective } from '@ngrx/component';
 
 type PromoCodeForm = FormGroup<{
   id: FormControl<string | null>;
@@ -22,7 +23,7 @@ type PromoCodeForm = FormGroup<{
 @Component({
   selector: 'app-manage-promo-code-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, LetDirective],
   templateUrl: './manage-promo-code-form.component.html',
   styleUrl: './manage-promo-code-form.component.scss',
 })

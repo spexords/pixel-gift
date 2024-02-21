@@ -7,11 +7,12 @@ import { ItemAdmin } from 'src/app/core/models';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateItemComponent } from './create-item/create-item.component';
 import { UpdateItemComponent } from './update-item/update-item.component';
+import { LetDirective } from '@ngrx/component';
 
 @Component({
   selector: 'app-items',
   standalone: true,
-  imports: [CommonModule, EditableCardComponent, ConfirmationModalComponent],
+  imports: [CommonModule, EditableCardComponent, ConfirmationModalComponent, LetDirective],
   templateUrl: './items.component.html',
   styleUrl: './items.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

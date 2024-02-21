@@ -1,0 +1,13 @@
+<div class="field-wrapper">
+  <label [for]="label">{{ label }}</label>
+  <input
+    [id]="label"
+    [type]="type"
+    [disabled]="disabled"
+    (blur)="onTouch()"
+    [(ngModel)]="value"
+  />
+</div>
+@if(controlDir?.control?.touched && controlDir?.control?.errors) {
+<app-error-validation-messages [errors]="controlDir?.control?.errors" />
+}

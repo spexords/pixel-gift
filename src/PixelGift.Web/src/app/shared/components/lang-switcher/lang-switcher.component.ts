@@ -25,6 +25,15 @@ export class LangSwitcherComponent implements OnInit {
   flag!: Flag;
 
   ngOnInit(): void {
+    this.setLang();
+  }
+
+  setLang() {
+    const activeLang = this.transolocoService.getActiveLang();
+    const destinationLang = window.localStorage.getItem('lang');
+    if (destinationLang && destinationLang !== activeLang) {
+      this.transolocoService.setActiveLang(destinationLang);
+    }
     this.flag = flags[this.transolocoService.getActiveLang()];
   }
 
@@ -37,6 +46,7 @@ export class LangSwitcherComponent implements OnInit {
     if (lang !== activeLang) {
       this.transolocoService.setActiveLang(lang);
       this.flag = flags[lang];
+      window.localStorage.setItem('lang', lang);
     }
   }
 

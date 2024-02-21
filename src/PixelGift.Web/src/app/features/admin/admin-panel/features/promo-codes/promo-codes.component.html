@@ -1,4 +1,4 @@
-<ng-container *ngIf="promoCodes$ | async as promoCodes">
+<ng-container *ngrxLet="promoCodes$ as promoCodes">
   @for(promoCode of promoCodes; track promoCode.id) {
   <app-editable-card
     [menuItems]="existingItemMenuItems"

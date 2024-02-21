@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using PixelGift.Application.Categories.Queries;
+using PixelGift.Api.Behaviours;
+using PixelGift.Application.Categories.Queries.GetCategories;
 using PixelGift.Core.Configuration;
 using PixelGift.Core.Interfaces;
 using PixelGift.Infrastructure.Data;
@@ -32,6 +34,7 @@ public static class ApplicationServicesExtensions
         @this.AddDbContext<PixelGiftContext>(options => options.UseMySql(config.GetConnectionString("MySQL"), version, options => options.UseMicrosoftJson()));
 
         @this.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(GetCategoriesQuery).Assembly));
+        //@this.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionalBehaviour<,>));
         @this.AddHttpContextAccessor();
 
         //own services

@@ -1,4 +1,4 @@
-<ng-container *ngIf="header$ | async as header">
+<ng-container *ngrxLet="header$ as header">
   @for(item of header; track item) {
   <p class="header-label">
     {{ item }}

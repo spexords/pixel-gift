@@ -7,11 +7,12 @@ import { PromoCode } from 'src/app/core/models';
 import { ConfirmationModalComponent } from 'src/app/shared/components/confirmation-modal/confirmation-modal.component';
 import { CreatePromoCodeComponent } from './create-promo-code/create-promo-code.component';
 import { UpdatePromoCodeComponent } from './update-promo-code/update-promo-code.component';
+import { LetDirective } from '@ngrx/component';
 
 @Component({
   selector: 'app-promo-codes',
   standalone: true,
-  imports: [CommonModule, EditableCardComponent],
+  imports: [CommonModule, EditableCardComponent, LetDirective],
   templateUrl: './promo-codes.component.html',
   styleUrl: './promo-codes.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

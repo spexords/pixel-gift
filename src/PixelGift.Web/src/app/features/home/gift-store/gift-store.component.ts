@@ -6,6 +6,7 @@ import { TranslocoPipe } from '@ngneat/transloco';
 import { GiftStoreService } from './gift-store.service';
 import { combineLatest, map } from 'rxjs';
 import { Category, Scrollable } from 'src/app/core/models';
+import { LetDirective } from '@ngrx/component';
 
 @Component({
   selector: 'app-gift-store',
@@ -15,6 +16,7 @@ import { Category, Scrollable } from 'src/app/core/models';
     StoreCategoriesComponent,
     StoreItemsComponent,
     TranslocoPipe,
+    LetDirective
   ],
   templateUrl: './gift-store.component.html',
   styleUrl: './gift-store.component.scss',

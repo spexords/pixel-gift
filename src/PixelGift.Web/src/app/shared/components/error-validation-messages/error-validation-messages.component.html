@@ -1,0 +1,11 @@
+<ng-container *ngrxLet="lang$ as lang">
+  @if(errors?.['required']) {
+  <p class="error-validation">
+    {{ lang == "en" ? "This field is required" : "To pole jest wymagane" }}
+  </p>
+  } @if(errors?.['email']) {
+  <p class="error-validation">
+    {{ lang == "en" ? "Invalid email address." : "Niepoprawny adres email" }}
+  </p>
+  }
+</ng-container>

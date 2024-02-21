@@ -14,10 +14,11 @@ import { InfoCardsComponent } from './info-cards/info-cards.component';
 import { GiftStoreComponent } from './gift-store/gift-store.component';
 import { CustomerFeedbacksComponent } from './customer-feedbacks/customer-feedbacks.component';
 import { FaqComponent } from './faq/faq.component';
-import { NavbarService } from 'src/app/core/navbar/navbar.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NavbarComponent } from 'src/app/core/navbar/navbar.component';
 import { FooterComponent } from 'src/app/core/footer/footer.component';
+import { NavbarComponent } from 'src/app/core/navigation/navbar/navbar.component';
+import { NavbarService } from 'src/app/core/navigation/navbar/navbar.service';
+import { Scrollable } from 'src/app/core/models';
 
 @Component({
   selector: 'app-home',
@@ -42,9 +43,9 @@ export class HomeComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
   private navbarService = inject(NavbarService);
 
-  @ViewChild('store') giftStore!: GiftStoreComponent;
-  @ViewChild('faq') faq!: FaqComponent;
-  @ViewChild('chooseUs') chooseUs!: ChooseUsComponent;
+  @ViewChild('store') giftStore!: Scrollable;
+  @ViewChild('faq') faq!: Scrollable;
+  @ViewChild('chooseUs') chooseUs!: Scrollable;
 
   ngOnInit(): void {
     this.navbarService.scrollToSection$

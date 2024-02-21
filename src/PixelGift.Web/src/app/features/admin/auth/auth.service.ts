@@ -1,15 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { ReplaySubject, first, tap, map, take, BehaviorSubject } from 'rxjs';
+import { tap, map, take, BehaviorSubject } from 'rxjs';
 import { User } from 'src/app/core/models';
 import { Login } from 'src/app/core/models/login.interface';
-import { API_URL } from 'src/app/core/tokens/api-url.token';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private userSource = new BehaviorSubject<User | null>(null);
   private http = inject(HttpClient);
-  private baseUrl = inject(API_URL);
 
   user$ = this.userSource.asObservable();
 
@@ -25,14 +23,14 @@ export class AuthService {
     };
 
     this.http
-      .get<User>(`${this.baseUrl}/account`, { headers })
+      .get<User>('account', { headers })
       .pipe(tap((user) => this.saveJwtToken(user.token)))
       .subscribe((user) => this.userSource.next(user));
   }
 
   login(values: Login): void {
     this.http
-      .post<User>(`${this.baseUrl}/account/login`, values)
+      .post<User>('account/login', values)
       .pipe(
         tap((user) => {
           this.saveJwtToken(user.token);
@@ -58,7 +56,12 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     let loggedIn = false;
-    this.user$.pipe(take(1), map((user) => !!user)).subscribe((res) => (loggedIn = res));
+    this.user$
+      .pipe(
+        take(1),
+        map((user) => !!user)
+      )
+      .subscribe((res) => (loggedIn = res));
     return loggedIn;
   }
 

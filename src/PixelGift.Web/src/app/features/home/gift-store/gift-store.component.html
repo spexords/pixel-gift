@@ -4,7 +4,7 @@
     <span class="highlight">{{ "store.header-highlight" | transloco }}</span>
   </h2>
 
-  <ng-container *ngIf="categoriesData$ | async as data">
+  <ng-container *ngrxLet="categoriesData$ as data">
     <app-store-categories
       [categories]="data.categories"
       [currentCategory]="data.currentCategory"
@@ -12,7 +12,7 @@
     />
   </ng-container>
 
-  <ng-container *ngIf="items$ | async as items">
+  <ng-container *ngrxLet="items$ as items">
     <app-store-items
       (addPressed)="addItemToShoppingCart($event)"
       [items]="items"

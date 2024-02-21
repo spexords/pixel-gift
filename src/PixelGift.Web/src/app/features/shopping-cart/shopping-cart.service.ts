@@ -1,14 +1,16 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
-import { isEmpty } from 'lodash';
 import {
   BehaviorSubject,
   Observable,
   catchError,
   combineLatest,
+  debounceTime,
   map,
+  shareReplay,
   switchMap,
   tap,
   throwError,
@@ -16,7 +18,6 @@ import {
 import { BasketItems, FormFieldData, OrderPreview } from 'src/app/core/models';
 import { OrderCreated } from 'src/app/core/models/order-created.interface';
 import { OrderPaymentIntent } from 'src/app/core/models/order-payment-intent.interface';
-import { API_URL } from 'src/app/core/tokens/api-url.token';
 
 type PromoCodes = Record<string, string>;
 
@@ -28,7 +29,6 @@ type CategoryFormFieldsData = Record<string, FormFieldData[]>;
 export class ShoppingCartService {
   private readonly BASKET_KEY = 'basket';
   private http = inject(HttpClient);
-  private baseUrl = inject(API_URL);
   private translocoService = inject(TranslocoService);
   private router = inject(Router);
 
@@ -65,7 +65,11 @@ export class ShoppingCartService {
     this.translocoService.langChanges$,
     this.basketUpdatedChanged$,
     this.promoCodesUpdatedChanged$,
-  ]).pipe(switchMap(() => this.getOrderPreview()));
+  ]).pipe(
+    debounceTime(0),
+    switchMap(() => this.getOrderPreview()),
+    shareReplay()
+  );
 
   addItem(itemId: string): void {
     itemId in this.basket
@@ -95,8 +99,8 @@ export class ShoppingCartService {
 
   clearBasket(): void {
     this.basket = {};
-    this.categoryFormFieldsData = {};
     this.promoCodes = {};
+    this.categoryFormFieldsData = {};
     this.paymentIntentId = null;
     this.basketUpdatedSource.next(undefined);
   }
@@ -106,37 +110,72 @@ export class ShoppingCartService {
     this.promoCodesUpdatedSource.next(undefined);
   }
 
-  updateFormFieldData(categoryId: string, formFieldsData: FormFieldData[]) {
-    this.categoryFormFieldsData[categoryId] = formFieldsData;
+  tryMoveToCheckout(formGroup: FormGroup): void {
+    if (!this.validateFormFieldsData(formGroup)) {
+      return;
+    }
+
+    this.updateCategoryFormFieldsData(formGroup);
+    this.validCheckout = true;
+    this.router.navigate(['/shopping-cart/checkout']).then(() => {
+      window.scrollTo(0, 0);
+    });
   }
 
-  tryMoveToCheckout(): void {
-    try {
-      this.validateFormFieldsData();
-      this.validCheckout = true;
-      this.router.navigate(['/shopping-cart/checkout']);
-    } catch {
+  validateFormFieldsData(formGroup: FormGroup): boolean {
+    const result = formGroup.valid;
+    if (!result) {
       const message =
         this.translocoService.getActiveLang() === 'en'
           ? 'Please fill all the fields. It is needed to complete your order.'
           : 'Proszę wypłenić wszystkie pola. Pozwoli to na zrealizowanie twojego zamówienia';
       alert(message);
+
+      this.navigateToErrors();
+    }
+    return result;
+  }
+
+  navigateToErrors() {
+    const errorValidationMessagesElements =
+      document.getElementsByClassName('error-validation');
+
+    if (errorValidationMessagesElements.length > 0) {
+      const firstErrorValidationMessagesElement =
+        errorValidationMessagesElements[0];
+      firstErrorValidationMessagesElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
     }
   }
 
-  getFormFieldsData(categoryId: string): FormFieldData[] {
-    return categoryId in this.categoryFormFieldsData
-      ? this.categoryFormFieldsData[categoryId]
-      : [];
+  markFormFieldsAsTouched(formGroup: FormGroup): void {
+    Object.values(formGroup.controls).forEach((control) => {
+      control.markAsTouched();
+
+      if (control instanceof FormGroup) {
+        this.markFormFieldsAsTouched(control);
+      }
+    });
   }
 
-  getPromoCode(categoryId: string): string {
-    return this.promoCodes[categoryId];
+  updateCategoryFormFieldsData(formGroup: FormGroup) {
+    for (let [categoryKey, formValues] of Object.entries(formGroup.value)) {
+      this.categoryFormFieldsData[categoryKey] = [];
+      for (let [key, value] of Object.entries(
+        formValues as Record<string, string>
+      )) {
+        if (key !== 'promoCode') {
+          this.categoryFormFieldsData[categoryKey].push({ key, value });
+        }
+      }
+    }
   }
 
   createOrderPaymentIntent(): Observable<OrderPaymentIntent> {
     return this.http
-      .post<OrderPaymentIntent>(`${this.baseUrl}/payments/intent`, {
+      .post<OrderPaymentIntent>('payments/intent', {
         basketItems: this.basket,
         promoCodes: this.promoCodes,
       })
@@ -152,7 +191,7 @@ export class ShoppingCartService {
   }
 
   createOrder(email: string): Observable<OrderCreated> {
-    return this.http.post<OrderCreated>(`${this.baseUrl}/orders`, {
+    return this.http.post<OrderCreated>(`orders`, {
       basketItems: this.basket,
       promoCodes: this.promoCodes,
       categoryFormFieldsData: this.categoryFormFieldsData,
@@ -171,7 +210,9 @@ export class ShoppingCartService {
         message.includes('Could not create order'))
     ) {
       alert(
-        'Invalid request - clearing basket. Please complete your shopping cart again.'
+        this.translocoService.getActiveLang() === 'en'
+          ? 'Invalid request - clearing basket. Please complete your shopping cart again.'
+          : 'Nieprawidłowe żądanie - czyszczenie koszyka. Proszę wypełnić koszyk ponownie.'
       );
       this.router.navigate(['/']);
       this.clearBasket();
@@ -181,7 +222,7 @@ export class ShoppingCartService {
 
   private getOrderPreview(): Observable<OrderPreview> {
     return this.http
-      .post<OrderPreview>(`${this.baseUrl}/orders/preview`, {
+      .post<OrderPreview>(`orders/preview`, {
         basketItems: this.basket,
         promoCodes: this.promoCodes,
         language: this.translocoService.getActiveLang(),
@@ -198,20 +239,14 @@ export class ShoppingCartService {
         message.includes("Invalid requested item's quantity"))
     ) {
       alert(
-        'Invalid request - clearing basket. Please  complete your shopping cart again.'
+        this.translocoService.getActiveLang() === 'en'
+          ? 'Invalid request - clearing basket. Please complete your shopping cart again.'
+          : 'Nieprawidłowe żądanie - czyszczenie koszyka. Proszę wypełnić koszyk ponownie.'
       );
       this.router.navigate(['/']);
       this.clearBasket();
     }
     return throwError(() => error);
-  }
-
-  private validateFormFieldsData(): void {
-    for (const formFieldData of Object.values(this.categoryFormFieldsData)) {
-      if (formFieldData.some((data) => isEmpty(data.value))) {
-        throw new Error('Invalid form field data');
-      }
-    }
   }
 
   private saveToLocalStorage(): void {

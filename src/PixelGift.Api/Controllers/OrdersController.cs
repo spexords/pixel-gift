@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PixelGift.Api.Attributes;
-using PixelGift.Application.Oders.Queries;
-using PixelGift.Application.Orders.Commands;
-using PixelGift.Core.Entities;
+using PixelGift.Application.Orders.Commands.CreateOrder;
+using PixelGift.Application.Orders.Commands.GenerateOrderPreview;
+using PixelGift.Application.Orders.Commands.SendMessage;
+using PixelGift.Application.Orders.Commands.UpdateOrder;
+using PixelGift.Application.Orders.Queries.GetOrder;
+using PixelGift.Application.Orders.Queries.GetOrders;
 using PixelGift.Core.Entities.Identity;
-using PixelGift.Core.Entities.OrderAggregate;
 
 namespace PixelGift.Api.Controllers;
 
@@ -49,6 +51,16 @@ public class OrdersController : BaseApiController
     public async Task<IActionResult> UpdateOrder(Guid id, UpdateOrderCommand command)
     {
         command = command with { Id = id };
+        await Mediator.Send(command);
+
+        return Ok();
+    }
+
+    [AuthorizeRole(UserRole.Admin)]
+    [HttpPost("{id}/send-message")]
+    public async Task<IActionResult> SendMessage(Guid id, [FromBody] SendMessageCommand command)
+    {
+        command = command with { OrderId = id };
         await Mediator.Send(command);
 
         return Ok();

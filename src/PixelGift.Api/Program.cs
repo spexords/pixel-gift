@@ -23,7 +23,12 @@ using var scope = app.Services.CreateScope();
 var context = scope.ServiceProvider.GetRequiredService<PixelGiftContext>();
 await context.Database.MigrateAsync();
 var loggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
-await PixelGiftContextSeed.SeedAsync(context, loggerFactory);
+await PixelGiftContextSeed.SeedAdminAsync(context, loggerFactory);
+
+//if (app.Environment.IsDevelopment())
+//{
+//    await PixelGiftContextSeed.SeedDataAsync(context, loggerFactory);
+//}
 
 app.UseMiddleware<ExceptionMiddleware>();
 

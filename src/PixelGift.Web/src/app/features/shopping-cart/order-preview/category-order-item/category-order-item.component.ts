@@ -1,15 +1,15 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   Input,
-  OnInit,
-  inject,
+  Output,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CategoryOrderFormComponent } from './category-order-form/category-order-form.component';
 import { CategoryOrderProductsComponent } from './category-order-products/category-order-products.component';
-import { FormFieldData, OrderCategory } from 'src/app/core/models';
-import { ShoppingCartService } from '../../shopping-cart.service';
+import { OrderCategory } from 'src/app/core/models';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-category-order-item',
@@ -21,33 +21,9 @@ import { ShoppingCartService } from '../../shopping-cart.service';
   ],
   templateUrl: './category-order-item.component.html',
   styleUrl: './category-order-item.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CategoryOrderItemComponent implements OnInit {
-  private shoppingCartService = inject(ShoppingCartService);
-
+export class CategoryOrderItemComponent {
   @Input({ required: true }) orderCategory!: OrderCategory;
-
-  existingFormFieldsData!: FormFieldData[];
-  existingPromoCode!: string;
-
-  ngOnInit(): void {
-    this.existingFormFieldsData = this.shoppingCartService.getFormFieldsData(
-      this.orderCategory.id
-    );
-    this.existingPromoCode = this.shoppingCartService.getPromoCode(
-      this.orderCategory.id
-    );
-  }
-
-  onPromoCodeRequestChange(code: string): void {
-    this.shoppingCartService.updatePromoCodes(this.orderCategory.id, code);
-  }
-
-  onFormFieldDataChange(formFieldsData: FormFieldData[]): void {
-    this.shoppingCartService.updateFormFieldData(
-      this.orderCategory.id,
-      formFieldsData
-    );
-  }
+  @Input({ required: true }) orderCategoryForm!: FormGroup;
+  @Output() promoCodeChanged = new EventEmitter<string>();
 }

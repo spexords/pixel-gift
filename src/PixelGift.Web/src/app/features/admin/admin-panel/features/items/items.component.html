@@ -1,4 +1,4 @@
-<ng-container *ngIf="items$ | async as items">
+<ng-container *ngrxLet="items$ as items">
   @for(item of items; track item.id) {
   <app-editable-card
     [menuItems]="existingItemMenuItems"

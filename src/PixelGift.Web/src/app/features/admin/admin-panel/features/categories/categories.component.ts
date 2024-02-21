@@ -7,6 +7,7 @@ import { ConfirmationModalComponent } from 'src/app/shared/components/confirmati
 import { Category } from 'src/app/core/models';
 import { AdminPanelService } from '../../admin-panel.service';
 import { CreateCategoryComponent } from './create-category/create-category.component';
+import { LetDirective } from '@ngrx/component';
 
 @Component({
   selector: 'app-categories',
@@ -16,6 +17,7 @@ import { CreateCategoryComponent } from './create-category/create-category.compo
     EditableCardComponent,
     ConfirmationModalComponent,
     CreateCategoryComponent,
+    LetDirective
   ],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss',

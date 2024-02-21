@@ -1,4 +1,4 @@
-<ng-container *ngIf="categories$ | async as categories">
+<ng-container *ngrxLet="categories$ as categories">
   <form (ngSubmit)="onSubmit()">
     <label for="category">Categories</label>
     <select id="category" [formControl]="form.controls.categoryId" type="text">
@@ -13,7 +13,7 @@
     <label for="discount">Discount</label>
     <input id="discount" [formControl]="form.controls.discount" type="text" />
 
-    <label for="expiry">Discount</label>
+    <label for="expiry">Expiry</label>
     <input
       id="expiry"
       (change)="updateExpiry($event)"
