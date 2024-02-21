@@ -4,7 +4,7 @@ using PixelGift.Core.Entities;
 
 namespace PixelGift.Api.Extensions;
 
-public static class MediatrExtenions
+public static class MediatrExtensions
 {
     public static async Task DispatchDomainEventsAsync(this IMediator mediator, DbContext context, CancellationToken cancellationToken = default)
     {
