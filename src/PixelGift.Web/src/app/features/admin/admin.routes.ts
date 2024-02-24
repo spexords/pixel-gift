@@ -1,5 +1,4 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { AuthComponent } from './auth/auth.component';
 import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 import { CategoriesComponent } from './admin-panel/features/categories/categories.component';
@@ -8,8 +7,10 @@ import { authGuard } from './auth/auth.guard';
 import { PromoCodesComponent } from './admin-panel/features/promo-codes/promo-codes.component';
 import { AccountComponent } from './admin-panel/features/account/account.component';
 import { OrdersComponent } from './admin-panel/features/orders/orders.component';
+import { importProvidersFrom } from '@angular/core';
+import { MatDialogModule } from '@angular/material/dialog';
 
-const routes: Routes = [
+export const ADMIN_ROUTES: Routes = [
   {
     path: 'auth',
     component: AuthComponent,
@@ -18,6 +19,9 @@ const routes: Routes = [
     path: '',
     component: AdminPanelComponent,
     canActivate: [authGuard],
+    providers: [
+      importProvidersFrom(MatDialogModule)
+    ],
     children: [
       { path: 'categories', component: CategoriesComponent },
       { path: 'items', component: ItemsComponent },
@@ -27,9 +31,3 @@ const routes: Routes = [
     ],
   },
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-})
-export class AdminRoutingModule {}

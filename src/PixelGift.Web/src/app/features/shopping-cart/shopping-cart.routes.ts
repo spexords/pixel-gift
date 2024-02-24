@@ -1,12 +1,11 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
 import { ShoppingCartComponent } from './shopping-cart.component';
 import { OrderPreviewComponent } from './order-preview/order-preview.component';
 import { OrderCheckoutComponent } from './order-checkout/order-checkout.component';
 import { OrderConfirmComponent } from './order-confirm/order-confirm.component';
 import { orderCheckoutGuard } from './order-checkout/order-checkout.guard';
+import { Routes } from '@angular/router';
 
-const routes: Routes = [
+export const SHOPPING_CART_ROUTES: Routes = [
   {
     path: '',
     component: ShoppingCartComponent,
@@ -47,10 +46,3 @@ const routes: Routes = [
     ],
   },
 ];
-
-@NgModule({
-  declarations: [],
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-})
-export class ShoppingCartRoutingModule {}
