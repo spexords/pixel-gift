@@ -19,6 +19,8 @@ import { FooterComponent } from 'src/app/core/footer/footer.component';
 import { NavbarComponent } from 'src/app/core/navigation/navbar/navbar.component';
 import { NavbarService } from 'src/app/core/navigation/navbar/navbar.service';
 import { Scrollable } from 'src/app/core/models';
+import { Store } from '@ngrx/store';
+import { HomeActions, HomeSelectors } from './state';
 
 @Component({
   selector: 'app-home',
@@ -40,6 +42,7 @@ import { Scrollable } from 'src/app/core/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements OnInit {
+  private store = inject(Store);
   private destroyRef = inject(DestroyRef);
   private navbarService = inject(NavbarService);
 
@@ -48,6 +51,11 @@ export class HomeComponent implements OnInit {
   @ViewChild('chooseUs') chooseUs!: Scrollable;
 
   ngOnInit(): void {
+    this.handleScrollNavigation();
+    this.store.dispatch(HomeActions.getCategoriesList());
+  }
+
+  handleScrollNavigation() {
     this.navbarService.scrollToSection$
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((section) => {

@@ -8,11 +8,11 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { loadingInterceptor, baseUrlInterceptor } from './core/interceptors';
-import { appStore, appEffects } from './core/store/store';
+import { appStore, appEffects } from './core/store/app.store';
 import { provideTokens } from './core/tokens';
 import { authInterceptor } from './features/admin/auth/auth.interceptor';
 import { provideTransloco } from '@ngneat/transloco';
-import { TranslocoHttpLoader } from './transloco-loader';
+import { TranslocoHttpLoader } from './core/lang/transloco-loader';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { BreadcrumbModule } from 'xng-breadcrumb';
@@ -23,6 +23,7 @@ import {
   withRouterConfig,
 } from '@angular/router';
 import { APP_ROUTES } from './app.routes';
+import { provideLang } from './core/lang/lang.provider';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -32,7 +33,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(
       APP_ROUTES,
       withPreloading(PreloadAllModules),
-      withRouterConfig({ onSameUrlNavigation: 'reload' }),
+      withRouterConfig({ onSameUrlNavigation: 'reload' })
     ),
     provideHttpClient(
       withInterceptors([
@@ -44,14 +45,6 @@ export const appConfig: ApplicationConfig = {
     provideStore(appStore),
     provideEffects(appEffects),
     provideStoreDevtools(),
-    provideTransloco({
-      config: {
-        availableLangs: ['en', 'pl'],
-        defaultLang: 'en',
-        reRenderOnLangChange: true,
-        prodMode: !isDevMode(),
-      },
-      loader: TranslocoHttpLoader,
-    }),
+    provideLang(),
   ],
 };

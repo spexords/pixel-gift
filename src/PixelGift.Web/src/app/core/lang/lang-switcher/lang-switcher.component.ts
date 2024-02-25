@@ -1,5 +1,6 @@
 import {
   Component,
+  DestroyRef,
   ElementRef,
   HostListener,
   OnInit,
@@ -8,6 +9,10 @@ import {
 import { CommonModule } from '@angular/common';
 import { TranslocoService } from '@ngneat/transloco';
 import { Flag, flags } from './flags.const';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Store } from '@ngrx/store';
+import { LangActions } from '../state';
+import { AvailableLangs } from '../available-langs.type';
 
 @Component({
   selector: 'app-lang-switcher',
@@ -17,6 +22,8 @@ import { Flag, flags } from './flags.const';
   styleUrl: './lang-switcher.component.scss',
 })
 export class LangSwitcherComponent implements OnInit {
+  private store = inject(Store);
+  private destroyRef = inject(DestroyRef);
   private transolocoService = inject(TranslocoService);
   private el = inject(ElementRef);
 
@@ -25,10 +32,18 @@ export class LangSwitcherComponent implements OnInit {
   flag!: Flag;
 
   ngOnInit(): void {
-    this.setLang();
+    this.setInitialLang();
   }
 
-  setLang() {
+  setInitialLang() {
+    this.transolocoService.langChanges$
+    .pipe(takeUntilDestroyed(this.destroyRef))
+    .subscribe((lang) =>
+      this.store.dispatch(
+        LangActions.setLang({ lang: lang as AvailableLangs })
+      )
+    );
+    
     const activeLang = this.transolocoService.getActiveLang();
     const destinationLang = window.localStorage.getItem('lang');
     if (destinationLang && destinationLang !== activeLang) {

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BreadcrumbModule, BreadcrumbService } from 'xng-breadcrumb';
-import { LangSwitcherComponent } from 'src/app/shared/components/lang-switcher/lang-switcher.component';
+import { LangSwitcherComponent } from 'src/app/core/lang/lang-switcher/lang-switcher.component';
 
 @Component({
   selector: 'app-breadcrumb',

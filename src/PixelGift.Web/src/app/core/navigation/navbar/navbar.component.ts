@@ -10,7 +10,7 @@ import { NavbarService } from './navbar.service';
 import { TranslocoPipe } from '@ngneat/transloco';
 import { CartComponent } from './cart/cart.component';
 import { RouterLink } from '@angular/router';
-import { LangSwitcherComponent } from 'src/app/shared/components/lang-switcher/lang-switcher.component';
+import { LangSwitcherComponent } from 'src/app/core/lang/lang-switcher/lang-switcher.component';
 import { DiscordService } from '../../services/discord.service';
 
 @Component({
