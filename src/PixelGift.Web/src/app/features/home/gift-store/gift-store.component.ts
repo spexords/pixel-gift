@@ -9,6 +9,7 @@ import { Category, Scrollable } from 'src/app/core/models';
 import { LetDirective } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { HomeActions, HomeSelectors } from '../state';
+import { BasketActions } from 'src/app/core/basket/state';
 
 @Component({
   selector: 'app-gift-store',
@@ -51,5 +52,6 @@ export class GiftStoreComponent implements Scrollable {
 
   addItemToShoppingCart(itemId: string): void {
     this.giftStoreService.addItemToShoppingCart(itemId);
+    this.store.dispatch(BasketActions.addItem({ itemId }));
   }
 }

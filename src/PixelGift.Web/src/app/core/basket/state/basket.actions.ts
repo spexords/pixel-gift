@@ -10,4 +10,9 @@ export class BasketActions {
     '[Basket] removeItem',
     props<{ itemId: string }>()
   );
+
+  static updateItemQuantity = createAction(
+    '[Basket] updateItemQuantity',
+    props<{ itemId: string; quantity: number }>()
+  );
 }

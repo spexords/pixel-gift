@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, Subject, combineLatest, map, switchMap, tap } from 'rxjs';
-import { TranslocoService } from '@ngneat/transloco';
+import { Observable } from 'rxjs';
 import { Category, Item } from 'src/app/core/models';
 import { ShoppingCartService } from '../../shopping-cart/shopping-cart.service';
 

@@ -53,14 +53,6 @@ export class ShoppingCartService {
 
   basket$ = this.basketUpdatedChanged$.pipe(map(() => this.basket));
 
-  basketItemsCount$ = this.basketUpdatedChanged$.pipe(
-    map(() =>
-      Object.values(this.basket).reduce((accumulator, currentValue) => {
-        return accumulator + currentValue;
-      }, 0)
-    )
-  );
-
   orderPreview$ = combineLatest([
     this.translocoService.langChanges$,
     this.basketUpdatedChanged$,
@@ -80,11 +72,6 @@ export class ShoppingCartService {
 
   increaseItemQuantity(itemId: string): void {
     this.basket[itemId]++;
-    this.basketUpdatedSource.next(undefined);
-  }
-
-  decreaseItemQuantity(itemId: string): void {
-    this.basket[itemId]--;
     this.basketUpdatedSource.next(undefined);
   }
 

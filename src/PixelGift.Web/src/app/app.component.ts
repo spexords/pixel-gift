@@ -1,4 +1,9 @@
-import { CUSTOM_ELEMENTS_SCHEMA, Component } from '@angular/core';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -7,8 +12,7 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   imports: [RouterOutlet],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {
-  title = 'PixelGift';
-}
+export class AppComponent {}
