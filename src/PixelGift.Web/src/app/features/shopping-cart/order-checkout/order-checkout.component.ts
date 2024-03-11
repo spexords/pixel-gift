@@ -12,22 +12,18 @@ import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslocoPipe, TranslocoService } from '@ngneat/transloco';
 import { BreadcrumbService } from 'xng-breadcrumb';
-import { combineLatest, firstValueFrom } from 'rxjs';
+import { combineLatest, first, firstValueFrom } from 'rxjs';
 import { OrderSummaryComponent } from '../order-summary/order-summary.component';
-import { ShoppingCartService } from '../shopping-cart.service';
-import {
-  Appearance,
-  Stripe,
-  StripeElements,
-  loadStripe,
-} from '@stripe/stripe-js';
+import { Stripe, StripeElements, loadStripe } from '@stripe/stripe-js';
 import { environment } from 'src/environments/environment';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { OrderCreated } from 'src/app/core/models/order-created.interface';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { OrderCreated } from 'src/app/features/shopping-cart/models/order-created.interface';
 import { LetDirective } from '@ngrx/component';
 import { TextInputComponent } from 'src/app/shared/components/text-input/text-input.component';
+import { Store } from '@ngrx/store';
+import { ShoppingCartActions, ShoppingCartSelectors } from '../state';
+import { appearance } from './stripe-appearance.const';
+import { ScrollService } from 'src/app/core/services/scroll.service';
 
 @Component({
   selector: 'app-order-checkout',
@@ -45,12 +41,12 @@ import { TextInputComponent } from 'src/app/shared/components/text-input/text-in
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrderCheckoutComponent implements OnInit {
+  private store = inject(Store);
   private destroyRef = inject(DestroyRef);
   private cdr = inject(ChangeDetectorRef);
   private breadcrumbService = inject(BreadcrumbService);
   private translocoService = inject(TranslocoService);
-  private router = inject(Router);
-  private shoppingCartService = inject(ShoppingCartService);
+  private scrollService = inject(ScrollService)
   private stripe: Stripe | null = null;
   private elements: StripeElements | null = null;
 
@@ -59,13 +55,14 @@ export class OrderCheckoutComponent implements OnInit {
     Validators.email,
   ]);
 
-  orderPreview$ = this.shoppingCartService.orderPreview$;
+  orderPreview$ = this.store.select(ShoppingCartSelectors.selectOrderPreview);
 
   @ViewChild('payment') payment?: ElementRef;
 
   ngOnInit(): void {
-    this.initStripe();
+    window.scrollTo(0, 0);
     this.updateBreadcrumb();
+    this.initStripe();
   }
 
   initStripe(): void {
@@ -75,35 +72,13 @@ export class OrderCheckoutComponent implements OnInit {
       }
 
       this.stripe = stripe;
-
-      this.shoppingCartService
-        .createOrderPaymentIntent()
+      this.store.dispatch(ShoppingCartActions.getOrderPaymentIntent());
+      this.store
+        .select(ShoppingCartSelectors.selectOrderPaymentIntent)
+        .pipe(first((orderPaymentIntent) => !!orderPaymentIntent))
         .subscribe((orderPaymentIntent) => {
-          const appearance: Appearance = {
-            theme: 'night',
-            variables: {
-              fontFamily: 'Goldman, system-ui, sans-serif',
-              fontWeightNormal: '400',
-              borderRadius: '12px',
-              colorBackground: '#06172c',
-              colorPrimary: '#DBA619',
-              accessibleColorOnColorPrimary: '#1A1B25',
-              colorText: 'white',
-              colorTextSecondary: 'white',
-              colorTextPlaceholder: '#67707a',
-              tabIconColor: 'white',
-              logoColor: 'dark',
-            },
-            rules: {
-              '.Input, .Block, .Select': {
-                backgroundColor: 'transparent',
-                border: '1.5px solid var(--colorPrimary)',
-              },
-            },
-          };
-
-          const elements = stripe?.elements({
-            clientSecret: orderPaymentIntent.clientSecret,
+          const elements = stripe!.elements({
+            clientSecret: orderPaymentIntent!.clientSecret,
             appearance,
           });
 
@@ -122,7 +97,9 @@ export class OrderCheckoutComponent implements OnInit {
 
               errorElement.textContent = event.complete
                 ? ''
-                : 'Please enter valid payment information.';
+                : this.translocoService.getActiveLang() === 'en'
+                  ? 'Please enter valid payment information'
+                  : 'Proszę podać prawidłowe dane do płatności';
             });
           }
         });
@@ -133,13 +110,9 @@ export class OrderCheckoutComponent implements OnInit {
     try {
       this.emailFormField.markAllAsTouched();
       this.cdr.detectChanges();
-      if (!this.emailFormField.valid) {
-        alert(
-          this.translocoService.getActiveLang() === 'en'
-            ? 'Please fill all required fields'
-            : 'Proszę wypełnić wszystkie wymagane pola'
-        );
-        this.shoppingCartService.navigateToErrors();
+
+      if (this.emailFormField.invalid) {
+        this.scrollService.moveToErrors();
         return;
       }
 
@@ -156,13 +129,14 @@ export class OrderCheckoutComponent implements OnInit {
           alert(
             this.translocoService.getActiveLang() === 'en'
               ? 'Please enter valid payment information'
-              : 'Proszę podać prawidłowe dane do płatności'
+              : 'Proszę podać prawidłowe dane do płatności',
           );
           return;
         }
       }
 
       const order = await this.createOrder();
+
       const stripeResult = await this.stripe.confirmPayment({
         elements: this.elements,
         confirmParams: {
@@ -173,31 +147,12 @@ export class OrderCheckoutComponent implements OnInit {
       if (stripeResult.error) {
         alert(stripeResult.error.message);
       }
-    } catch (error: any) {
-      if (error instanceof HttpErrorResponse) {
-        const code = error.status;
-        const message: string = error.error.errors.message;
-        if (
-          code == 400 &&
-          (message.includes('Could not find') ||
-            message.includes("Invalid requested item's quantity") ||
-            message.includes('Could not create order'))
-        ) {
-          alert(
-            this.translocoService.getActiveLang() === 'en'
-              ? 'Invalid request - clearing basket. Please complete your shopping cart again'
-              : 'Nieprawidłowe żądanie - czyszczenie koszyka. Proszę wypełnić koszyk ponownie'
-          );
-          this.router.navigate(['/']);
-          this.shoppingCartService.clearBasket();
-        } else {
-          alert(
-            this.translocoService.getActiveLang() === 'en'
-              ? 'Failed with order submit. Please contact administrator. You can find contact information on the bottom of the page.'
-              : 'Nie udało się przesłać zamówienia. Skontaktuj się z administratorem. Dane kontaktowe znajdziesz na dole strony.'
-          );
-        }
-      }
+    } catch (error) {
+      alert(
+        this.translocoService.getActiveLang() === 'en'
+          ? 'Failed with order submit. Please contact administrator. You can find contact information on the bottom of the page.'
+          : 'Nie udało się przesłać zamówienia. Skontaktuj się z administratorem. Dane kontaktowe znajdziesz na dole strony.',
+      );
     }
   }
 
@@ -213,15 +168,21 @@ export class OrderCheckoutComponent implements OnInit {
       });
   }
 
-  private async createOrder(): Promise<OrderCreated> {
+  private createOrder(): Promise<OrderCreated> {
+    this.store.dispatch(
+      ShoppingCartActions.createOrder({
+        email: this.emailFormField.value as string,
+      }),
+    );
+
     return firstValueFrom(
-      this.shoppingCartService.createOrder(this.emailFormField.value as string)
+      this.store
+        .select(ShoppingCartSelectors.selectOrderCreated)
+        .pipe(first((orderCreated) => !!orderCreated)),
     );
   }
 
   private getValidReturnUrl(orderCreated: OrderCreated): string {
-    return `${window.location.href}/confirm?orderCustomerId=${
-      orderCreated.orderCustomerId
-    }&lang=${this.translocoService.getActiveLang()}`;
+    return `${window.location.href}/confirm?orderCustomerId=${orderCreated.orderCustomerId}`;
   }
 }

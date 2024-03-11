@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ShoppingCartService } from 'src/app/features/shopping-cart/shopping-cart.service';
 import { LetDirective } from '@ngrx/component';
+import { Store } from '@ngrx/store';
+import { BasketSelectors } from 'src/app/core/basket/state/basket.selectors';
 
 @Component({
   selector: 'app-cart',
@@ -12,7 +13,6 @@ import { LetDirective } from '@ngrx/component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CartComponent {
-  private shoppingCartService = inject(ShoppingCartService);
-
-  itemsCount$ = this.shoppingCartService.basketItemsCount$;
+  private store = inject(Store);
+  itemsCount$ = this.store.select(BasketSelectors.selectItemsCount);
 }

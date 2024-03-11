@@ -1,21 +1,14 @@
-:host {
-  color: white;
-  display: grid;
-  grid-template-columns: 1fr 4fr;
-  grid-template-areas: 
-    "sidebar main";
-  min-height: 100vh;
+app-sidebar {
+  position: fixed;
+  width: 20rem;
   padding: 2rem;
 }
 
-app-sidebar {
-  grid-area: sidebar;
-  background-color: #333;
-  color: #fff;
-  padding: 4rem;
-}
-
 .main-container {
-  grid-area: main;
-  padding: 0 4rem;
+  width: calc(100% - 26rem);
+  padding: 2rem;
+  margin-left: 22rem;
+  color: white;
+  overflow-y: auto;
+  min-height: 100vh;
 }

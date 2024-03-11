@@ -1,102 +1,111 @@
 <ng-container *ngrxLet="order$ as order">
-  <div class="order-details">
-    <div class="top-details">
-      <p>Order Id: {{ order.customerOrderId }}</p>
-      <p>Intent Id: {{ order.paymentIntentId }}</p>
-      <p>Created At: {{ order.createdAt | date : "HH:mm dd/MM/yyyy" }}</p>
-      <p *ngIf="order.updatedAt">
-        Updated At: {{ order.updatedAt | date : "HH:mm dd/MM/yyyy" }}
-      </p>
-    </div>
-
-    @for (category of order.categories; track category.name) {
-    <div class="category-details">
-      <p>{{ category.name | uppercase }}</p>
-
-      <div class="category-content">
-        <div class="list-wrapper">
-          <p>Items:</p>
-          <ul>
-            @for (item of category.items; track item.name) {
-            <li>
-              {{ item.quantity }}x <strong>{{ item.name }}</strong> x
-              {{ item.unitPrice }}PLN = {{ item.quantity * item.unitPrice }}PLN
-            </li>
-            }
-          </ul>
-        </div>
-
-        <div class="list-wrapper">
-          <p>Data:</p>
-          <ul>
-            @for (data of category.metadata; track data.key) {
-            <li>
-              {{ data.key }}: <strong>{{ data.value }}</strong>
-            </li>
-            }
-          </ul>
-        </div>
+  @if (order) {
+    <div class="order-details">
+      <div class="top-details">
+        <p>Order Id: {{ order.customerOrderId }}</p>
+        <p>Intent Id: {{ order.paymentIntentId }}</p>
+        <p>Created At: {{ order.createdAt | date: "HH:mm dd/MM/yyyy" }}</p>
+        <p *ngIf="order.updatedAt">
+          Updated At: {{ order.updatedAt | date: "HH:mm dd/MM/yyyy" }}
+        </p>
       </div>
 
-      <p>
-        Subtotal: {{ category.subtotal }}PLN
-        <span *ngIf="category.promoCode">
-          - {{ category.discount }}PLN (<strong>{{ category.promoCode }}</strong
-          >) = {{ category.total }}PLN</span
-        >
-      </p>
-    </div>
-    }
+      @for (category of order.categories; track category.name) {
+        <div class="category-details">
+          <p>{{ category.name | uppercase }}</p>
 
-    <div class="bottom-details">
-      <div class="status-wrapper">
-        <label for="status">Status:</label>
-        <select id="status" [formControl]="status">
-          <option *ngFor="let option of statuses" [value]="option.value">
-            {{ option.displayValue }}
-          </option>
-        </select>
-      </div>
+          <div class="category-content">
+            <div class="list-wrapper">
+              <p>Items:</p>
+              <ul>
+                @for (item of category.items; track item.name) {
+                  <li>
+                    {{ item.quantity }}x <strong>{{ item.name }}</strong> x
+                    {{ item.unitPrice }}PLN =
+                    {{ item.quantity * item.unitPrice }}PLN
+                  </li>
+                }
+              </ul>
+            </div>
 
-      <p class="total-price">Total: {{ order.total }}PLN</p>
-    </div>
-    <button (click)="updateOrder(order.id)">Update</button>
-  </div>
+            <div class="list-wrapper">
+              <p>Data:</p>
+              <ul>
+                @for (data of category.metadata; track data.key) {
+                  <li>
+                    {{ data.key }}: <strong>{{ data.value }}</strong>
+                  </li>
+                }
+              </ul>
+            </div>
+          </div>
 
-  <div class="mailing-container">
-    <p>Email: {{ order.email }}</p>
-
-    <div class="mail-history">
-      <p>History:</p>
-      <div class="messages-container">
-        @for (message of order.messages; track message.subject) {
-        <div class="message-wrapper">
-          <p>Subject: {{ message.subject }}</p>
-          <p class="date">
-            {{ message.createdAt | date : "HH:mm dd/MM/yyyy" }}
+          <p>
+            Subtotal: {{ category.subtotal }}PLN
+            <span *ngIf="category.promoCode">
+              - {{ category.discount }}PLN (<strong>{{
+                category.promoCode
+              }}</strong
+              >) = {{ category.total }}PLN</span
+            >
           </p>
-          <p class="content">Message:</p>
-          <p class="content" [innerHTML]="message.content | breakLines"></p>
         </div>
-        }
+      }
+
+      <div class="bottom-details">
+        <div class="status-wrapper">
+          <label for="status">Status:</label>
+          <select id="status" [formControl]="status">
+            <option *ngFor="let option of statuses" [value]="option.value">
+              {{ option.displayValue }}
+            </option>
+          </select>
+        </div>
+
+        <p class="total-price">Total: {{ order.total }}PLN</p>
       </div>
+      <button (click)="updateOrder(order.id)">Update</button>
     </div>
 
-    <form [formGroup]="mailForm" class="new-mail" (ngSubmit)="sendMail($event)">
-      <p>New Mail:</p>
+    <div class="mailing-container">
+      <p>Email: {{ order.email }}</p>
 
-      <label for="subject">Subject:</label>
-      <input [formControl]="mailForm.controls.subject" id="subject" />
+      <div class="mail-history">
+        <p>History:</p>
+        <div class="messages-container">
+          @for (message of order.messages; track message.subject) {
+            <div class="message-wrapper">
+              <p>Subject: {{ message.subject }}</p>
+              <p class="date">
+                {{ message.createdAt | date: "HH:mm dd/MM/yyyy" }}
+              </p>
+              <p class="content">Message:</p>
+              <p class="content" [innerHTML]="message.content | breakLines"></p>
+            </div>
+          }
+        </div>
+      </div>
 
-      <label for="content">Message:</label>
-      <textarea
-        id="content"
-        [formControl]="mailForm.controls.content"
-        cols="1"
-        rows="5"
-      ></textarea>
+      <form
+        [formGroup]="mailForm"
+        class="new-mail"
+        (ngSubmit)="sendMail($event)"
+      >
+        <p>New Mail:</p>
 
-      <button type="submit" [disabled]="!mailForm.valid">send</button>
-    </form>
-  </div>
+        <label for="subject">Subject:</label>
+        <input [formControl]="mailForm.controls.subject" id="subject" />
+
+        <label for="content">Message:</label>
+        <textarea
+          id="content"
+          [formControl]="mailForm.controls.content"
+          cols="1"
+          rows="5"
+        ></textarea>
+
+        <button type="submit" [disabled]="!mailForm.valid">send</button>
+      </form>
+    </div>
+  }
 </ng-container>

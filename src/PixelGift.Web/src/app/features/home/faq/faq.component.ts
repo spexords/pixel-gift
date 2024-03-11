@@ -8,8 +8,8 @@ import {
 import { CommonModule } from '@angular/common';
 import { FaqAccordionComponent } from './faq-accordion/faq-accordion.component';
 import { TranslocoService } from '@ngneat/transloco';
-import { Scrollable } from 'src/app/core/models';
 import { LetDirective } from '@ngrx/component';
+import { Scrollable } from '../models';
 
 @Component({
   selector: 'app-faq',

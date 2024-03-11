@@ -8,9 +8,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
-import { PromoCodePayloadRequest } from 'src/app/core/models';
-import { AdminPanelService } from '../../../admin-panel.service';
 import { LetDirective } from '@ngrx/component';
+import { Store } from '@ngrx/store';
+import { AdminActions, AdminSelectors } from '../../../state';
+import { PromoCodePayloadRequest } from '../../../models';
+import { tap } from 'rxjs';
+import { isEmpty } from 'lodash';
 
 type PromoCodeForm = FormGroup<{
   id: FormControl<string | null>;
@@ -28,12 +31,19 @@ type PromoCodeForm = FormGroup<{
   styleUrl: './manage-promo-code-form.component.scss',
 })
 export class ManagePromoCodeFormComponent {
-  private adminPanelService = inject(AdminPanelService);
+  private store = inject(Store);
 
   initialized = true;
   form = this.createForm();
-  categories$ = this.adminPanelService.categoriesAsSelectOptions$;
-
+  categories$ = this.store
+    .select(AdminSelectors.selectCategoriesAsOptions)
+    .pipe(
+      tap((categories) => {
+        if (isEmpty(categories)) {
+          this.store.dispatch(AdminActions.getCategories());
+        }
+      })
+    );
 
   @Input() set data(data: PromoCodePayloadRequest) {
     this.updateForm(data);

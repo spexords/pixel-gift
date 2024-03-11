@@ -7,13 +7,16 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { enumToSelectOptions } from 'src/app/shared/utils';
-import { OrderSearchParams, OrderStatus } from 'src/app/core/models';
-import { AdminPanelService } from '../../admin-panel.service';
 import { StatusComponent } from 'src/app/shared/components/status/status.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ManageOrderComponent } from './manage-order/manage-order.component';
 import { Status } from 'src/app/shared/components/status/status.type';
 import { LetDirective } from '@ngrx/component';
+import { Store } from '@ngrx/store';
+import { AdminActions, AdminSelectors } from '../../state';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { isEqual } from 'lodash';
+import { OrderSearchParams, OrderStatus } from '../../models';
 
 @Component({
   selector: 'app-orders',
@@ -24,8 +27,8 @@ import { LetDirective } from '@ngrx/component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrdersComponent implements OnInit {
-  private adminService = inject(AdminPanelService);
   private dialog = inject(MatDialog);
+  private store = inject(Store);
 
   orderStatuses = [
     { value: '', displayValue: 'All' },
@@ -37,9 +40,10 @@ export class OrdersComponent implements OnInit {
     status: new FormControl<string | null>(''),
   });
 
-  orders$ = this.adminService.orders$;
+  orders$ = this.store.select(AdminSelectors.selectOrders);
 
   ngOnInit(): void {
+    this.store.dispatch(AdminActions.getOrders());
     this.initFormBehaviour();
   }
 
@@ -63,10 +67,14 @@ export class OrdersComponent implements OnInit {
   }
 
   initFormBehaviour() {
-    this.form.valueChanges.subscribe((values) => {
-      this.adminService.notifyOrdersSearchParamsChanged(
-        values as OrderSearchParams
-      );
-    });
+    this.form.valueChanges
+      .pipe(distinctUntilChanged(isEqual), debounceTime(300))
+      .subscribe((values) => {
+        this.store.dispatch(
+          AdminActions.setSearchParams({
+            searchParams: values as OrderSearchParams,
+          }),
+        );
+      });
   }
 }

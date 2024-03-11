@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrderProductItemComponent } from './order-product-item/order-product-item.component';
 import { OrderProductHeaderComponent } from './order-product-header/order-product-header.component';
-import { OrderItem } from 'src/app/core/models';
+import { OrderItem } from 'src/app/features/admin/admin-panel/models';
 
 @Component({
   selector: 'app-category-order-products',

@@ -16,9 +16,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CategoryPayloadRequest, FieldType } from 'src/app/core/models';
 import { v4 as uuidv4 } from 'uuid';
 import { enumToSelectOptions } from 'src/app/shared/utils';
+import { FieldType, DetailedCategory, CategoryPayloadRequest } from '../../../models';
 
 type FormFieldForm = FormGroup<{
   id: FormControl<string | null>;
@@ -45,7 +45,7 @@ export class ManageCategoryFormComponent {
   form = this.createForm();
   fieldTypeOptions = enumToSelectOptions(FieldType);
 
-  @Input() set data(data: CategoryPayloadRequest) {
+  @Input() set data(data: DetailedCategory) {
     this.updateForm(data);
   }
   @Output() submitted = new EventEmitter<CategoryPayloadRequest>();
@@ -119,7 +119,7 @@ export class ManageCategoryFormComponent {
     return control;
   }
 
-  private updateForm(data: CategoryPayloadRequest): void {
+  private updateForm(data: DetailedCategory): void {
 
     const { formFields } = data;
 

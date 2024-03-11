@@ -1,28 +1,43 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AdminPanelService } from '../../admin-panel.service';
 import { ConfirmationModalComponent } from 'src/app/shared/components/confirmation-modal/confirmation-modal.component';
 import { EditableCardComponent } from 'src/app/shared/components/editable-card/editable-card.component';
-import { ItemAdmin } from 'src/app/core/models';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateItemComponent } from './create-item/create-item.component';
 import { UpdateItemComponent } from './update-item/update-item.component';
 import { LetDirective } from '@ngrx/component';
+import { Store } from '@ngrx/store';
+import { AdminActions, AdminSelectors } from '../../state';
+import { ItemAdmin } from '../../models';
 
 @Component({
   selector: 'app-items',
   standalone: true,
-  imports: [CommonModule, EditableCardComponent, ConfirmationModalComponent, LetDirective],
+  imports: [
+    CommonModule,
+    EditableCardComponent,
+    ConfirmationModalComponent,
+    LetDirective,
+  ],
   templateUrl: './items.component.html',
   styleUrl: './items.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ItemsComponent {
-  private adminPanelService = inject(AdminPanelService);
+export class ItemsComponent implements OnInit {
   private dialog = inject(MatDialog);
+  private store = inject(Store);
 
   existingItemMenuItems = ['Update', 'Delete'];
-  items$ = this.adminPanelService.items$;
+  items$ = this.store.select(AdminSelectors.selectItems);
+
+  ngOnInit(): void {
+    this.store.dispatch(AdminActions.getItems());
+  }
 
   handleExistingItemMenuClicked(menuItem: string, item: ItemAdmin): void {
     switch (menuItem) {
@@ -46,7 +61,7 @@ export class ItemsComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.adminPanelService.deleteItem(item.id).subscribe();
+        this.store.dispatch(AdminActions.deleteItem({ id: item.id }));
       }
     });
   }

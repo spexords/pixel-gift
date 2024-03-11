@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ItemPayloadRequest } from 'src/app/core/models';
 import {
   FormControl,
   FormGroup,
@@ -10,8 +9,12 @@ import {
 } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
 import { ImageUploadComponent } from 'src/app/shared/components/image-upload/image-upload.component';
-import { AdminPanelService } from '../../../admin-panel.service';
 import { LetDirective } from '@ngrx/component';
+import { Store } from '@ngrx/store';
+import { AdminActions, AdminSelectors } from '../../../state';
+import { ItemPayloadRequest } from '../../../models';
+import { isEmpty } from 'lodash';
+import { tap } from 'rxjs';
 
 type ItemForm = FormGroup<{
   id: FormControl<string | null>;
@@ -31,17 +34,25 @@ type ItemForm = FormGroup<{
     ReactiveFormsModule,
     FormsModule,
     ImageUploadComponent,
-    LetDirective
+    LetDirective,
   ],
   templateUrl: './manage-item-form.component.html',
   styleUrl: './manage-item-form.component.scss',
 })
 export class ManageItemFormComponent {
-  private adminPanelService = inject(AdminPanelService);
+  private store = inject(Store);
 
   initialized = true;
   form = this.createForm();
-  categories$ = this.adminPanelService.categoriesAsSelectOptions$;
+  categories$ = this.store
+    .select(AdminSelectors.selectCategoriesAsOptions)
+    .pipe(
+      tap((categories) => {
+        if (isEmpty(categories)) {
+          this.store.dispatch(AdminActions.getCategories());
+        }
+      })
+    );
 
   @Input() set data(data: ItemPayloadRequest) {
     this.updateForm(data);

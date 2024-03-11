@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatDialogRef } from '@angular/material/dialog';
-import { AdminPanelService } from '../../../admin-panel.service';
-import { CategoryPayloadRequest } from 'src/app/core/models';
 import { ManageCategoryFormComponent } from '../manage-category-form/manage-category-form.component';
+import { Store } from '@ngrx/store';
+import { AdminActions } from '../../../state';
+import { CategoryPayloadRequest } from '../../../models';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-create-category',
@@ -11,19 +12,13 @@ import { ManageCategoryFormComponent } from '../manage-category-form/manage-cate
   imports: [CommonModule, ManageCategoryFormComponent],
   templateUrl: './create-category.component.html',
   styleUrl: './create-category.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateCategoryComponent {
-  private dialogRef = inject(MatDialogRef<CreateCategoryComponent>);
-  private adminPanelService = inject(AdminPanelService);
+  private store = inject(Store);
 
-  onSubmit(data: CategoryPayloadRequest): void {
-    this.adminPanelService.createCategory(data).subscribe({
-      next: () => {
-        alert('Category successfully created');
-        this.dialogRef.close();
-      },
-      error: (e) => alert(e.error.errors.message),
-    });
+  onSubmit(category: CategoryPayloadRequest): void {
+    category.id = uuidv4();
+    this.store.dispatch(AdminActions.createCategory({ category }));
   }
 }

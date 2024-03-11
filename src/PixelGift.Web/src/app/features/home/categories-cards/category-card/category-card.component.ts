@@ -8,8 +8,9 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslocoPipe } from '@ngneat/transloco';
-import { GiftStoreService } from '../../gift-store/gift-store.service';
 import { NavbarService } from 'src/app/core/navigation/navbar/navbar.service';
+import { Store } from '@ngrx/store';
+import { HomeActions } from '../../state';
 
 @Component({
   selector: 'app-category-card',
@@ -20,8 +21,8 @@ import { NavbarService } from 'src/app/core/navigation/navbar/navbar.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryCardComponent implements OnInit {
-  private giftStoreService = inject(GiftStoreService);
   private navbarService = inject(NavbarService);
+  private store = inject(Store);
 
   @HostBinding('style.background-image') back!: any;
   @HostBinding('style.margin-top') mt!: any;
@@ -31,7 +32,9 @@ export class CategoryCardComponent implements OnInit {
   @Input({ required: true }) categoryName!: string;
 
   moveToStore() {
-    this.giftStoreService.selectCategoryByName(this.categoryName);
+    this.store.dispatch(
+      HomeActions.chooseCategoryByName({ name: this.categoryName })
+    );
     this.navbarService.scroll('store');
   }
 

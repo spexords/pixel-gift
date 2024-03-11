@@ -1,8 +1,8 @@
-@if(paymentSucceeded) {
-<app-order-succeeded
-  (continueShoppingClicked)="continueShopping()"
-  [orderCustomerId]="orderCustomerId"
-/>
-}@else {
-<app-order-failed (tryAgainClicked)="tryAgain()" />
+@if (paymentStatus === "succeeded") {
+  <app-order-succeeded
+    (continueShoppingClicked)="continueShopping()"
+    [orderCustomerId]="orderCustomerId"
+  />
+} @else {
+  <app-order-failed (tryAgainClicked)="tryAgain()" />
 }

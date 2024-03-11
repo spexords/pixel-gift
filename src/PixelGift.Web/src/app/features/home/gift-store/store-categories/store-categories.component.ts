@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreCategoryComponent } from './store-category/store-category.component';
-import { Category } from 'src/app/core/models';
+import { Category } from '../../models';
 
 @Component({
   selector: 'app-store-categories',

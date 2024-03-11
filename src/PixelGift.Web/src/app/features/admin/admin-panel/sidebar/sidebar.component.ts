@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
+import { Store } from '@ngrx/store';
+import { AuthActions } from '../../auth/state';
 
 @Component({
   selector: 'app-sidebar',
@@ -12,11 +14,11 @@ import { AuthService } from '../../auth/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidebarComponent {
-  private authService = inject(AuthService);
+  private store = inject(Store);
   private router = inject(Router);
 
   logout(): void {
-    this.authService.logout();
+    this.store.dispatch(AuthActions.logout());
     this.router.navigateByUrl('/');
   }
 }

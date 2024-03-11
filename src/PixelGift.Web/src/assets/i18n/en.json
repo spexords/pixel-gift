@@ -1,0 +1,89 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About Us",
+    "store": "Store",
+    "faq": "FAQ"
+  },
+  "pixel-gift-header": "Welcome to our digital store, where the world of games becomes a reality at your fingertips! We offer a wide selection to the latest titles, available immediately after purchase.",
+  "choose-us": {
+    "header": "Why Choose",
+    "header-highlight": "Us",
+    "description": "This is an innovative online store that specializes in offering virtual gaming products. We guarantee such things as:",
+    "cards": {
+      "heart": "Our store operates with respect for the rules and regulations of the games we are associated with. Customers can be confident that purchases from our store are legal and comply with the policies of game developers.",
+      "bomb": "In our store, we always offer promotions and products at the best prices on the market. We strive to provide our customers with attractive deals and competitive prices, making their purchases not only satisfying but also financially advantageous.",
+      "hourglass": "Our company prides itself on the swift and efficient delivery of purchased virtual in-game items. We ensure that our customers receive their items immediately after completing the transaction.",
+      "treasure": "We offer a wide and varied selection of virtual game items, covering a variety of categories.This allows our customers to find unique and attractive items that meet their needs."
+    }
+  },
+  "store": {
+    "header": "Our",
+    "header-highlight": "Store"
+  },
+  "feedback": {
+    "header": "What our customers say",
+    "description": "Pixelgift enjoys the recognition of users around the world"
+  },
+  "faq": [
+    {
+      "question": "How do i receive my order?",
+      "answer": "After finalizing your purchase, be sure to check your friend invitations to send items. It is required that our bots be on your friends list for at least 24 hours. Once you have successfully completed the task and delivered the goods, the bots will be automatically deleted."
+    },
+    {
+      "question": "After purchase, when will i receive my order?",
+      "answer": "League of Legends - In order to successfully deliver the order, we must meet certain requirements set by the customer. Once your friend invitations are accepted, you will receive your gifts exactly 24 hours later. It is worth remembering that there is a limit of 10 gifts per account in 24 hours. If you have already received the maximum number of gifts, another 10 will be available after another 24 hours. *For fortnite, the time is extended to 48h"
+    },
+    {
+      "question": "What forms of payment are accepted?",
+      "answer": "Credit card, BLIK, Paysafe Card"
+    },
+    {
+      "question": "Can I return a purchased product?",
+      "answer": "Normally, digital products are not subject to returns due to the nature of the product. However, if you have problems with your purchased product, please contact our customer service department."
+    },
+    {
+      "question": "Is this safe?",
+      "answer": "Without a doubt, we have managed to fulfill thousands of orders without any problems. Our priority is to ensure the satisfaction of every customer, so we make every effort to ensure that no one leaves us unsatisfied."
+    }
+  ],
+  "footer": {
+    "contact-header": "contact us"
+  },
+  "buttons": {
+    "jumbotron": "Check our store",
+    "cart": "Add to cart",
+    "categories": "Check out"
+  },
+  "shopping-cart": {
+    "bc1": "Shopping Cart",
+    "bc2": "Checkout",
+    "bc3": "Confirm",
+    "order": "Order",
+    "header": "Shopping",
+    "header-highlight": "Cart",
+    "products-header": [
+      "product",
+      "price",
+      "quantity",
+      "total"
+    ],
+    "summary": {
+      "header": "ORDER SUMMARY",
+      "subtotal": "Subtotal",
+      "discount": "Discount",
+      "total": "Total",
+      "btn1": "checkout",
+      "btn2": "confirm"
+    },
+    "checkout": {
+      "mail": "contact email",
+      "success": {
+          "header": "Thank you for your purchase!",
+          "order-number": "Your order number is #",
+          "order-info": "We’ll email you an order confirmation with details and tracking info",
+          "button": "continue shopping"
+      }
+    }
+  }
+}

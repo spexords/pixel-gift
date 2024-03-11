@@ -2,17 +2,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   Inject,
+  OnInit,
   inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AdminPanelService } from '../../../admin-panel.service';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { enumToSelectOptions } from 'src/app/shared/utils';
-import {
-  DetailedOrderAdmin,
-  MailMessageRequest,
-  OrderStatus,
-} from 'src/app/core/models';
 import {
   FormControl,
   FormGroup,
@@ -20,9 +15,17 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { BehaviorSubject, Subject, switchMap, tap } from 'rxjs';
+import { filter, tap } from 'rxjs';
 import { BreakLinesPipe } from 'src/app/shared/pipes/break-lines.pipe';
 import { LetDirective } from '@ngrx/component';
+import { Store } from '@ngrx/store';
+import { AdminActions, AdminSelectors } from '../../../state';
+import { isNull } from 'lodash';
+import {
+  DetailedOrderAdmin,
+  MailMessageRequest,
+  OrderStatus,
+} from '../../../models';
 
 @Component({
   selector: 'app-manage-order',
@@ -38,10 +41,8 @@ import { LetDirective } from '@ngrx/component';
   styleUrl: './manage-order.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ManageOrderComponent {
-  private dialogRef = inject(MatDialogRef<ManageOrderComponent>);
-  private adminPanelService = inject(AdminPanelService);
-  private refreshOrder = new BehaviorSubject<undefined>(undefined);
+export class ManageOrderComponent implements OnInit {
+  private store = inject(Store);
 
   statuses = enumToSelectOptions(OrderStatus);
   status = new FormControl<string>('');
@@ -54,46 +55,44 @@ export class ManageOrderComponent {
 
   constructor(@Inject(MAT_DIALOG_DATA) public id: string) {}
 
-  order$ = this.refreshOrder.asObservable().pipe(
-    switchMap(() =>
-      this.adminPanelService.getOrder(this.id).pipe(
-        tap((order) => {
-          this.updateMissingDetails(order);
-          this.initDefaultSubject(order.customerOrderId);
-        })
-      )
-    )
+  ngOnInit(): void {
+    this.store.dispatch(AdminActions.getOrder({ id: this.id }));
+  }
+
+  order$ = this.store.select(AdminSelectors.selectOrder).pipe(
+    filter((order) => !isNull(order)),
+    tap((order) => {
+      this.updateMissingDetails(order!);
+      this.updateOrderMessage(order!);
+    }),
   );
 
   updateOrder(id: string): void {
-    this.adminPanelService
-      .updateOrder(id, this.status.value as string)
-      .subscribe(() => {
-        this.dialogRef.close();
-      });
+    this.store.dispatch(
+      AdminActions.updateOrder({
+        id,
+        status: this.status.value as string,
+      }),
+    );
   }
 
   sendMail(event: Event): void {
     event.preventDefault();
-    this.adminPanelService
-      .sendOrderMessage(this.id, this.mailForm.value as MailMessageRequest)
-      .subscribe({
-        next: () => {
-          alert('Email sent');
-          this.refreshOrder.next(undefined);
-          this.mailForm.controls.content.patchValue('');
-        },
-        error: () => alert('Could not send email'),
-      });
+    this.store.dispatch(
+      AdminActions.sendOrderMessage({
+        message: this.mailForm.value as MailMessageRequest,
+      }),
+    );
   }
 
   private updateMissingDetails(order: DetailedOrderAdmin) {
     this.status.patchValue(order.status);
   }
 
-  private initDefaultSubject(customerOrderId: number): void {
+  private updateOrderMessage(order: DetailedOrderAdmin): void {
+    this.mailForm.controls.orderId.patchValue(order.id);
     this.mailForm.controls.subject.patchValue(
-      `Products details & confirmation - Order #${customerOrderId}  `
+      `Products details & confirmation - Order #${order.customerOrderId}  `,
     );
   }
 }

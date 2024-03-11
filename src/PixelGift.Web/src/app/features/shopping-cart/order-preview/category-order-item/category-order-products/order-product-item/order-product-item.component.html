@@ -1,9 +1,15 @@
 <div class="product-wrapper">
-  <img alt="store item icon" [src]="'data:image;base64,' + orderItem.base64Image" />
-  <p>{{orderItem.name}}</p>
+  <img
+    alt="store item icon"
+    [src]="'data:image;base64,' + orderItem.base64Image"
+  />
+  <p>{{ orderItem.name }}</p>
 </div>
-<p class="price">{{orderItem.unitPrice}}PLN</p>
-<app-counter-button [ngModel]="orderItem.quantity" (ngModelChange)="updateOrderItemQuantity($event)"/>
-<p class="price">{{orderItem.total}}PLN</p>
+<p class="price">{{ orderItem.unitPrice }}PLN</p>
+<app-counter-button
+  [ngModel]="orderItem.quantity"
+  (ngModelChange)="updateOrderItemQuantity($event)"
+/>
+<p class="price">{{ orderItem.total }}PLN</p>
 <app-cancel-button (click)="updateOrderItemQuantity(0)" />
 <div *ngIf="!last" class="separator"></div>

@@ -1,0 +1,89 @@
+{
+  "nav": {
+    "home": "Strona Główna",
+    "about": "O Nas",
+    "store": "Sklep",
+    "faq": "FAQ"
+  },
+  "pixel-gift-header": "Witamy w naszym cyfrowym sklepie, gdzie świat gier staje się rzeczywistością na wyciągnięcie ręki! Oferujemy szeroki wybór do najnowszych tytułów, dostępnych natychmiast po zakupie.",
+  "choose-us": {
+    "header": "Dlaczego",
+    "header-highlight": "My",
+    "description": "To innowacyjny sklep online, który specjalizuje się w oferowaniu wirtualnych produktów do gier. Gwarantujemy takie rzeczy jak:",
+    "cards": {
+      "heart": "Nasz sklep działa z poszanowaniem zasad i regulaminów gier, z którymi jesteśmy powiązani. Klienci mogą mieć pewność, że zakupy w naszym sklepie są legalne i zgodne z politykami twórców gier.",
+      "bomb": "W naszym sklepie zawsze oferujemy promocje oraz produkty w najlepszych cenach na rynku. Staramy się zapewnić naszym klientom atrakcyjne oferty i konkurencyjne ceny, dzięki czemu ich zakupy są nie tylko satysfakcjonujące, ale również korzystne pod względem finansowym.",
+      "hourglass": "Nasza firma szczyci się szybką i efektywną dostawą zakupionych wirtualnych przedmiotów do gier. Dbamy o to, aby nasi klienci otrzymywali swój przedmiot natychmiast po dokonaniu transakcji.",
+      "treasure": "Oferujemy szeroki i zróżnicowany wybór wirtualnych przedmiotów do gier, obejmujących różne kategorie. Dzięki temu nasi klienci mogą znaleźć unikalne i atrakcyjne przedmioty, które spełnią ich oczekiwania."
+    }
+  },
+  "store": {
+    "header": "Nasz",
+    "header-highlight": "Sklep"
+  },
+  "feedback": {
+    "header": "Opinie naszych klientów",
+    "description": "Pixelgift cieszy się uznaniem użytkowników na całym świecie"
+  },
+  "faq": [
+    {
+      "question": "Jak mogę otrzymać moje zamówienie?",
+      "answer": "Po sfinalizowaniu zakupu, koniecznie sprawdź zaproszenia do znajomych, aby móc wysyłać przedmioty. Wymagane jest, aby nasze boty znajdowały się na Twojej liście znajomych przez co najmniej 24 godziny. Po pomyślnym zakończeniu zadania i dostarczeniu towarów, boty zostaną automatycznie usunięte."
+    },
+    {
+      "question": "Kiedy otrzymam zamówienie po dokonaniu zakupu?",
+      "answer": "League of Legends - Aby skutecznie dostarczyć zamówienie, musimy spełnić określone wymagania postawione przez klienta. Po akceptacji zaproszeń do grona znajomych, otrzymasz prezenty dokładnie po 24 godzinach. Warto pamiętać, że istnieje ograniczenie do 10 prezentów na konto w ciągu 24 godzin. Jeśli już otrzymałeś maksymalną liczbę prezentów, kolejne 10 będą dostępne po upływie kolejnych 24 godzin. *W przypadku fortnite czas jest wydłuzony do 48h"
+    },
+    {
+      "question": "Jakie formy płatności są akceptowane?",
+      "answer": "Karta kredytowa, BLIK, Paysafe Card"
+    },
+    {
+      "question": "Czy mogę zwrócić zakupiony produkt?",
+      "answer": "Zazwyczaj cyfrowe produkty nie podlegają zwrotom ze względu na specyfikę ich natury. Jednakże, jeśli masz problemy z zakupionym produktem, skontaktuj się z naszym działem obsługi klienta."
+    },
+    {
+      "question": "Czy to jest bezpieczne?",
+      "answer": "Bez wątpienia, udało nam się zrealizować tysiące zamówień bez żadnych problemów. Naszym priorytetem jest zapewnienie satysfakcji każdemu klientowi, dlatego dokładamy wszelkich starań, aby nikt nie opuszczał nas niezadowolony."
+    }
+  ],
+  "footer": {
+    "contact-header": "kontakt"
+  },
+  "buttons": {
+    "jumbotron": "Nasz sklep",
+    "cart": "Do koszyka",
+    "categories": "Sprawdź"
+  },
+  "shopping-cart": {
+    "bc1": "Koszyk Zakupowy",
+    "bc2": "Zakup",
+    "bc3": "Potwierdzenie",
+    "order": "Zamówienie",
+    "header": "Koszyk",
+    "header-highlight": "Zakupowy",
+    "products-header": [
+      "produkt",
+      "cena",
+      "ilość",
+      "łącznie"
+    ],
+    "summary": {
+      "header": "PODSUMOWANIE ZAMÓWIENIA",
+      "subtotal": "Suma częściowa",
+      "discount": "Rabat",
+      "total": "Razem",
+      "btn1": "zakup",
+      "btn2": "potwierdź"
+    },
+    "checkout": {
+      "mail": "email kontaktowy",
+      "success": {
+        "header": "Dziękujemy za zakup!",
+        "order-number": "Numer zamówienia to #",
+        "order-info": "Prześlemy na Twój adres e-mail potwierdzenie zamówienia z niezbędnymi danymi",
+        "button": "Kontynuuj zakupy"
+      }
+    }
+  }
+}

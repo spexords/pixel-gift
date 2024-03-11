@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, Optional, Self } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgControl } from '@angular/forms';
-import { SelectOption } from 'src/app/core/models';
 import { ErrorValidationMessagesComponent } from '../error-validation-messages/error-validation-messages.component';
+import { SelectOption } from '../../utils';
 
 @Component({
   selector: 'app-select-input',

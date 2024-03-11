@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatDialogRef } from '@angular/material/dialog';
-import { PromoCodePayloadRequest } from 'src/app/core/models';
-import { AdminPanelService } from '../../../admin-panel.service';
 import { ManagePromoCodeFormComponent } from '../manage-promo-code-form/manage-promo-code-form.component';
+import { Store } from '@ngrx/store';
+import { AdminActions } from '../../../state';
+import { PromoCodePayloadRequest } from '../../../models';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-create-promo-code',
@@ -14,16 +15,10 @@ import { ManagePromoCodeFormComponent } from '../manage-promo-code-form/manage-p
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreatePromoCodeComponent {
-  private dialogRef = inject(MatDialogRef<CreatePromoCodeComponent>);
-  private adminPanelService = inject(AdminPanelService);
+  private store = inject(Store);
 
-  onSubmit(data: PromoCodePayloadRequest): void {
-    this.adminPanelService.createPromoCode(data).subscribe({
-      next: () => {
-        alert('Promo Code successfully created');
-        this.dialogRef.close();
-      },
-      error: (e) => alert(e.error.errors.message),
-    });
+  onSubmit(promoCode: PromoCodePayloadRequest): void {
+    promoCode.id = uuidv4();
+    this.store.dispatch(AdminActions.createPromoCode({ promoCode }));
   }
 }
