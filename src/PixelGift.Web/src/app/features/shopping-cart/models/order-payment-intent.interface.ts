@@ -1,4 +1,4 @@
-import { OrderSummary } from './order-summary.interface';
+import { OrderSummary } from '../../admin/admin-panel/models/order-summary.interface';
 
 export interface OrderPaymentIntent {
   orderSummary: OrderSummary;

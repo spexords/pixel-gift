@@ -1,11 +1,11 @@
-import { Component, Inject, inject } from '@angular/core';
+import { Component, Inject, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AdminPanelService } from '../../../admin-panel.service';
-import { CreateCategoryComponent } from '../../categories/create-category/create-category.component';
-import { ItemPayloadRequest } from 'src/app/core/models';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ManageItemFormComponent } from '../manage-item-form/manage-item-form.component';
 import { LetDirective } from '@ngrx/component';
+import { Store } from '@ngrx/store';
+import { AdminActions, AdminSelectors } from '../../../state';
+import { ItemPayloadRequest } from '../../../models';
 
 @Component({
   selector: 'app-update-item',
@@ -14,21 +14,17 @@ import { LetDirective } from '@ngrx/component';
   templateUrl: './update-item.component.html',
   styleUrl: './update-item.component.scss',
 })
-export class UpdateItemComponent {
-  private dialogRef = inject(MatDialogRef<CreateCategoryComponent>);
-  private adminPanelService = inject(AdminPanelService);
+export class UpdateItemComponent implements OnInit {
+  private store = inject(Store);
+  item$ = this.store.select(AdminSelectors.selectItem);
 
   constructor(@Inject(MAT_DIALOG_DATA) public id: string) {}
 
-  item$ = this.adminPanelService.getItem(this.id);
+  ngOnInit(): void {
+    this.store.dispatch(AdminActions.getItem({ id: this.id }));
+  }
 
-  onSubmit(data: ItemPayloadRequest): void {
-    this.adminPanelService.updateItem(this.id, data).subscribe({
-      next: () => {
-        alert('Item successfully updated');
-        this.dialogRef.close();
-      },
-      error: (e) => alert(e.error.errors.message),
-    });
+  onSubmit(item: ItemPayloadRequest): void {
+    this.store.dispatch(AdminActions.updateItem({ item }));
   }
 }

@@ -9,25 +9,38 @@ import { AccountComponent } from './admin-panel/features/account/account.compone
 import { OrdersComponent } from './admin-panel/features/orders/orders.component';
 import { importProvidersFrom } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import { AuthEffects, authReducer } from './auth/state';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { AdminEffects, adminReducer } from './admin-panel/state';
 
 export const ADMIN_ROUTES: Routes = [
   {
-    path: 'auth',
-    component: AuthComponent,
-  },
-  {
     path: '',
-    component: AdminPanelComponent,
-    canActivate: [authGuard],
     providers: [
-      importProvidersFrom(MatDialogModule)
+      importProvidersFrom(
+        StoreModule.forFeature('admin', adminReducer),
+        EffectsModule.forFeature([AdminEffects]),
+      ),
     ],
     children: [
-      { path: 'categories', component: CategoriesComponent },
-      { path: 'items', component: ItemsComponent },
-      { path: 'promo-codes', component: PromoCodesComponent },
-      { path: 'orders', component: OrdersComponent },
-      { path: 'account', component: AccountComponent },
+      {
+        path: 'auth',
+        component: AuthComponent,
+      },
+      {
+        path: '',
+        component: AdminPanelComponent,
+        canActivate: [authGuard],
+        providers: [importProvidersFrom(MatDialogModule)],
+        children: [
+          { path: 'categories', component: CategoriesComponent },
+          { path: 'items', component: ItemsComponent },
+          { path: 'promo-codes', component: PromoCodesComponent },
+          { path: 'orders', component: OrdersComponent },
+          { path: 'account', component: AccountComponent },
+        ],
+      },
     ],
   },
 ];

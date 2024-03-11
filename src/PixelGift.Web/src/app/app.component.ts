@@ -2,7 +2,6 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   ChangeDetectionStrategy,
   Component,
-  OnInit,
 } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 

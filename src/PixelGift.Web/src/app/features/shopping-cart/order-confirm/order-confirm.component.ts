@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  OnDestroy,
   OnInit,
   inject,
 } from '@angular/core';
@@ -14,7 +13,8 @@ import { BreadcrumbService } from 'xng-breadcrumb';
 import { OrderSucceededComponent } from './order-succeeded/order-succeeded.component';
 import { OrderFailedComponent } from './order-failed/order-failed.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ShoppingCartService } from '../shopping-cart.service';
+import { SHOPPING_CART_PATH } from 'src/app/app.routes';
+import { ShoppingCartClearService } from '../shopping-cart-clear.service';
 
 @Component({
   selector: 'app-order-confirm',
@@ -28,26 +28,22 @@ export class OrderConfirmComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
   private breadcrumbService = inject(BreadcrumbService);
   private translocoService = inject(TranslocoService);
-  private shoppingCartService = inject(ShoppingCartService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private paymentStatus!: string;
+  private shoppingCartClearService = inject(ShoppingCartClearService);
 
+  paymentStatus!: string;
   orderCustomerId!: string;
 
   ngOnInit(): void {
     this.getDataFromQueryString();
+    this.updateBasket();
     this.updateBreadcrumb();
-    this.cleanUpShoppingCart();
   }
 
-  get paymentSucceeded(): boolean {
-    return this.paymentStatus === 'succeeded';
-  }
-
-  cleanUpShoppingCart(): void {
-    if (this.paymentSucceeded) {
-      this.shoppingCartService.clearBasket();
+  updateBasket() {
+    if (this.paymentStatus === 'succeeded') {
+      this.shoppingCartClearService.clear()
     }
   }
 
@@ -56,14 +52,13 @@ export class OrderConfirmComponent implements OnInit {
   }
 
   tryAgain(): void {
-    this.router.navigate(['/', 'shopping-cart']);
+    this.router.navigate(['/', SHOPPING_CART_PATH]);
   }
 
   private getDataFromQueryString() {
     this.route.queryParams.pipe(first()).subscribe((params) => {
       this.paymentStatus = params['redirect_status'] as string;
       this.orderCustomerId = params['orderCustomerId'] as string;
-      this.translocoService.setActiveLang(params['lang'] as string);
     });
   }
 

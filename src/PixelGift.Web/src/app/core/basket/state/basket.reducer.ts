@@ -1,8 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
-import { BasketItems } from '../../models';
 import { BasketActions } from './basket.actions';
+import { BasketItems } from '../models';
 
-const BASKET_KEY = 'basket';
+export const BASKET_KEY = 'basket';
 
 function tryLoadBasketItemsFromLocalStorage(): BasketItems {
   let basketItems = {} as BasketItems;
@@ -17,7 +17,7 @@ export interface BasketState {
   items: BasketItems;
 }
 
-export const initialState = {
+const initialState = {
   items: tryLoadBasketItemsFromLocalStorage(),
 } as BasketState;
 
@@ -58,5 +58,9 @@ export const basketReducer = createReducer(
       ...state,
       items: updatedItems,
     };
-  })
+  }),
+
+  on(BasketActions.clear, () => ({
+    items: {},
+  })),
 );

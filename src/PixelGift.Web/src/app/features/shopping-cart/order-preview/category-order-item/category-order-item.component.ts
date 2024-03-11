@@ -1,15 +1,12 @@
 import {
-  ChangeDetectionStrategy,
   Component,
-  EventEmitter,
   Input,
-  Output,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CategoryOrderFormComponent } from './category-order-form/category-order-form.component';
 import { CategoryOrderProductsComponent } from './category-order-products/category-order-products.component';
-import { OrderCategory } from 'src/app/core/models';
 import { FormGroup } from '@angular/forms';
+import { OrderCategory } from '../../models';
 
 @Component({
   selector: 'app-category-order-item',
@@ -25,5 +22,4 @@ import { FormGroup } from '@angular/forms';
 export class CategoryOrderItemComponent {
   @Input({ required: true }) orderCategory!: OrderCategory;
   @Input({ required: true }) orderCategoryForm!: FormGroup;
-  @Output() promoCodeChanged = new EventEmitter<string>();
 }

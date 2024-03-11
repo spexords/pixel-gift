@@ -1,13 +1,14 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { AdminPanelService } from '../../admin-panel.service';
 import { EditableCardComponent } from 'src/app/shared/components/editable-card/editable-card.component';
-import { PromoCode } from 'src/app/core/models';
 import { ConfirmationModalComponent } from 'src/app/shared/components/confirmation-modal/confirmation-modal.component';
 import { CreatePromoCodeComponent } from './create-promo-code/create-promo-code.component';
 import { UpdatePromoCodeComponent } from './update-promo-code/update-promo-code.component';
 import { LetDirective } from '@ngrx/component';
+import { Store } from '@ngrx/store';
+import { AdminActions, AdminSelectors } from '../../state';
+import { PromoCode } from '../../models';
 
 @Component({
   selector: 'app-promo-codes',
@@ -17,12 +18,16 @@ import { LetDirective } from '@ngrx/component';
   styleUrl: './promo-codes.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PromoCodesComponent {
-  private adminPanelService = inject(AdminPanelService);
+export class PromoCodesComponent implements OnInit {
+  private store = inject(Store);
   private dialog = inject(MatDialog);
 
   existingItemMenuItems = ['Update', 'Delete'];
-  promoCodes$ = this.adminPanelService.promoCodes$;
+  promoCodes$ = this.store.select(AdminSelectors.selectPromoCodes);
+
+  ngOnInit(): void {
+    this.store.dispatch(AdminActions.getPromoCodes());
+  }
 
   handleExistingItemMenuClicked(menuItem: string, item: PromoCode): void {
     switch (menuItem) {
@@ -46,7 +51,7 @@ export class PromoCodesComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.adminPanelService.deletePromoCode(promoCode.id).subscribe();
+        this.store.dispatch(AdminActions.deletePromoCode({ id: promoCode.id }));
       }
     });
   }

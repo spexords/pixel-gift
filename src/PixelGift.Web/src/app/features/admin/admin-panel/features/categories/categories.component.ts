@@ -1,13 +1,14 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EditableCardComponent } from 'src/app/shared/components/editable-card/editable-card.component';
 import { MatDialog } from '@angular/material/dialog';
 import { UpdateCategoryComponent } from './update-category/update-category.component';
 import { ConfirmationModalComponent } from 'src/app/shared/components/confirmation-modal/confirmation-modal.component';
-import { Category } from 'src/app/core/models';
-import { AdminPanelService } from '../../admin-panel.service';
-import { CreateCategoryComponent } from './create-category/create-category.component';
 import { LetDirective } from '@ngrx/component';
+import { Store } from '@ngrx/store';
+import { AdminActions, AdminSelectors } from '../../state';
+import { Category } from 'src/app/features/home/models';
+import { CreateCategoryComponent } from './create-category/create-category.component';
 
 @Component({
   selector: 'app-categories',
@@ -17,18 +18,22 @@ import { LetDirective } from '@ngrx/component';
     EditableCardComponent,
     ConfirmationModalComponent,
     CreateCategoryComponent,
-    LetDirective
+    LetDirective,
   ],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss',
 })
-export class CategoriesComponent {
-  private adminPanelService = inject(AdminPanelService);
+export class CategoriesComponent implements OnInit {
+  private store = inject(Store);
   private dialog = inject(MatDialog);
 
   existingCategoryMenuItems = ['Update', 'Delete'];
 
-  categories$ = this.adminPanelService.categories$;
+  categories$ = this.store.select(AdminSelectors.selectCategories);
+
+  ngOnInit(): void {
+    this.store.dispatch(AdminActions.getCategories());
+  }
 
   handleExistingCategoryClicked(menuItem: string, category: Category): void {
     switch (menuItem) {
@@ -52,7 +57,7 @@ export class CategoriesComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.adminPanelService.deleteCategory(category.id).subscribe();
+        this.store.dispatch(AdminActions.deleteCategory({ id: category.id }));
       }
     });
   }

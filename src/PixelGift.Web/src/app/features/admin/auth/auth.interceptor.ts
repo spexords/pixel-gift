@@ -1,29 +1,40 @@
 import { HttpInterceptorFn } from '@angular/common/http';
-import { AuthService } from './auth.service';
 import { inject } from '@angular/core';
-import { catchError, first, throwError } from 'rxjs';
+import {
+  catchError,
+  first,
+  switchMap,
+  throwError,
+  withLatestFrom,
+} from 'rxjs';
+import { Store } from '@ngrx/store';
+import { RouterSelectors } from 'src/app/core/router';
+import { ADMIN_PATH } from 'src/app/app.routes';
+import { AuthActions, AuthSelectors } from './state';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const authService = inject(AuthService);
+  const store = inject(Store);
 
-  const isLoggedId = authService.isLoggedIn();
-
-  if (isLoggedId) {
-    authService.user$.pipe(first()).subscribe((user) => {
-      req = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${user?.token}`,
-        },
-      });
-    });
-  }
-
-  return next(req).pipe(
-    catchError((error) => {
-      if (error.status === 401) {
-        authService.logout();
+  return store.select(AuthSelectors.selectUser).pipe(
+    withLatestFrom(store.select(RouterSelectors.selectUrl)),
+    first(),
+    switchMap(([user, url]) => {
+      if (user && url.startsWith(ADMIN_PATH)) {
+        req = req.clone({
+          setHeaders: {
+            Authorization: `Bearer ${user!.token}`,
+          },
+        });
       }
-      return throwError(() => error);
-    })
+
+      return next(req).pipe(
+        catchError((error) => {
+          if (error.status === 401) {
+            store.dispatch(AuthActions.logout());
+          }
+          return throwError(() => error);
+        }),
+      );
+    }),
   );
 };

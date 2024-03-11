@@ -1,4 +1,4 @@
-import { FormField } from './form-field.interface';
+import { FormField } from '../../../shopping-cart/models/form-field.interface';
 
 export interface DetailedCategory {
   id: string;

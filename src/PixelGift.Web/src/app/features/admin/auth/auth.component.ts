@@ -1,8 +1,4 @@
-import {
-  Component,
-  OnInit,
-  inject,
-} from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -10,10 +6,13 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { Login } from 'src/app/core/models/login.interface';
-import { filter, first } from 'rxjs';
+import { filter } from 'rxjs';
 import { Router } from '@angular/router';
-import { AuthService } from './auth.service';
+import { Store } from '@ngrx/store';
+import { AuthActions, AuthSelectors } from './state';
+import { isNull } from 'lodash';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ADMIN_PATH } from 'src/app/app.routes';
 
 @Component({
   selector: 'app-auth',
@@ -23,8 +22,9 @@ import { AuthService } from './auth.service';
   styleUrl: './auth.component.scss',
 })
 export class AuthComponent implements OnInit {
+  private destroyRef = inject(DestroyRef);
+  private store = inject(Store);
   private router = inject(Router);
-  private authService = inject(AuthService);
 
   form = new FormGroup({
     username: new FormControl(''),
@@ -32,15 +32,23 @@ export class AuthComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.authService.user$.pipe(filter((user) => !!user)).subscribe(() => {
-      this.router.navigate(['/admin'], {replaceUrl: true});
-    });
-    this.authService.getCurrentUser();
+    this.store.dispatch(AuthActions.getCurrentUser());
 
+    this.store
+      .select(AuthSelectors.selectUser)
+      .pipe(
+        filter((user) => !isNull(user)),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe(() => {
+        this.router.navigate(['/', ADMIN_PATH], { replaceUrl: true });
+      });
   }
 
   onSubmit(): void {
-    const values = this.form.value as Login;
-    this.authService.login(values);
+    const { username, password } = this.form.value;
+    if (username && password) {
+      this.store.dispatch(AuthActions.login({ username, password }));
+    }
   }
 }

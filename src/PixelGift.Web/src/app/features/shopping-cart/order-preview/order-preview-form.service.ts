@@ -1,31 +1,25 @@
-import { isEqual } from 'lodash';
+import { cloneDeep, isEqual } from 'lodash';
 import { Injectable, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BehaviorSubject, distinctUntilChanged } from 'rxjs';
-import { ShoppingCartService } from '../shopping-cart.service';
-import { OrderCategory, OrderPreview } from 'src/app/core/models';
+import { distinctUntilChanged, filter, map } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { ShoppingCartSelectors } from '../state';
+import { OrderCategory, OrderPreview, OrderPreviewFormData } from '../models';
 
 @Injectable()
 export class OrderPreviewFormService {
-  private shoppingCartService = inject(ShoppingCartService);
+  private store = inject(Store);
   private formBuilder = inject(FormBuilder);
-  private formSource = new BehaviorSubject<FormGroup | null>(null);
+  private cachedValues: OrderPreviewFormData | null = null;
 
-  formChanged$ = this.formSource.asObservable();
+  form$ = this.store.select(ShoppingCartSelectors.selectOrderPreview).pipe(
+    distinctUntilChanged(compareOrderPreview),
+    filter((x) => !!x),
+    map((x) => this.buildForm(x!.orderCategories)),
+  );
 
-  constructor() {
-    this.updateFormIfOrderPreviewChanged();
-  }
 
-  updateFormIfOrderPreviewChanged(): void {
-    this.shoppingCartService.orderPreview$
-      .pipe(distinctUntilChanged(compareOrderPreview))
-      .subscribe((orderPreview) => {
-        this.buildForm(orderPreview.orderCategories);
-      });
-  }
-
-  private buildForm(orderCategories: OrderCategory[]): void {
+  private buildForm(orderCategories: OrderCategory[]): FormGroup<any> {
     const form = this.formBuilder.group({});
 
     for (const orderCategory of orderCategories) {
@@ -36,29 +30,31 @@ export class OrderPreviewFormService {
           formField.name,
           this.formBuilder.control(
             formField.fieldType === 'Select' ? formField.options[0] : '',
-            Validators.required
-          )
+            Validators.required,
+          ),
         );
       }
       orderCategoryFormGroup.addControl(
         'promoCode',
-        this.formBuilder.control('')
+        this.formBuilder.control(''),
       );
 
       form.addControl(orderCategory.id, orderCategoryFormGroup);
     }
 
-    if (this.formSource.value?.value) {
-      form.patchValue(this.formSource.value?.value);
+    if (this.cachedValues) {
+      form.patchValue(this.cachedValues);
     }
 
-    this.formSource.next(form);
+    this.cachedValues = cloneDeep(form.value);
+
+    return form;
   }
 }
 
 function compareOrderPreview(
-  previous: OrderPreview,
-  current: OrderPreview
+  previous: OrderPreview | null,
+  current: OrderPreview | null,
 ): boolean {
   const previousData = mapToComparableFormData(previous);
   const currentData = mapToComparableFormData(current);
@@ -66,7 +62,7 @@ function compareOrderPreview(
   return isEqual(previousData, currentData);
 }
 
-function mapToComparableFormData(orderPreview: OrderPreview) {
+function mapToComparableFormData(orderPreview: OrderPreview | null) {
   return orderPreview?.orderCategories.map((category) => ({
     id: category.id,
     fields: category.formFields.map((field) => ({

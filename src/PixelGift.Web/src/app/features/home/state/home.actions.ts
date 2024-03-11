@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Category, Item } from 'src/app/core/models';
+import { Category, Item } from '../models';
 
 export class HomeActions {
   static getItemsList = createAction('[Home] getItemsList');

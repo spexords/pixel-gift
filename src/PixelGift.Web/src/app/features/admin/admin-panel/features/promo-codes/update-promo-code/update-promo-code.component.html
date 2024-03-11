@@ -1,6 +1,8 @@
 <ng-container *ngrxLet="promoCode$ as promoCode">
-  <app-manage-promo-code-form
-    [data]="promoCode"
-    (submitted)="onSubmit($event)"
-  />
+  @if (promoCode) {
+    <app-manage-promo-code-form
+      [data]="promoCode"
+      (submitted)="onSubmit($event)"
+    />
+  }
 </ng-container>

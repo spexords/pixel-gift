@@ -8,6 +8,7 @@ Pixel Gift is a full-stack application that simplifies the buying and selling of
 - EF Core
 - MediatR
 - Angular 17
+- NgRx
 
 ## Architectural Patterns
 

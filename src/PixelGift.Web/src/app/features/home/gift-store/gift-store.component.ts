@@ -4,12 +4,11 @@ import { StoreCategoriesComponent } from './store-categories/store-categories.co
 import { StoreItemsComponent } from './store-items/store-items.component';
 import { TranslocoPipe } from '@ngneat/transloco';
 import { GiftStoreService } from './gift-store.service';
-import { combineLatest, map } from 'rxjs';
-import { Category, Scrollable } from 'src/app/core/models';
 import { LetDirective } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { HomeActions, HomeSelectors } from '../state';
 import { BasketActions } from 'src/app/core/basket/state';
+import { Category, Scrollable } from '../models';
 
 @Component({
   selector: 'app-gift-store',
@@ -25,7 +24,6 @@ import { BasketActions } from 'src/app/core/basket/state';
   styleUrl: './gift-store.component.scss',
 })
 export class GiftStoreComponent implements Scrollable {
-  private giftStoreService = inject(GiftStoreService);
   private store = inject(Store);
 
   categories$ = this.store.select(HomeSelectors.selectCategories);
@@ -51,7 +49,6 @@ export class GiftStoreComponent implements Scrollable {
   }
 
   addItemToShoppingCart(itemId: string): void {
-    this.giftStoreService.addItemToShoppingCart(itemId);
     this.store.dispatch(BasketActions.addItem({ itemId }));
   }
 }

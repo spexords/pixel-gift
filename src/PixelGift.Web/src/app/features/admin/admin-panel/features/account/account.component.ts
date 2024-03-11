@@ -11,7 +11,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { AdminPanelService } from '../../admin-panel.service';
-import { ChangePassword } from 'src/app/core/models';
+import { ChangePassword } from '../../models';
 
 @Component({
   selector: 'app-account',

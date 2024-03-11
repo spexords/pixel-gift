@@ -18,9 +18,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FooterComponent } from 'src/app/core/footer/footer.component';
 import { NavbarComponent } from 'src/app/core/navigation/navbar/navbar.component';
 import { NavbarService } from 'src/app/core/navigation/navbar/navbar.service';
-import { Scrollable } from 'src/app/core/models';
 import { Store } from '@ngrx/store';
-import { HomeActions, HomeSelectors } from './state';
+import { HomeActions } from './state';
+import { Scrollable } from './models';
 
 @Component({
   selector: 'app-home',
@@ -51,22 +51,31 @@ export class HomeComponent implements OnInit {
   @ViewChild('chooseUs') chooseUs!: Scrollable;
 
   ngOnInit(): void {
+    this.getCategoriesList();
     this.handleScrollNavigation();
+  }
+
+  getCategoriesList(): void {
     this.store.dispatch(HomeActions.getCategoriesList());
   }
 
-  handleScrollNavigation() {
+  handleScrollNavigation(): void {
     this.navbarService.scrollToSection$
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((section) => {
-        if (section === 'home') {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else if (section === 'store') {
-          this.giftStore.scrollIntoView();
-        } else if (section === 'faq') {
-          this.faq.scrollIntoView();
-        } else if (section === 'choose-us') {
-          this.chooseUs.scrollIntoView();
+        switch (section) {
+          case 'home':
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            break;
+          case 'store':
+            this.giftStore.scrollIntoView();
+            break;
+          case 'faq':
+            this.faq.scrollIntoView();
+            break;
+          case 'choose-us':
+            this.chooseUs.scrollIntoView();
+            break;
         }
       });
   }

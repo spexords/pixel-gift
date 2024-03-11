@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslocoPipe } from '@ngneat/transloco';
-import { Scrollable } from 'src/app/core/models';
+import { Scrollable } from '../models';
 
 @Component({
   selector: 'app-choose-us',

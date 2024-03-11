@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
-import { Category, Item } from 'src/app/core/models';
 import { HomeActions } from './home.actions';
+import { Item, Category } from '../models';
 
 export interface HomeState {
   items: Item[];
@@ -8,7 +8,7 @@ export interface HomeState {
   currentCategory: Category | null;
 }
 
-export const initialState = {
+const initialState = {
   items: [],
   categories: [],
   currentCategory: null,

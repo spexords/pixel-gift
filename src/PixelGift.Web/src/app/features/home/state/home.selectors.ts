@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { HomeState } from './home.reducer';
-import { Category } from 'src/app/core/models';
+import { Category } from '../models';
 
 export class HomeSelectors {
   private static getHomeState = createFeatureSelector<HomeState>('home');

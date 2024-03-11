@@ -13,6 +13,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { LangActions } from '../state';
 import { AvailableLangs } from '../available-langs.type';
+import { distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-lang-switcher',
@@ -33,23 +34,26 @@ export class LangSwitcherComponent implements OnInit {
 
   ngOnInit(): void {
     this.setInitialLang();
+    this.handleLangUpdate();
   }
 
-  setInitialLang() {
-    this.transolocoService.langChanges$
-    .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe((lang) =>
-      this.store.dispatch(
-        LangActions.setLang({ lang: lang as AvailableLangs })
-      )
-    );
-    
+  setInitialLang(): void {
     const activeLang = this.transolocoService.getActiveLang();
     const destinationLang = window.localStorage.getItem('lang');
     if (destinationLang && destinationLang !== activeLang) {
       this.transolocoService.setActiveLang(destinationLang);
     }
     this.flag = flags[this.transolocoService.getActiveLang()];
+  }
+
+  handleLangUpdate(): void {
+    this.transolocoService.langChanges$
+      .pipe(takeUntilDestroyed(this.destroyRef), distinctUntilChanged())
+      .subscribe((lang) =>
+        this.store.dispatch(
+          LangActions.setLang({ lang: lang as AvailableLangs })
+        )
+      );
   }
 
   toggleLangSwitcher(): void {

@@ -1,10 +1,11 @@
-import { Component, Inject, inject } from '@angular/core';
+import { Component, Inject, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AdminPanelService } from '../../../admin-panel.service';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ManagePromoCodeFormComponent } from '../manage-promo-code-form/manage-promo-code-form.component';
-import { PromoCodePayloadRequest } from 'src/app/core/models';
 import { LetDirective } from '@ngrx/component';
+import { Store } from '@ngrx/store';
+import { AdminActions, AdminSelectors } from '../../../state';
+import { PromoCodePayloadRequest } from '../../../models';
 
 @Component({
   selector: 'app-update-promo-code',
@@ -13,21 +14,18 @@ import { LetDirective } from '@ngrx/component';
   templateUrl: './update-promo-code.component.html',
   styleUrl: './update-promo-code.component.scss',
 })
-export class UpdatePromoCodeComponent {
-  private dialogRef = inject(MatDialogRef<UpdatePromoCodeComponent>);
-  private adminPanelService = inject(AdminPanelService);
+export class UpdatePromoCodeComponent implements OnInit {
+  private store = inject(Store);
 
   constructor(@Inject(MAT_DIALOG_DATA) public id: string) {}
 
-  promoCode$ = this.adminPanelService.getPromoCode(this.id);
+  ngOnInit(): void {
+    this.store.dispatch(AdminActions.getPromoCode({ id: this.id }));
+  }
 
-  onSubmit(data: PromoCodePayloadRequest): void {
-    this.adminPanelService.updatePromoCode(this.id, data).subscribe({
-      next: () => {
-        alert('Promo code successfully updated');
-        this.dialogRef.close();
-      },
-      error: (e) => alert(e.error.errors.message),
-    });
+  promoCode$ = this.store.select(AdminSelectors.selectPromoCode);
+
+  onSubmit(promoCode: PromoCodePayloadRequest): void {
+    this.store.dispatch(AdminActions.updatePromoCode({ promoCode }));
   }
 }

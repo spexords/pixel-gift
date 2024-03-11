@@ -7,9 +7,11 @@
 <div #payment class="stripe-element"></div>
 
 <ng-container *ngrxLet="orderPreview$ as orderPreview">
-  <app-order-summary
-    [orderSummary]="orderPreview.orderSummary"
-    [checkout]="true"
-    (clicked)="submitOrder()"
-  />
+  @if (orderPreview) {
+    <app-order-summary
+      [orderSummary]="orderPreview.orderSummary"
+      [checkout]="true"
+      (clicked)="submitOrder()"
+    />
+  }
 </ng-container>

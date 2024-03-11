@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslocoPipe } from '@ngneat/transloco';
-import { Item } from 'src/app/core/models';
+import { Item } from '../../../models';
 
 @Component({
   selector: 'app-item-card',

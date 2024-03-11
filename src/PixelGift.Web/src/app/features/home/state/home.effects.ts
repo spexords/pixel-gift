@@ -6,6 +6,8 @@ import { GiftStoreService } from '../gift-store/gift-store.service';
 import { HomeSelectors } from './home.selectors';
 import { Store } from '@ngrx/store';
 import { LangActions, LangSelectors } from 'src/app/core/lang/state';
+import { RouterSelectors } from 'src/app/core/router';
+import { HOME_PATH } from 'src/app/app.routes';
 
 @Injectable()
 export class HomeEffects {
@@ -29,8 +31,11 @@ export class HomeEffects {
   refreshItems = createEffect(() =>
     this.actions.pipe(
       ofType(LangActions.setLang, HomeActions.chooseCategoryByName),
-      withLatestFrom(this.store.select(HomeSelectors.selectCurrentCategory)),
-      filter(([, category]) => category !== null),
+      withLatestFrom(
+        this.store.select(HomeSelectors.selectCurrentCategory),
+        this.store.select(RouterSelectors.selectUrl)
+      ),
+      filter(([, category, url]) => category !== null && url === HOME_PATH),
       map(() => HomeActions.getItemsList())
     )
   );

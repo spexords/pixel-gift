@@ -48,6 +48,8 @@ public class SendMessageHandler : ICommandHandler<SendMessageCommand, Unit>
             Content = request.Content
         });
 
+        await _context.SaveChangesAsync();
+
         return Unit.Value;
     }
 }

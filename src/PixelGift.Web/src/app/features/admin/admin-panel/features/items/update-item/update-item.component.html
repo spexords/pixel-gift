@@ -1,3 +1,5 @@
 <ng-container *ngrxLet="item$ as item">
-  <app-manage-item-form [data]="item" (submitted)="onSubmit($event)" />
+  @if (item) {
+    <app-manage-item-form [data]="item" (submitted)="onSubmit($event)" />
+  }
 </ng-container>

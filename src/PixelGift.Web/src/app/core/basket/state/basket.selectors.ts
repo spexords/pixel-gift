@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { BasketState } from './basket.reducer';
-import { BasketItems } from '../../models';
+import { BasketItems } from '../models';
 
 export class BasketSelectors {
   private static getBasketState = createFeatureSelector<BasketState>('basket');
